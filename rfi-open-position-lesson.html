@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="assets/poker-kit/decks/decks.css">
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css">
   <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css">
-  <link rel="stylesheet" href="assets/poker-rfi-open-lesson/lesson.css?v=20260713-3">
+  <link rel="stylesheet" href="assets/poker-rfi-open-lesson/lesson.css?v=20260713-4">
 </head>
 <body class="rfi-open-lesson">
   <main class="app">
@@ -35,16 +35,64 @@
     </section>
 
     <section class="screen" data-screen="main">
-      <div class="wisdom-heading"><div><p class="eyebrow">Сначала пойми идею</p><h2>Позиция управляет шириной</h2></div><p><strong>5 коротких мыслей</strong> · листай стрелками или точками</p></div>
-      <div class="wisdom" id="wisdom">
-        <article class="slide active"><div><p class="eyebrow">Игроки за спиной</p><h2>В EP ты проходишь через шестерых</h2><p>Если у каждого лишь около 5% действительно сильных рук, шесть независимых шансов уже создают заметный риск. На BTN за спиной только два игрока — украсть блайнды намного проще.</p></div><div class="backline"><span>EP<strong>6 соперников</strong></span><i>→</i><span>BTN<strong>2 соперника</strong></span></div></article>
-        <article class="slide"><div><p class="eyebrow">Учебная лестница</p><h2>20 → 26 → 32 → 47 → 75</h2><p>Запоминай не пять несвязанных чартов, а расширение: аккуратно в ранней, понемногу в средней, резко шире в CO и BTN.</p></div><div class="ladder"><b style="--w:20%">EP 20</b><b style="--w:26%">MP 26</b><b style="--w:32%">HJ 32</b><b style="--w:47%">CO 47</b><b style="--w:75%">BTN 75</b></div></article>
-        <article class="slide"><div><p class="eyebrow">Главный массовый лик</p><h2>Не теряй offsuit-границу</h2><p>Разномастных комбинаций одной руки в три раза больше, чем одномастных. Сдвиг границы с K5o до K7o кажется маленьким, но вырезает много опенов.</p></div><div class="combo"><span><strong>K5s</strong><small>4 комбинации</small></span><span><strong>K5o</strong><small>12 комбинаций</small></span></div></article>
-        <article class="slide"><div><p class="eyebrow">Чистая стратегия новичка</p><h2>Рейз или пас. Лимпа нет</h2><p>Рабочая базовая линия урока для EP–BTN: все до тебя выбросили — открывай выбранный диапазон рейзом 2,2 BB, остальное пас. SB — отдельная стратегия: там встречаются лимп и увеличенный сайзинг.</p></div><div class="binary"><span class="yes">В диапазоне<strong>Рейз 2,2 BB</strong></span><span class="no">Вне диапазона<strong>Пас</strong></span></div></article>
-        <article class="slide"><div><p class="eyebrow">Не только тузы</p><h2>Слишком узко — тоже ошибка</h2><p>Открывать лишь премиумы значит добровольно отдавать блайнды и становиться читаемым. Равновесная база нужна как точка отсчёта; против более тайтового поля можно сужаться, против пассивного — расширяться осознанно.</p></div><div class="note">Сначала выучи базу → затем делай подстройку</div></article>
-        <div class="carousel wisdom-carousel-controls" aria-label="Навигация по пяти мыслям">
+      <div class="wisdom-heading"><div><p class="eyebrow">Сначала пойми идею</p><h2>Позиция управляет шириной</h2></div><p><strong>5 практических правил</strong> · стрелки, точки или свайп</p></div>
+      <div class="wisdom" id="wisdom" role="region" aria-roledescription="карусель" tabindex="0" aria-label="Пять главных правил опен-рейза">
+        <article class="slide active" role="group" aria-roledescription="слайд" aria-label="1 из 5: Игроки за спиной" data-story-label="Игроки за спиной" style="--slide-accent:#ffdf51">
+          <span class="slide-number" aria-hidden="true">01</span>
+          <div class="slide-copy"><p class="eyebrow">Игроки за спиной</p><h2>Меньше игроков — шире опен</h2><p>В EP твой рейз должны пропустить ещё шесть игроков. На BTN остаются только два блайнда. Чем короче путь до банка, тем больше рук можно прибыльно открыть.</p><strong class="slide-rule">Сначала посчитай игроков — потом оценивай руку.</strong></div>
+          <div class="slide-visual pressure-visual" role="img" aria-label="Сравнение: шесть игроков за EP и два игрока за BTN">
+            <div class="pressure-card"><span>EP</span><strong>6</strong><small>игроков за спиной</small><div class="seat-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+            <i class="pressure-arrow" aria-hidden="true">→</i>
+            <div class="pressure-card is-late"><span>BTN</span><strong>2</strong><small>игрока за спиной</small><div class="seat-dots" aria-hidden="true"><i></i><i></i></div></div>
+            <p>Меньше препятствий <b>→</b> шире диапазон</p>
+          </div>
+        </article>
+        <article class="slide" role="group" aria-roledescription="слайд" aria-label="2 из 5: Лестница диапазонов" data-story-label="Лестница диапазонов" style="--slide-accent:#ffdf51">
+          <span class="slide-number" aria-hidden="true">02</span>
+          <div class="slide-copy"><p class="eyebrow">Учебная лестница</p><h2>Расширяй один чарт — не учи пять заново</h2><p>Каждая следующая позиция добавляет руки к уже знакомой форме. Самый заметный скачок начинается в CO и продолжается на BTN.</p><strong class="slide-rule">20 → 26 → 32 → 47 → 75</strong></div>
+          <div class="slide-visual range-stair" role="img" aria-label="Диапазоны растут от 20 процентов в EP до 75 процентов на BTN">
+            <div><span>EP</span><i><em style="--range:20%"></em></i><b>20%</b></div>
+            <div><span>MP</span><i><em style="--range:26%"></em></i><b>26%</b></div>
+            <div><span>HJ</span><i><em style="--range:32%"></em></i><b>32%</b></div>
+            <div class="is-jump"><span>CO</span><i><em style="--range:47%"></em></i><b>47%</b></div>
+            <div class="is-jump"><span>BTN</span><i><em style="--range:75%"></em></i><b>75%</b></div>
+            <small>CO и BTN — место главного расширения</small>
+          </div>
+        </article>
+        <article class="slide" role="group" aria-roledescription="слайд" aria-label="3 из 5: Offsuit-граница" data-story-label="Offsuit-граница" style="--slide-accent:#f58a94">
+          <span class="slide-number" aria-hidden="true">03</span>
+          <div class="slide-copy"><p class="eyebrow">Главный массовый лик</p><h2>Offsuit-клетка весит втрое больше</h2><p>У одной одномастной руки 4 комбинации, у разномастной — 12. Поэтому маленький промах по нижней offsuit-границе вырезает из опена сразу много рук.</p><strong class="slide-rule">Забыл две offsuit-клетки — потерял 24 комбинации.</strong></div>
+          <div class="slide-visual combo-impact" role="img" aria-label="K5 suited имеет четыре комбинации, K5 offsuit — двенадцать">
+            <div class="combo-card is-suited"><span>K5s</span><strong>4</strong><small>комбинации</small></div>
+            <b class="combo-times">×3</b>
+            <div class="combo-card is-offsuit"><span>K5o</span><strong>12</strong><small>комбинаций</small></div>
+            <div class="combo-loss"><strong>−24</strong><span>две забытые offsuit-клетки</span></div>
+          </div>
+        </article>
+        <article class="slide" role="group" aria-roledescription="слайд" aria-label="4 из 5: Рейз или пас" data-story-label="Рейз или пас" style="--slide-accent:#57d69a">
+          <span class="slide-number" aria-hidden="true">04</span>
+          <div class="slide-copy"><p class="eyebrow">Базовая линия EP–BTN</p><h2>Первое решение: рейз 2,2 или пас</h2><p>Если все до тебя выбросили, сверяй руку с чартом. Внутри диапазона — открывай 2,2 BB. Вне диапазона — пас. Колл здесь превращается в лимп и не нужен.</p><strong class="slide-rule">SB — отдельная стратегия с собственными сайзингами.</strong></div>
+          <div class="slide-visual decision-flow" role="img" aria-label="Все пасуют до Hero, затем рука проверяется по чарту и выбирается рейз или пас">
+            <div class="decision-start">Все до тебя <strong>пас</strong></div><i aria-hidden="true">↓</i>
+            <div class="decision-question">Рука в чарте?</div><i aria-hidden="true">↓</i>
+            <div class="decision-results"><span class="yes"><small>Да</small><strong>Рейз 2,2 BB</strong></span><span class="no"><small>Нет</small><strong>Пас</strong></span></div>
+            <div class="decision-limp"><s>Колл</s><span>лимпа нет</span></div>
+          </div>
+        </article>
+        <article class="slide" role="group" aria-roledescription="слайд" aria-label="5 из 5: База и подстройка" data-story-label="База и подстройка" style="--slide-accent:#a875df">
+          <span class="slide-number" aria-hidden="true">05</span>
+          <div class="slide-copy"><p class="eyebrow">Порядок обучения</p><h2>Сначала база. Потом подстройка</h2><p>Открывая только премиумы, ты отдаёшь блайнды и пропускаешь прибыльные рейзы. Выучи базовый чарт и меняй его только по наблюдениям.</p><strong class="slide-rule">Подстройка без выученной базы — угадайка.</strong></div>
+          <div class="slide-visual learning-steps" role="img" aria-label="Три шага: выучить базу, закрепить границу, затем подстраиваться по данным">
+            <div><b>1</b><span><strong>База</strong><small>Выучи форму чарта</small></span></div>
+            <i aria-hidden="true">↓</i>
+            <div><b>2</b><span><strong>Практика</strong><small>Закрепи пограничные руки</small></span></div>
+            <i aria-hidden="true">↓</i>
+            <div class="is-final"><b>3</b><span><strong>Подстройка</strong><small>Меняй диапазон по данным</small></span></div>
+          </div>
+        </article>
+        <div class="carousel wisdom-carousel-controls" role="group" aria-label="Навигация по пяти мыслям">
           <button class="wisdom-arrow" id="prev" type="button" aria-label="Предыдущая мысль">←</button>
-          <div class="wisdom-carousel-status"><strong id="counter">1 из 5</strong><div class="wisdom-story-dots" id="carouselDots" aria-label="Выбор мысли"></div><small id="carouselRemaining">Ещё 4 мысли</small></div>
+          <div class="wisdom-carousel-status"><strong id="counter" aria-live="polite">1 из 5</strong><div class="wisdom-story-dots" id="carouselDots" role="group" aria-label="Выбор мысли"></div><small id="carouselRemaining">Ещё 4 мысли</small></div>
           <button class="wisdom-arrow" id="next" type="button" aria-label="Следующая мысль">→</button>
         </div>
       </div>
@@ -77,6 +125,6 @@
     </section>
   </main>
   <footer class="lesson-footer"><a href="/">← Все тренажёры</a><a href="/bb-call-defense-lesson">Следующий урок: защита BB →</a></footer>
-  <script src="assets/poker-kit/decks/deck-library.js"></script><script src="assets/poker-kit/chips/chip-library.js"></script><script src="assets/poker-rfi-open-lesson/data.js?v=20260713-2"></script><script src="assets/poker-rfi-open-lesson/recall.js?v=20260713-3"></script><script src="assets/poker-rfi-open-lesson/lesson.js?v=20260713-3"></script>
+  <script src="assets/poker-kit/decks/deck-library.js"></script><script src="assets/poker-kit/chips/chip-library.js"></script><script src="assets/poker-rfi-open-lesson/data.js?v=20260713-2"></script><script src="assets/poker-rfi-open-lesson/recall.js?v=20260713-3"></script><script src="assets/poker-rfi-open-lesson/lesson.js?v=20260713-4"></script>
 </body>
 </html>
