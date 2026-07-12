@@ -12,6 +12,8 @@
   const learningPosition = Object.freeze({ UTG: "EP", LJ: "MP", HJ: "HJ", CO: "CO", BTN: "BTN" });
   const processedEntries = new Set();
   let restartHandlerInstalled = false;
+  let learningUiHandlersInstalled = false;
+  let limpReturnFocus = null;
 
   function sessionHands() {
     const count = Number(params.get("hands"));
@@ -39,7 +41,7 @@
       randomStackMaxBb: 40,
       actionTimerSeconds: 0,
       trainingMode: false,
-      manualNextHand: false,
+      manualNextHand: true,
       continueAfterBust: true,
       sessionHandLimit: sessionHands(),
       demoMode: true,
@@ -141,15 +143,20 @@
   function heroPreflopAction(entry = {}) {
     const heroSeatId = Number(entry?.hero?.seatId ?? 0);
     const actions = Array.isArray(entry?.handHistory?.actions) ? entry.handHistory.actions : [];
-    const event = actions.find((item) => {
+    for (const item of actions) {
       const street = String(item?.street || "preflop");
       const isHero = item?.isHero === true || Number(item?.seatId) === heroSeatId;
-      return street === "preflop" && isHero;
-    });
-    const action = String(event?.action || event?.type || event?.label || "").toLowerCase();
-    if (/raise|open|all[- ]?in|\bjam\b/.test(action) || action === "r") return "open";
-    if (/fold|пас/.test(action) || action === "f") return "fold";
+      if (street !== "preflop" || !isHero) continue;
+      const action = String(item?.action || item?.type || item?.label || "").toLowerCase();
+      if (/raise|open|all[- ]?in|\bjam\b/.test(action) || action === "r") return "open";
+      if (/fold|пас/.test(action) || action === "f") return "fold";
+      if (/call|limp|колл/.test(action) || action === "c") return "limp";
+    }
     return "";
+  }
+
+  function decisionForFrequency(frequency) {
+    return Number(frequency || 0) >= 50 ? "open" : "fold";
   }
 
   function gradeEntry(entry = {}) {
@@ -157,9 +164,65 @@
     const position = targetLearningPosition(handNo);
     const combo = comboForEntry(entry);
     const frequency = Number(root.PokerRfiData?.frequencies?.[position]?.[combo] || 0);
-    const expected = frequency >= 50 ? "open" : "fold";
+    const expected = decisionForFrequency(frequency);
     const action = heroPreflopAction(entry);
     return { handNo, position, combo, frequency, expected, action, correct: Boolean(action) && action === expected };
+  }
+
+  function handAt(row, column) {
+    const ranks = root.PokerRfiData?.ranks || "AKQJT98765432".split("");
+    return row === column
+      ? `${ranks[row]}${ranks[row]}`
+      : row < column ? `${ranks[row]}${ranks[column]}s` : `${ranks[column]}${ranks[row]}o`;
+  }
+
+  function actionLabel(action) {
+    if (action === "open") return `рейз ${OPEN_SIZE_LABEL} BB`;
+    if (action === "limp") return "колл / лимп";
+    return "пас";
+  }
+
+  function reviewVerdict(grade) {
+    if (grade.action === "limp") {
+      return {
+        title: "Колл здесь — это лимп",
+        text: `В unopened-RFI выбираем только рейз ${OPEN_SIZE_LABEL} BB или пас.`,
+        tone: "wrong"
+      };
+    }
+    if (grade.correct && grade.expected === "open") {
+      return { title: "Правильно! Попал в диапазон рейза", text: `Эту руку открываем ${OPEN_SIZE_LABEL} BB.`, tone: "correct" };
+    }
+    if (grade.correct) {
+      return { title: "Правильно! Рука вне диапазона", text: "Здесь сохраняем фишки и выбираем пас.", tone: "correct" };
+    }
+    if (grade.expected === "open") {
+      return { title: "Неверно — надо было рейз", text: `Эта рука входит в опен: ставим ${OPEN_SIZE_LABEL} BB.`, tone: "wrong" };
+    }
+    return { title: "Неверно — надо было пас", text: "Эта рука не входит в учебный диапазон опена.", tone: "wrong" };
+  }
+
+  function reviewChart(grade) {
+    const ranks = root.PokerRfiData?.ranks || [];
+    const frequencies = root.PokerRfiData?.frequencies?.[grade.position] || {};
+    return ranks.map((_, row) => ranks.map((__, column) => {
+      const hand = handAt(row, column);
+      const frequency = Number(frequencies[hand] || 0);
+      const expected = decisionForFrequency(frequency);
+      const mixed = frequency > 0 && frequency < 100;
+      const hit = hand === grade.combo;
+      const classes = [
+        "rfi-review-cell",
+        row === column ? "is-pair" : row < column ? "is-suited" : "is-offsuit",
+        expected === "open" ? "is-target-open" : "is-target-fold",
+        mixed ? "is-mixed" : "",
+        mixed && expected === "fold" ? "is-low-mix" : "",
+        hit ? "is-hit" : "",
+        hit ? (grade.correct ? "is-correct" : "is-wrong") : ""
+      ].filter(Boolean).join(" ");
+      const weight = mixed ? `<small>${frequency}%</small>` : "";
+      return `<span class="${classes}" style="--frequency:${frequency}%" title="${hand}: ${frequency ? `рейз ${frequency}%` : "пас"}"><b>${hand}</b>${weight}</span>`;
+    }).join("")).join("");
   }
 
   function ensureFeedback() {
@@ -167,10 +230,12 @@
     let feedback = root.document.querySelector("[data-rfi-feedback]");
     if (feedback) return feedback;
     feedback = root.document.createElement("aside");
-    feedback.className = "rfi-drill-feedback";
+    feedback.className = "rfi-range-review";
     feedback.dataset.rfiFeedback = "";
-    feedback.setAttribute("role", "status");
-    feedback.setAttribute("aria-live", "polite");
+    feedback.setAttribute("role", "alertdialog");
+    feedback.setAttribute("aria-modal", "true");
+    feedback.setAttribute("aria-labelledby", "rfi-review-title");
+    feedback.setAttribute("aria-hidden", "true");
     root.document.body.appendChild(feedback);
     return feedback;
   }
@@ -178,11 +243,162 @@
   function showGrade(grade) {
     const feedback = ensureFeedback();
     if (!feedback || !grade.combo || !grade.action) return;
-    const mixed = grade.frequency > 0 && grade.frequency < 100 ? ` · частота ${grade.frequency}%` : "";
-    feedback.innerHTML = `<strong>${grade.correct ? "Верно" : "Сверь границу"}: ${grade.combo} · ${grade.position}</strong><span>База: ${grade.expected === "open" ? `рейз ${OPEN_SIZE_LABEL} BB` : "пас"}${mixed}</span>`;
-    feedback.classList.add("is-visible", grade.correct ? "is-correct" : "is-wrong");
-    feedback.classList.remove(grade.correct ? "is-wrong" : "is-correct");
-    root.setTimeout(() => feedback.classList.remove("is-visible"), 4200);
+    const verdict = reviewVerdict(grade);
+    const mixed = grade.frequency > 0 && grade.frequency < 100 ? ` · исходный вес ${grade.frequency}%` : "";
+    const lastHand = grade.handNo >= sessionHands();
+    feedback.innerHTML = `
+      <div class="rfi-review-backdrop" aria-hidden="true"></div>
+      <section class="rfi-review-board ${verdict.tone === "correct" ? "is-correct" : "is-wrong"}">
+        <header class="rfi-review-header">
+          <div><span>Разбор завершённой раздачи ${grade.handNo}</span><strong>${grade.position} · ${grade.combo}</strong></div>
+          <p>Твоя мишень — чарт позиции. Кольцо показывает сыгранную руку.</p>
+        </header>
+        <div class="rfi-review-legend"><span class="is-open">Рейз</span><span class="is-fold">Пас</span><span class="is-weighted">Смешанная частота</span><small>Учебное решение: 50% и выше → рейз, ниже 50% → пас</small></div>
+        <div class="rfi-review-chart" aria-label="Чарт ${grade.position}; сыгранная рука ${grade.combo}">${reviewChart(grade)}</div>
+        <footer class="rfi-review-footer">
+          <div><strong id="rfi-review-title">${verdict.title}</strong><p>${verdict.text}</p><small>Ты выбрал: ${actionLabel(grade.action)} · База: ${actionLabel(grade.expected)}${mixed}</small></div>
+          <button class="rfi-review-next" type="button" data-rfi-review-next data-final="${lastHand ? "true" : "false"}">${lastHand ? "Посмотреть итог" : "Следующая раздача"}</button>
+        </footer>
+      </section>`;
+    feedback.classList.remove("is-visible");
+    feedback.setAttribute("aria-hidden", "false");
+    root.requestAnimationFrame?.(() => {
+      feedback.classList.add("is-visible");
+      feedback.querySelector("[data-rfi-review-next]")?.focus({ preventScroll: true });
+    });
+  }
+
+  function hideGrade() {
+    const feedback = root.document?.querySelector?.("[data-rfi-feedback]");
+    if (!feedback) return;
+    feedback.classList.remove("is-visible");
+    feedback.setAttribute("aria-hidden", "true");
+  }
+
+  function playLimpTone() {
+    const AudioContext = root.AudioContext || root.webkitAudioContext;
+    if (!AudioContext) return false;
+    try {
+      const context = new AudioContext();
+      const now = context.currentTime;
+      [196, 147].forEach((frequency, index) => {
+        const oscillator = context.createOscillator();
+        const gain = context.createGain();
+        const start = now + index * 0.09;
+        oscillator.type = "square";
+        oscillator.frequency.setValueAtTime(frequency, start);
+        gain.gain.setValueAtTime(0.0001, start);
+        gain.gain.exponentialRampToValueAtTime(0.055, start + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.085);
+        oscillator.connect(gain);
+        gain.connect(context.destination);
+        oscillator.start(start);
+        oscillator.stop(start + 0.09);
+      });
+      context.resume?.();
+      root.setTimeout(() => context.close?.(), 360);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function ensureLimpWarning() {
+    if (!root.document) return null;
+    let warning = root.document.querySelector("[data-rfi-limp-warning]");
+    if (warning) return warning;
+    warning = root.document.createElement("aside");
+    warning.className = "rfi-limp-warning";
+    warning.dataset.rfiLimpWarning = "";
+    warning.setAttribute("role", "alertdialog");
+    warning.setAttribute("aria-modal", "true");
+    warning.setAttribute("aria-labelledby", "rfi-limp-title");
+    warning.setAttribute("aria-hidden", "true");
+    warning.innerHTML = `
+      <div class="rfi-limp-warning-backdrop" aria-hidden="true"></div>
+      <section class="rfi-limp-warning-window">
+        <div class="rfi-limp-warning-icon" aria-hidden="true">!</div>
+        <div><strong id="rfi-limp-title">Колл здесь — это лимп</strong><p>Когда все до тебя выбросили, выбираем только рейз ${OPEN_SIZE_LABEL} BB или пас.</p></div>
+        <button type="button" data-rfi-limp-dismiss>Понятно</button>
+      </section>`;
+    root.document.body.appendChild(warning);
+    return warning;
+  }
+
+  function showLimpWarning(source) {
+    const warning = ensureLimpWarning();
+    if (!warning) return;
+    limpReturnFocus = source || root.document?.activeElement || null;
+    warning.classList.remove("is-visible");
+    warning.setAttribute("aria-hidden", "false");
+    warning.dataset.tonePlayed = playLimpTone() ? "true" : "false";
+    void warning.offsetWidth;
+    warning.classList.add("is-visible");
+    root.setTimeout(() => warning.querySelector("[data-rfi-limp-dismiss]")?.focus({ preventScroll: true }), 40);
+  }
+
+  function hideLimpWarning() {
+    const warning = root.document?.querySelector?.("[data-rfi-limp-warning]");
+    if (!warning) return;
+    warning.classList.remove("is-visible");
+    warning.setAttribute("aria-hidden", "true");
+    limpReturnFocus?.focus?.({ preventScroll: true });
+    limpReturnFocus = null;
+  }
+
+  function installLearningUiHandlers() {
+    if (!active || !root.document || learningUiHandlersInstalled) return;
+    learningUiHandlersInstalled = true;
+    root.document.addEventListener("click", (event) => {
+      const limp = event.target?.closest?.('.client-controls.is-rfi-opening [data-action="call"]');
+      if (limp) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation?.();
+        showLimpWarning(limp);
+        return;
+      }
+      const dismissLimp = event.target?.closest?.("[data-rfi-limp-dismiss]");
+      if (dismissLimp) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation?.();
+        hideLimpWarning();
+        return;
+      }
+      const next = event.target?.closest?.("[data-rfi-review-next]");
+      if (!next) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation?.();
+      hideGrade();
+      if (next.dataset.final !== "true") root.PokerSimulatorApp?.newHand?.();
+    }, true);
+    root.document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        const warning = root.document.querySelector('[data-rfi-limp-warning][aria-hidden="false"]');
+        if (warning) {
+          event.preventDefault();
+          hideLimpWarning();
+          return;
+        }
+        const review = root.document.querySelector('[data-rfi-feedback][aria-hidden="false"]');
+        if (review) {
+          event.preventDefault();
+          hideGrade();
+        }
+        return;
+      }
+      const tag = event.target?.tagName;
+      if (event.metaKey || event.ctrlKey || event.altKey || event.repeat || tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA" || event.target?.isContentEditable || String(event.key).toLowerCase() !== "c") return;
+      if (root.document.querySelector('[data-rfi-limp-warning][aria-hidden="false"]')) return;
+      const openingCall = root.document.querySelector('.client-controls.is-rfi-opening [data-action="call"]');
+      if (!openingCall) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation?.();
+      showLimpWarning(openingCall);
+    }, true);
   }
 
   function restartSession() {
@@ -212,7 +428,7 @@
       const hud = root.document.createElement("section");
       hud.className = "rfi-drill-hud";
       hud.setAttribute("aria-live", "polite");
-      hud.innerHTML = `<strong>RFI по позициям</strong><span>EP 20 · MP 26 · HJ 32 · CO 47 · BTN 75</span><small>Все до Hero выбросили · рейз ${OPEN_SIZE_LABEL} BB или пас</small><b data-rfi-score>0 / ${sessionHands()} верно</b>`;
+      hud.innerHTML = `<strong>RFI по позициям</strong><span>EP 20 · MP 26 · HJ 32 · CO 47 · BTN 75</span><small>Все до Hero выбросили · рейз ${OPEN_SIZE_LABEL} BB или пас · колл покажет подсказку</small><b data-rfi-score>0 / ${sessionHands()} верно</b>`;
       topbar.prepend(hud);
       let signature = "";
       const update = () => {
@@ -259,7 +475,11 @@
     completedEntries,
     comboForEntry,
     heroPreflopAction,
+    decisionForFrequency,
     gradeEntry,
+    reviewVerdict,
+    reviewChart,
+    playLimpTone,
     installHud,
     restartSession
   };
@@ -272,6 +492,7 @@
   }
   installPack(root.PokerSimulatorEngine);
   installRestartHandler();
+  installLearningUiHandlers();
   if (root.document?.readyState === "loading") root.document.addEventListener("DOMContentLoaded", installHud, { once: true });
   else installHud();
 })();

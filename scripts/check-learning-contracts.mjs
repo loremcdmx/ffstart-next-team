@@ -8,6 +8,9 @@ const json = (path) => JSON.parse(readFileSync(resolve(root, path), "utf8"));
 
 await import("../assets/poker-resteal-lesson/engine.js");
 await import("../assets/poker-rfi-open-lesson/simulator-pack.js");
+globalThis.window = globalThis;
+await import("../assets/poker-rfi-open-lesson/data.js");
+delete globalThis.window;
 
 const engine = globalThis.PokerRestealEngine;
 const rfi = globalThis.PokerRfiOpenSimulatorPack;
@@ -65,8 +68,21 @@ assert.equal(rfi.targetLearningPosition(2), "MP", "engine LJ is presented as lea
 assert.equal(rfi.openSizeBb, 2.2, "RFI lesson and simulator use the same 2.2 BB size");
 
 const rfiCss = readFileSync(resolve(root, "assets/poker-rfi-open-lesson/simulator-pack.css"), "utf8");
-assert(rfiCss.includes('.client-controls.is-rfi-opening [data-action="call"]'), "RFI pack hides limp only on the initial unopened decision");
-assert(!/data-rfi-open-drill[^\n]+>\s*\[data-action=["']call["']/.test(rfiCss), "RFI pack does not hide legal calls globally after a 3-bet");
+assert(!rfiCss.includes('.client-controls.is-rfi-opening [data-action="call"] { display:none'), "RFI opening keeps the call button visible as a teaching trap");
+assert(rfiCss.includes(".rfi-range-review"), "RFI pack includes the post-hand range target review");
+assert(rfiCss.includes(".rfi-limp-warning"), "RFI pack includes the dedicated limp warning dialog");
+const rfiPackSource = readFileSync(resolve(root, "assets/poker-rfi-open-lesson/simulator-pack.js"), "utf8");
+assert(rfiPackSource.includes("manualNextHand: true"), "RFI waits for post-hand review before dealing the next hand");
+assert(rfiPackSource.includes('.client-controls.is-rfi-opening [data-action="call"]'), "RFI intercepts only the unopened limp action");
+assert(rfiPackSource.includes("stopImmediatePropagation"), "RFI limp guard stops the invalid action before the engine receives it");
+assert.equal(rfi.decisionForFrequency(49), "fold", "sub-50 source weights use the simplified fold action");
+assert.equal(rfi.decisionForFrequency(50), "open", "50-percent source weights enter the simplified open action");
+assert.equal(rfi.heroPreflopAction({ hero: { seatId: 4 }, handHistory: { actions: [{ street: "preflop", seatId: 4, action: "call" }] } }), "limp", "completed hand grading recognizes a limp");
+assert.equal(rfi.heroPreflopAction({ hero: { seatId: 0 }, handHistory: { actions: [{ street: "preflop", seatId: 0, phase: "chips", label: "Hero +2.2 BB" }, { street: "preflop", seatId: 0, phase: "action", label: "Raise to 2.2 BB" }] } }), "open", "RFI grading skips chip movement and finds the first meaningful hero action");
+assert.equal(rfi.reviewVerdict({ action: "limp", expected: "open", correct: false }).tone, "wrong", "limp receives an explicit wrong verdict");
+const epReviewChart = rfi.reviewChart({ position: "EP", combo: "A9o", correct: true });
+assert.equal((epReviewChart.match(/class="rfi-review-cell/g) || []).length, 169, "post-hand review renders all 169 range cells");
+assert(epReviewChart.includes("is-hit is-correct"), "post-hand review marks the played combo on the chart");
 const actionControls = readFileSync(resolve(root, "assets/poker-simulator/simulator-action-controls.js"), "utf8");
 assert(actionControls.includes("rfi-play-again"), "RFI terminal state offers an in-frame restart");
 
