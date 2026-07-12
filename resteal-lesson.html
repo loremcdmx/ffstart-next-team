@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Рестил</title>
+  <meta name="description" content="Интерактивный урок FF по рестилам в стеках 25–40 BB: EV-модель, профили соперников и практика.">
+  <meta property="og:title" content="Рестилы в коротких стеках · FF Префлоп-лаборатория">
+  <meta property="og:description" content="Разбери диапазоны рестил-пуша и закрепи решения против живых ботов.">
+  <title>Рестилы в коротких стеках · FF Префлоп-лаборатория</title>
+  <link rel="icon" href="assets/favicon.svg">
   <link rel="stylesheet" href="assets/poker-kit/tokens.css?v=4c5ba88ea3c1">
   <link rel="stylesheet" href="assets/poker-kit/decks/decks.css?v=0639396cc47c">
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
@@ -12,12 +16,13 @@
   <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=6ac33607ddcb">
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
-  <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=a5833851ff8c">
+  <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=20260713-2">
 </head>
 <body>
   <main class="app">
     <header class="topline">
       <div class="lesson-brand">
+        <a class="lesson-home" href="/">← В лабораторию</a>
         <p class="eyebrow">Префлоп · стек 25–40 BB</p>
         <h1>Рестил</h1>
       </div>
@@ -231,15 +236,15 @@
       <div class="field-grid field-grid-single">
         <article class="panel comparison-panel">
           <div class="comparison-heading"><div><p class="eyebrow">Реальные раздачи · январь–июнь 2026</p><h3>Сколько олл-ин и колл выигрывали относительно паса</h3></div><span>Не солвер</span></div>
-          <p class="comparison-note">Пас на большом блайнде принят за 0. Его реальная цена — −1,12 BB: большой блайнд и среднее анте уже вложены. Поэтому здесь показано, сколько каждая линия сохраняла или выигрывала сверх паса.</p>
+          <p class="comparison-note">Пас принят за 0 отдельно внутри каждой категории рук. Его фактическая цена берётся из fold-строки той же выгрузки (примерно −0,66…−0,82 BB), поэтому сравнение не смешивает SB- и BB-споты одним фиксированным бейзлайном.</p>
           <div class="comparison-method" aria-label="Откуда взялись числа">
             <div><span>Выборка</span><strong>Игроки проекта с известными картами</strong><small>База трекера; группы 1–15; руки без распознанных карт исключены.</small></div>
             <div><span>Один фильтр спота</span><strong>SB/BB против одного CO/BTN</strong><small>25–40 BB · без лимперов · опен не больше 3 BB · можно было сыграть 3-бет.</small></div>
-            <div><span>Одна шкала</span><strong>EV относительно паса</strong><small>Из среднего chips_ev ÷ BB вычитаем −1,12 BB. Например, +0,13 становится +1,25 BB относительно паса.</small></div>
+            <div><span>Одна шкала</span><strong>EV относительно паса</strong><small>Из среднего chips_ev ÷ BB вычитаем fold EV той же категории. Например, −0,28 у низких связок против −0,66 паса становится примерно +0,38 BB.</small></div>
           </div>
           <div class="comparison-caveat"><strong>Важно:</strong><span>это не две линии одной и той же раздачи. Игроки сами выбирали действие, поэтому внутри категории могли отличаться конкретные руки, позиции и соперники. Исходная выборка объединяет SB и BB, а учебная шкала приведена к цене паса именно с BB.</span></div>
           <div class="bars" id="outcomeBars"></div>
-          <p class="comparison-footnote"><strong>Значение линии</strong> = средний chips_ev ÷ BB − (−1,12 BB паса). <strong>Олл-ин − колл</strong> рассчитан до округления; общая поправка за пас сокращается и не меняет эту разницу. У каждой линии показан размер выборки. Разницы около 0,1 BB считаем «примерно одинаково»: в выгрузке нет дисперсии и доверительных интервалов.</p>
+          <p class="comparison-footnote"><strong>Значение линии</strong> = средний chips_ev ÷ BB − fold EV той же категории. <strong>Олл-ин − колл</strong> рассчитан до округления; общая поправка за пас сокращается и не меняет эту разницу. У каждой линии показан размер выборки. Разницы около 0,1 BB считаем «примерно одинаково»: в выгрузке нет дисперсии и доверительных интервалов.</p>
         </article>
       </div>
       </div>
@@ -279,6 +284,7 @@
         <iframe id="restealSimulator" title="Полный симулятор рестила" aria-describedby="practiceOutcomeNote" loading="eager" allow="autoplay"></iframe>
       </div>
     </section>
+    <footer class="lesson-footer"><a href="/">← Все тренажёры</a><a href="/rfi-open-position-lesson">Начать маршрут заново →</a></footer>
   </main>
 
   <aside class="info-popover" id="infoPopover" role="dialog" aria-modal="false" aria-labelledby="infoTitle" hidden>
@@ -297,8 +303,8 @@
   <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=876dfddebeb9"></script>
   <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=5a1febca1a73"></script>
   <script defer src="assets/poker-resteal-lesson/data/browser-bundle.js?v=63cee47708b4"></script>
-  <script defer src="assets/poker-resteal-lesson/data.js?v=0bf36db75b14"></script>
-  <script defer src="assets/poker-resteal-lesson/engine.js?v=4073eeae5aa3"></script>
-  <script defer src="assets/poker-resteal-lesson/lesson.js?v=a4e76e1b5086"></script>
+  <script defer src="assets/poker-resteal-lesson/data.js?v=20260713-2"></script>
+  <script defer src="assets/poker-resteal-lesson/engine.js?v=20260713-2"></script>
+  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260713-2"></script>
 </body>
 </html>

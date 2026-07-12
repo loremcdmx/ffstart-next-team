@@ -817,6 +817,7 @@
   const api = {
     active,
     packKey: PACK_KEY,
+    storageSuffix: "resteal-bb-demo",
     sessionHands,
     planForHand,
     realLimpSeatIds,

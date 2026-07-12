@@ -3,6 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>
+    window.FF_STATIC_LEARNING_HUB = true;
+    window.__consoleErrors = [];
+    window.addEventListener("error", function (event) { window.__consoleErrors.push(String(event.error?.stack || event.message || "unknown error")); });
+    window.addEventListener("unhandledrejection", function (event) { window.__consoleErrors.push(String(event.reason?.stack || event.reason || "unhandled rejection")); });
+    (function () {
+      var query = new URLSearchParams(window.location.search);
+      var lessonMode = query.has("lesson") || query.has("drill") || query.has("embedded") || query.has("room") || query.has("rooms");
+      if (!lessonMode && /\/poker-simulator(?:\.html)?$/.test(window.location.pathname)) window.location.replace("/");
+    })();
+  </script>
   <title>Покерный симулятор столов</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script>
@@ -20,8 +31,8 @@
   <link rel="stylesheet" href="assets/poker-simulator/simulator-dialogs.css?v=ddeb864f65b7">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-polish.css?v=d5b525b07ce0">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-identity.css?v=7b75c0708510">
-  <link rel="stylesheet" href="assets/poker-resteal-lesson/simulator-pack.css?v=f798cf9cf000">
-  <link rel="stylesheet" href="assets/poker-rfi-open-lesson/simulator-pack.css">
+  <link rel="stylesheet" href="assets/poker-resteal-lesson/simulator-pack.css?v=20260713-2">
+  <link rel="stylesheet" href="assets/poker-rfi-open-lesson/simulator-pack.css?v=20260713-2">
   <script defer src="assets/poker-kit/decks/deck-library.js?v=b03058b680c1"></script>
   <script defer src="assets/poker-kit/chips/chip-library.js"></script>
   <script defer src="assets/poker-kit/simulator/bot-strategy-profile.js?v=6388b0e93c2b"></script>
@@ -35,10 +46,11 @@
   <script defer src="assets/poker-kit/simulator/engine-showdown.js?v=4469d0f13f5f"></script>
   <script defer src="assets/poker-kit/simulator/engine-postflop-policy.js?v=b0c15c58572f"></script>
   <script defer src="assets/poker-kit/simulator/simulator-engine.js?v=b290173a89b0"></script>
-  <script defer src="assets/poker-resteal-lesson/advice.js?v=dc4196bbaf02"></script>
-  <script defer src="assets/poker-resteal-lesson/simulator-pack.js?v=74d1ae1e3514"></script>
-  <script defer src="assets/poker-rfi-open-lesson/simulator-pack.js"></script>
-  <script defer src="assets/poker-progress/progress.js?v=c897829879fa"></script>
+  <script defer src="assets/poker-resteal-lesson/advice.js?v=20260713-2"></script>
+  <script defer src="assets/poker-resteal-lesson/simulator-pack.js?v=20260713-2"></script>
+  <script defer src="assets/poker-rfi-open-lesson/data.js?v=20260713-2"></script>
+  <script defer src="assets/poker-rfi-open-lesson/simulator-pack.js?v=20260713-2"></script>
+  <script defer src="assets/poker-progress/progress.js?v=20260713-2"></script>
   <script defer src="assets/poker-simulator/simulator-timings.js?v=e6528afb294e"></script>
   <script defer src="assets/poker-simulator/simulator-timing-config.js?v=4d4ff450327d"></script>
   <script defer src="assets/poker-simulator/simulator-random.js?v=7231b8091c3c"></script>
@@ -71,9 +83,9 @@
   <script defer src="assets/poker-simulator/simulator-audio.js?v=9ee1ac3ddec7"></script>
   <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=1acc7eb15669"></script>
   <script defer src="assets/poker-simulator/simulator-geometry.js?v=e7201e1cc2ed"></script>
-  <script defer src="assets/poker-simulator/simulator-betting.js?v=f191b9bdf3ec"></script>
+  <script defer src="assets/poker-simulator/simulator-betting.js?v=20260713-2"></script>
   <script defer src="assets/poker-simulator/simulator-hero-actions.js?v=72e4ecd74d46"></script>
-  <script defer src="assets/poker-simulator/simulator-action-controls.js?v=17b56c57f6a1"></script>
+  <script defer src="assets/poker-simulator/simulator-action-controls.js?v=20260713-2"></script>
   <script defer src="assets/poker-simulator/simulator-action-bridge.js?v=1f528e7c4ec3"></script>
   <script defer src="assets/poker-simulator/simulator-action-i18n.js?v=36e573775a1a"></script>
   <script defer src="assets/poker-simulator/simulator-stage.js?v=d30cd5e5b8a3"></script>

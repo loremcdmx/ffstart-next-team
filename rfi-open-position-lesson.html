@@ -3,24 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Опен-рейз по позициям · FunFarm</title>
+  <meta name="description" content="Интерактивный урок FF по опен-рейзам: позиции, диапазоны, проверка памяти и практика.">
+  <meta property="og:title" content="Опен-рейзы по позициям · FF Префлоп-лаборатория">
+  <meta property="og:description" content="Пойми расширение диапазона от EP до BTN и закрепи пограничные решения.">
+  <title>Опен-рейзы по позициям · FF Префлоп-лаборатория</title>
+  <link rel="icon" href="assets/favicon.svg">
   <link rel="stylesheet" href="assets/poker-kit/tokens.css">
   <link rel="stylesheet" href="assets/poker-kit/decks/decks.css">
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css">
   <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css">
-  <link rel="stylesheet" href="assets/poker-rfi-open-lesson/lesson.css">
+  <link rel="stylesheet" href="assets/poker-rfi-open-lesson/lesson.css?v=20260713-2">
 </head>
 <body class="rfi-open-lesson">
   <main class="app">
     <header class="topline">
-      <div class="lesson-brand"><p class="eyebrow">Префлоп · RFI по позициям</p><h1>Опен-рейз</h1></div>
+      <div class="lesson-brand"><a class="lesson-home" href="/">← В лабораторию</a><p class="eyebrow">Префлоп · RFI по позициям</p><h1>Опен-рейз</h1></div>
       <nav class="step-tabs" role="tablist" aria-label="Шаги урока">
         <button class="step-tab active" role="tab" aria-selected="true" data-go="hand">1. Раздача</button><button class="step-tab" role="tab" aria-selected="false" data-go="main" disabled>2. Главное</button><button class="step-tab" role="tab" aria-selected="false" data-go="ranges" disabled>3. Подробнее</button><button class="step-tab" role="tab" aria-selected="false" data-go="practice" disabled>4. Практика</button>
       </nav>
     </header>
     <section class="screen active is-active" data-screen="hand">
       <article class="panel lesson-intro rfi-intro">
-        <div class="intro-copy"><p class="eyebrow">Главная мысль урока</p><h2>Чем ближе BTN, тем шире опен</h2><p class="intro-subtitle">Сначала позиция — потом карты</p><p class="intro-lead">Ты первым входишь в банк из EP. Одна и та же рука может быть пасом здесь и прибыльным рейзом на BTN: чем меньше игроков осталось за спиной, тем проще забрать блайнды.</p><p class="intro-support">Начнём с A9o в ранней позиции. Не угадывай «силу» руки — посчитай, сколько соперников ещё могут проснуться с сильной рукой.</p><div class="choices intro-choices"><button class="btn" data-intro="fold">Пас</button><button class="btn primary" data-intro="raise">Рейз 2 BB</button><button class="btn" data-intro="limp">Лимп</button></div><div class="intro-answer" id="introCoach" aria-live="polite"></div></div>
+        <div class="intro-copy"><p class="eyebrow">Главная мысль урока</p><h2>Чем ближе BTN, тем шире опен</h2><p class="intro-subtitle">Сначала позиция — потом карты</p><p class="intro-lead">Ты первым входишь в банк из EP. Одна и та же рука может быть пасом здесь и прибыльным рейзом на BTN: чем меньше игроков осталось за спиной, тем проще забрать блайнды.</p><p class="intro-support">Начнём с A9o в ранней позиции. Не угадывай «силу» руки — посчитай, сколько соперников ещё могут проснуться с сильной рукой.</p><div class="choices intro-choices"><button class="btn" data-intro="fold">Пас</button><button class="btn primary" data-intro="raise">Рейз 2,2 BB</button><button class="btn" data-intro="limp">Лимп</button></div><div class="intro-answer" id="introCoach" aria-live="polite"></div></div>
         <div class="intro-table-visual">
         <article class="table-card">
           <div class="table-head"><i></i><strong>Учебный стол · 7-max</strong><span>40 BB · BB ante</span></div>
@@ -36,7 +40,7 @@
         <article class="slide active"><div><p class="eyebrow">Игроки за спиной</p><h2>В EP ты проходишь через шестерых</h2><p>Если у каждого лишь около 5% действительно сильных рук, шесть независимых шансов уже создают заметный риск. На BTN за спиной только два игрока — украсть блайнды намного проще.</p></div><div class="backline"><span>EP<strong>6 соперников</strong></span><i>→</i><span>BTN<strong>2 соперника</strong></span></div></article>
         <article class="slide"><div><p class="eyebrow">Учебная лестница</p><h2>20 → 26 → 32 → 47 → 75</h2><p>Запоминай не пять несвязанных чартов, а расширение: аккуратно в ранней, понемногу в средней, резко шире в CO и BTN.</p></div><div class="ladder"><b style="--w:20%">EP 20</b><b style="--w:26%">MP 26</b><b style="--w:32%">HJ 32</b><b style="--w:47%">CO 47</b><b style="--w:75%">BTN 75</b></div></article>
         <article class="slide"><div><p class="eyebrow">Главный массовый лик</p><h2>Не теряй offsuit-границу</h2><p>Разномастных комбинаций одной руки в три раза больше, чем одномастных. Сдвиг границы с K5o до K7o кажется маленьким, но вырезает много опенов.</p></div><div class="combo"><span><strong>K5s</strong><small>4 комбинации</small></span><span><strong>K5o</strong><small>12 комбинаций</small></span></div></article>
-        <article class="slide"><div><p class="eyebrow">Чистая стратегия новичка</p><h2>Рейз или пас. Лимпа нет</h2><p>Лимп сообщает, что ты хочешь дёшево «посмотреть». Рабочая базовая линия урока: все до тебя выбросили — открывай выбранный диапазон рейзом 2 BB, остальное пас.</p></div><div class="binary"><span class="yes">В диапазоне<strong>Рейз 2 BB</strong></span><span class="no">Вне диапазона<strong>Пас</strong></span></div></article>
+        <article class="slide"><div><p class="eyebrow">Чистая стратегия новичка</p><h2>Рейз или пас. Лимпа нет</h2><p>Рабочая базовая линия урока для EP–BTN: все до тебя выбросили — открывай выбранный диапазон рейзом 2,2 BB, остальное пас. SB — отдельная стратегия: там встречаются лимп и увеличенный сайзинг.</p></div><div class="binary"><span class="yes">В диапазоне<strong>Рейз 2,2 BB</strong></span><span class="no">Вне диапазона<strong>Пас</strong></span></div></article>
         <article class="slide"><div><p class="eyebrow">Не только тузы</p><h2>Слишком узко — тоже ошибка</h2><p>Открывать лишь премиумы значит добровольно отдавать блайнды и становиться читаемым. Равновесная база нужна как точка отсчёта; против более тайтового поля можно сужаться, против пассивного — расширяться осознанно.</p></div><div class="note">Сначала выучи базу → затем делай подстройку</div></article>
         <div class="carousel wisdom-carousel-controls" aria-label="Навигация по пяти мыслям">
           <button class="wisdom-arrow" id="prev" type="button" aria-label="Предыдущая мысль">←</button>
@@ -50,17 +54,21 @@
     <section class="screen" data-screen="ranges">
       <div class="deep-heading"><div><p class="eyebrow">Учебная база со страницы 7</p><h2>Диапазон меняется вместе с позицией</h2></div><p>Смешанные клетки сохранены: закрашенная доля показывает частоту рейза.</p></div>
       <div class="range-layout">
-        <article class="panel range-card"><div class="position-tabs" id="positionTabs"></div><div class="range-meta"><div><p class="eyebrow" id="rangeSeat">EP · ранняя</p><h2 id="rangeTitle">Открываем 20%</h2></div><p id="rangeHint"></p></div><div class="matrix-key"><span class="key-open"><i></i>Открываем</span><span class="key-mix"><i></i>Микс</span><span class="key-fold"><i></i>Пас</span><small>Пары — диагональ · одномастные — сверху · разномастные — снизу</small></div><div class="matrix" id="rangeMatrix" aria-label="Матрица стартовых рук"></div></article>
+        <article class="panel range-card"><div class="position-tabs" id="positionTabs"></div><div class="range-meta"><div><p class="eyebrow" id="rangeSeat">EP · ранняя</p><h2 id="rangeTitle">Открываем 20%</h2></div><p id="rangeHint"></p></div><div class="matrix-key"><span class="key-open"><i></i>Открываем</span><span class="key-pair"><i></i>Пары в опене</span><span class="key-mix"><i></i>Микс</span><span class="key-fold"><i></i>Пас</span><small>Пары — диагональ · одномастные — сверху · разномастные — снизу</small></div><div class="matrix" id="rangeMatrix" aria-label="Матрица стартовых рук"></div></article>
         <aside class="panel memory"><p class="eyebrow">Проверка памяти</p><h2>Посмотри 10 секунд — восстанови лестницу</h2><p>После таймера цифры исчезнут. Выбери процент для каждой позиции; промахи попадут в практику чаще.</p><div class="memory-ladder" aria-label="Расширение диапазона от EP к BTN"><span style="--p:20%"><b>EP</b><i></i><strong>20</strong></span><span style="--p:26%"><b>MP</b><i></i><strong>26</strong></span><span style="--p:32%"><b>HJ</b><i></i><strong>32</strong></span><span style="--p:47%"><b>CO</b><i></i><strong>47</strong></span><span style="--p:75%"><b>BTN</b><i></i><strong>75</strong></span></div><button class="primary" id="startRecall">Запомнить за 10 секунд</button><div class="recall" id="recall" hidden></div><div id="recallResult" aria-live="polite"></div></aside>
       </div>
-      <p class="source-note">Источник: физическая страница 7 PDF «часть методички для аишки». Частоты внутри клеток перенесены из верхнего ряда RFI-чартов; это не измерение личного EV игрока.</p>
+      <p class="source-note">Источник: физическая страница 7 PDF «часть методички для аишки». Частоты внутри клеток перенесены из верхнего ряда RFI-чартов; подпись BTN 75% использует авторскую конвенцию «руки с частотой ≥50% считаются целиком» (взвешенная частота клеток — 68,9%). База рассчитана примерно на 40 BB; в 20–30 BB открывайся на позицию раньше.</p>
     </section>
 
     <section class="screen" data-screen="practice">
-      <div class="practice-heading"><div><p class="eyebrow">Граница, а не премиумы</p><h2>Открой или выброси</h2></div><p>Позиции и близкие пограничные руки перемешаны.</p></div>
+      <div class="practice-heading"><div><p class="eyebrow">Граница, а не премиумы</p><h2>Открой или выброси</h2></div><p>Сначала — 10 пограничных решений с грейдингом, затем живой unopened-RFI стол.</p></div>
       <div class="panel simulator-launch" id="simulatorLaunch">
-        <div><p class="eyebrow">Наш полный симулятор</p><h2>10 настоящих раздач RFI</h2><p>Hero по кругу окажется в EP, MP, HJ, CO и BTN. До него все выбросят. Нажимай обычные действия симулятора: пас или рейз 2 BB — после решения игра продолжится настоящими ботами.</p></div>
-        <button class="btn primary" id="startSimulator">Начать 10 раздач</button>
+        <div><p class="eyebrow">Два режима практики</p><h2>Граница → живой стол</h2><p>Пограничный режим повторяет позиции, которые ты не вспомнил. Живой стол затем даёт 10 настоящих unopened-RFI раздач по кругу EP–BTN и оценивает первое решение.</p></div>
+        <div class="practice-launch-actions"><button class="btn primary" id="startCurated">10 пограничных решений</button><button class="btn" id="startSimulator">Живой стол · 10 раздач</button></div>
+      </div>
+      <div class="panel curated-practice" id="curatedPractice" hidden>
+        <div class="practice-hud"><span>Рука <b id="handNo">0 / 10</b></span><span>Верно <b id="score">0</b></span><span>Промахи <b id="misses">0</b></span></div>
+        <div class="encounter"><div class="poker-table" id="practiceTable"></div><aside class="coach" id="practiceCoach"></aside></div>
       </div>
       <div class="simulator-shell" id="simulatorShell" hidden aria-busy="false">
         <div class="simulator-loading" id="simulatorLoading">Загружаем настоящий стол…</div>
@@ -68,6 +76,7 @@
       </div>
     </section>
   </main>
-  <script src="assets/poker-kit/decks/deck-library.js"></script><script src="assets/poker-kit/chips/chip-library.js"></script><script src="assets/poker-rfi-open-lesson/data.js"></script><script src="assets/poker-rfi-open-lesson/lesson.js"></script>
+  <footer class="lesson-footer"><a href="/">← Все тренажёры</a><a href="/bb-call-defense-lesson">Следующий урок: защита BB →</a></footer>
+  <script src="assets/poker-kit/decks/deck-library.js"></script><script src="assets/poker-kit/chips/chip-library.js"></script><script src="assets/poker-rfi-open-lesson/data.js?v=20260713-2"></script><script src="assets/poker-rfi-open-lesson/lesson.js?v=20260713-2"></script>
 </body>
 </html>

@@ -47,10 +47,11 @@ assert.equal((lessonHtml.match(/id="opponentTabs"/g) || []).length, 1, "deep les
 assert.doesNotMatch(lessonHtml, /id="presetRow"|id="fieldSummary"|class="range-picture"/);
 assert.equal((lessonHtml.match(/id="openPctOut"/g) || []).length, 1, "open frequency is shown once");
 assert.match(lessonHtml, /class="fold-summary" id="foldSummary"/);
-assert.match(lessonJs, /usesFieldProfile[\s\S]*fieldMetrics\(state\.opponent\)\.fold \* 100/, "field profile summary uses the exact fold rate applied to the matrix");
-assert.match(lessonJs, /advantageOverFold = \(rawEvBb\) => Number\(rawEvBb \|\| 0\) - comparisonFoldBaselineBb/, "comparison lines are rebased to folding");
+assert.match(lessonJs, /const field = usesFieldProfile \? fieldMetrics\(state\.opponent\) : null/, "field profile summary keeps observed fold data separate from the recommendation model");
+assert.match(lessonJs, /openPct: controls\.openPct,[\s\S]*callPct: controls\.callPct/, "field matrix uses a structural open and continuation range");
+assert.match(lessonJs, /foldBaselineFor = \(category\)[\s\S]*advantageOverFold = \(rawEvBb, category\)/, "comparison lines use each category's own fold baseline");
 assert.match(lessonJs, /const difference = jamRaw - callRaw/, "jam-call delta stays on the original unrounded observations");
-assert.match(lessonHtml, /\+0,13 становится \+1,25 BB относительно паса/, "comparison methodology explains the fold rebase with the broadway example");
+assert.match(lessonHtml, /−0,28 у низких связок против −0,66 паса становится примерно \+0,38 BB/, "comparison methodology explains the category-specific fold rebase");
 
 const introPot = context.PokerChipKit.renderAmount(4.5, { maxVisual: 3, detail: true });
 assert.match(introPot, /poker-chip--one/);

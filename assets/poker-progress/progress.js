@@ -702,6 +702,7 @@
 
   function canSendTrainerEvent() {
     if (typeof window === "undefined") return false;
+    if (window.FF_STATIC_LEARNING_HUB) return false;
     const protocol = window.location?.protocol || "";
     if (protocol && protocol !== "https:" && protocol !== "http:") return false;
     return Boolean(typeof window.fetch === "function" || window.navigator?.sendBeacon);
@@ -1171,6 +1172,7 @@
 
   function canRequestAuthSession() {
     return typeof window !== "undefined" &&
+      !window.FF_STATIC_LEARNING_HUB &&
       typeof window.fetch === "function" &&
       typeof window.location === "object" &&
       (window.location.protocol === "https:" || window.location.protocol === "http:");

@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Защита BB коллом · альфа</title>
+  <meta name="description" content="Интерактивный урок FF по защите большого блайнда: цена колла, позиция, сайзинг и практика.">
+  <meta property="og:title" content="Защита BB коллом · FF Префлоп-лаборатория">
+  <meta property="og:description" content="Научись считать цену колла и читать матрицу защиты большого блайнда.">
+  <title>Защита BB коллом · FF Префлоп-лаборатория</title>
+  <link rel="icon" href="assets/favicon.svg">
   <link rel="stylesheet" href="assets/poker-kit/tokens.css?v=4c5ba88ea3c1">
   <link rel="stylesheet" href="assets/poker-kit/decks/decks.css?v=0639396cc47c">
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
@@ -13,12 +17,13 @@
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
   <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css?v=ba22f60d20fa">
-  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/lesson.css?v=9cc632b9b283">
+  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/lesson.css?v=20260713-2">
 </head>
 <body class="bb-call-lesson">
   <main class="app">
     <header class="topline">
       <div class="lesson-brand">
+        <a class="lesson-home" href="/">← В лабораторию</a>
         <p class="eyebrow">Префлоп · большой блайнд</p>
         <h1>Защита BB коллом</h1>
       </div>
@@ -36,18 +41,18 @@
           <p class="eyebrow">Главная мысль урока</p>
           <h2>Колл на BB дешевле, чем кажется</h2>
           <p class="intro-subtitle">Сначала посчитай цену — потом решай</p>
-          <p class="intro-lead">Ты уже поставил большой блайнд. BTN открывается до 2 BB, SB пасует — тебе нужно добавить всего 1 BB, после чего экшен закрыт и сразу откроется флоп.</p>
+          <p class="intro-lead">Ты уже поставил большой блайнд. BTN открывается до 2 BB, SB пасует — для колла тебе нужно добавить всего 1 BB, после чего экшен закрыт и сразу откроется флоп.</p>
           <p class="intro-support">Итоговая цена — 18,2%. Главный лик здесь не сложный постфлоп, а ранний пас на «некрасивую» руку. Начнём с K4o — именно такие защиты чаще всего пропускают на автопилоте.</p>
           <button class="btn primary intro-cta" type="button" id="startLesson">Понятно, сыграть раздачу</button>
         </div>
         <div class="intro-table-visual" aria-hidden="true">
           <div class="intro-felt">
-            <span class="intro-seat intro-btn"><b>BTN</b><small>Стек 40 BB</small><i class="intro-dealer-host" id="introDealerButton"></i></span>
+            <span class="intro-seat intro-btn"><b>BTN</b><small>Стек 38 BB</small><i class="intro-dealer-host" id="introDealerButton"></i></span>
             <span class="intro-chip-marker intro-btn-bet"><span id="introBtnChips"></span><strong>Рейз 2 BB</strong></span>
             <span class="intro-pot"><span id="introPotChips"></span><strong>Банк 4,5 BB</strong></span>
             <span class="intro-chip-marker intro-bb-jam intro-bb-call"><span id="introCallChips"></span><strong>Колл +1 BB</strong></span>
             <span class="intro-hero-cards" id="introHeroCards"></span>
-            <span class="intro-seat intro-bb"><b>BB · Ты</b><small>Стек 39 BB</small></span>
+            <span class="intro-seat intro-bb"><b>BB · Ты</b><small>Стек 38 BB</small></span>
           </div>
         </div>
       </article>
@@ -225,7 +230,7 @@
       <section class="panel bb-range-lab" aria-labelledby="rangeTitle">
         <div class="lab-heading range-heading">
           <div><p class="eyebrow">Шаг 2 · выбери ситуацию</p><h3 id="rangeTitle">Диапазон BB</h3></div>
-          <p>Розовый — 3-бет · зелёный — колдколл · белый — пас</p>
+          <p>Розовый — 3-бет · зелёный — колдколл · белый — пас. Серые и жёлтые полупрозрачные фрагменты на исходных PNG — авторские микс-пометки; решение читается по основной заливке клетки.</p>
         </div>
         <div class="range-controls">
           <div><span>Сайз рейзера</span><div class="segmented-control" id="rangeSizeTabs" role="tablist" aria-label="Сайз для матрицы"></div></div>
@@ -276,6 +281,7 @@
           <span><small>Верно</small><b id="practiceCorrect">0</b></span>
           <span><small>Пропущенные коллы</small><b id="practiceMissedCalls">0</b></span>
           <span><small>Лишние коллы</small><b id="practiceWideCalls">0</b></span>
+          <span><small>Пропущенные 3-беты</small><b id="practiceMissedThreeBets">0</b></span>
           <button class="btn secondary" type="button" id="exitPractice">К уроку</button>
         </div>
         <div class="section-heading encounter-heading practice-spot-heading">
@@ -291,6 +297,7 @@
         </div>
       </div>
     </section>
+    <footer class="lesson-footer"><a href="/">← Все тренажёры</a><a href="/resteal-lesson">Следующий урок: рестил →</a></footer>
   </main>
 
   <script defer src="assets/poker-kit/decks/deck-library.js?v=b03058b680c1"></script>
@@ -301,7 +308,7 @@
   <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=876dfddebeb9"></script>
   <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=5a1febca1a73"></script>
   <script defer src="assets/poker-bb-call-defense-lesson/engine.js?v=9b670c3cf7e8"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/data.js?v=1f3a34a16e94"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/lesson.js?v=d0fba9287be8"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/data.js?v=20260713-2"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/lesson.js?v=20260713-2"></script>
 </body>
 </html>

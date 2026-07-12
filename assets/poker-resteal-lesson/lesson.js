@@ -3,6 +3,7 @@
 
   const Engine = window.PokerRestealEngine;
   const Content = window.PokerRestealData;
+  const PROGRESS_KEY = "ff-learning-hub:resteal:v1";
   const DATA_ROOT = "assets/poker-resteal-lesson/data/";
   const DATA_VERSION = "20260711-v2";
   const files = [
@@ -78,14 +79,22 @@
     const normalized = Math.abs(Number(value)) < 0.5 * 10 ** -digits ? 0 : Number(value);
     return `${normalized >= 0 ? "+" : "−"}${number(Math.abs(normalized), digits)}`;
   };
+  const readProgress = () => {
+    try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "null") || {}; } catch (error) { return {}; }
+  };
+  const saveProgress = () => {
+    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: Boolean(state.firstChoice), firstChoice: state.firstChoice })); } catch (error) {}
+  };
   const sampleSize = (value) => Math.round(Number(value) || 0).toLocaleString("ru-RU");
-  const comparisonFoldBaselineBb = Number(Content?.comparisonFoldBaselineBb ?? -1.12);
-  const advantageOverFold = (rawEvBb) => Number(rawEvBb || 0) - comparisonFoldBaselineBb;
+  const fallbackFoldBaselineBb = Number(Content?.comparisonFoldBaselineBb ?? -1.12);
+  const foldBaselineFor = (category) => Number(state.data?.hero_outcomes?.pooled?.ALL?.[category]?.fold?.avg_ev_bb ?? fallbackFoldBaselineBb);
+  const advantageOverFold = (rawEvBb, category) => Number(rawEvBb || 0) - foldBaselineFor(category);
 
   function showStep(next, options = {}) {
     if (!state.firstChoice && next !== "idea") return;
     closeInfo();
     state.step = next;
+    saveProgress();
     document.body.classList.toggle("practice-is-running", next === "practice" && state.practiceStarted);
     $$(".screen").forEach((screen) => screen.classList.toggle("is-active", screen.dataset.step === next));
     $$(".step-tab").forEach((tab) => {
@@ -146,6 +155,7 @@
     state.loading = Promise.all(files.map(async (name) => [name.replace(".json", ""), await fetchJson(name)]))
       .then((entries) => hydrateData(Object.fromEntries(entries)))
       .catch((error) => {
+        state.loading = null;
         console.error("Resteal data load failed", error);
         $("#matrixStatus").classList.remove("is-ready");
         $("#matrixStatus").textContent = "Данные урока не загрузились. Пересобери browser-bundle.js.";
@@ -251,6 +261,7 @@
   function answerFirst(key) {
     if (state.firstChoice || !optionFor(Content.firstSpot, key)) return;
     state.firstChoice = key;
+    saveProgress();
     $$(".step-tab").forEach((tab) => { tab.disabled = false; });
     $("#firstEncounter").classList.add("has-answer");
     renderFirstTable();
@@ -268,7 +279,8 @@
   }
 
   function practiceSimulatorUrl() {
-    const url = new URL("poker-simulator.html", document.baseURI);
+    const local = /^(?:localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+    const url = new URL(local ? "poker-simulator.html" : "poker-simulator", document.baseURI);
     url.searchParams.set("embedded", "1");
     url.searchParams.set("lesson", "resteal");
     url.searchParams.set("hands", String(state.practiceHands));
@@ -355,12 +367,14 @@
       results.set(hand, usesFieldProfile
         ? Engine.fieldHand({
           hand,
-          foldEquity: metrics.fold,
+          openPct: controls.openPct,
+          callPct: controls.callPct,
           callWeights: weights,
           stack: controls.stack,
           openSize: controls.openSize,
           ante: 1,
           bounty: state.fieldBounty,
+          ranking: state.ranking,
           equityFor
         })
         : Engine.theoreticalHand({ ...controls, bounty: state.fieldBounty, hand, ranking: state.ranking, equityFor }));
@@ -370,7 +384,9 @@
     const pushed = [...results.values()].filter((item) => item.ev >= controls.threshold);
     const pushedCombos = pushed.reduce((sum, item) => sum + Engine.totalCombos(item.hand), 0);
     $("#pushPct").textContent = pct(pushedCombos / 1326, 1);
-    $("#matrixStatus").textContent = `Матрица обновлена: ${usesFieldProfile ? opponentLabel(state.opponent) : "свои настройки"}.`;
+    $("#matrixStatus").textContent = usesFieldProfile
+      ? `Матрица обновлена: ${opponentLabel(state.opponent)} · опен ${controls.openPct}% · модель продолжения ${controls.callPct}%.`
+      : "Матрица обновлена: свои настройки.";
     $("#matrixStatus").classList.add("is-ready");
     selectHand(state.selectedTheoryHand, "theory");
   }
@@ -462,13 +478,16 @@
     const open = state.controls.openPct;
     const call = state.controls.callPct;
     const usesFieldProfile = state.loaded && state.matrixSource === "field" && state.opponent !== "custom";
+    const field = usesFieldProfile ? fieldMetrics(state.opponent) : null;
     const foldAfterOpen = usesFieldProfile
-      ? fieldMetrics(state.opponent).fold * 100
+      ? field.fold * 100
       : open > 0 ? clamp((open - call) / open * 100, 0, 100) : 0;
     $("#openPctOut").textContent = `${open}%`;
     $("#callPctOut").textContent = `${call}% рук`;
     $("#thresholdOut").textContent = signed(state.controls.threshold, 1);
-    $("#foldSummary").textContent = `После опена выбросит примерно ${Math.round(foldAfterOpen)} раза из 100.`;
+    $("#foldSummary").textContent = usesFieldProfile
+      ? `В выборке пасовал ${Math.round(foldAfterOpen)} раз из 100 узких пушей. Матрица считает отдельный диапазон продолжения ${Math.round(field.call * 100)}%.`
+      : `После опена выбросит примерно ${Math.round(foldAfterOpen)} раз из 100.`;
   }
 
   function weightedField(category, source, field) {
@@ -493,9 +512,16 @@
     const open = category === "overall"
       ? Object.entries(shares).reduce((sum, [key, weight]) => sum + weight * (opens[key]?.BTN?.open_clean_pct || 0), 0)
       : opens[category]?.BTN?.open_clean_pct || 0;
+    const fold = weightedField(category, vsJam, "fold_pct");
+    const empiricalCall = open * (1 - fold);
+    // Field fold-to-jam is selected on naturally narrow jams. Keep it as
+    // evidence, but build recommendations from a structural continuation
+    // range that is never narrower than the 12% teaching baseline at 25-40 BB.
+    const call = Math.min(open, Math.max(empiricalCall, 0.12));
     return {
       open,
-      fold: weightedField(category, vsJam, "fold_pct"),
+      fold,
+      call,
       n: category === "overall"
         ? Object.values(vsJam).reduce((sum, item) => sum + (item.n_faced || 0), 0)
         : vsJam[category]?.n_faced || 0
@@ -531,7 +557,7 @@
       state.matrixSource = "field";
       const metrics = fieldMetrics(key);
       state.controls.openPct = Math.round(metrics.open * 100);
-      state.controls.callPct = Math.max(1, Math.round(metrics.open * (1 - metrics.fold) * 100));
+      state.controls.callPct = Math.max(1, Math.round(metrics.call * 100));
     }
     $("#openPct").value = String(state.controls.openPct);
     $("#callPct").value = String(state.controls.callPct);
@@ -547,24 +573,25 @@
     const all = state.data.hero_outcomes.pooled.ALL;
     const keys = ["pair_22_66", "pair_77_99", "ax_strong", "broadway_offsuit", "pair_TT_plus", "suited_conn_low"].filter((key) => all[key]);
     const max = Math.max(...keys.flatMap((key) => [
-      Math.abs(advantageOverFold(all[key].jam?.avg_ev_bb)),
-      Math.abs(advantageOverFold(all[key].call?.avg_ev_bb))
+      Math.abs(advantageOverFold(all[key].jam?.avg_ev_bb, key)),
+      Math.abs(advantageOverFold(all[key].call?.avg_ev_bb, key))
     ]), 1);
     $("#outcomeBars").innerHTML = keys.map((key) => {
       const jamRow = all[key].jam;
       const callRow = all[key].call;
       const jamRaw = Number(jamRow?.avg_ev_bb) || 0;
       const callRaw = Number(callRow?.avg_ev_bb) || 0;
-      const jam = advantageOverFold(jamRaw);
-      const call = advantageOverFold(callRaw);
+      const baseline = foldBaselineFor(key);
+      const jam = advantageOverFold(jamRaw, key);
+      const call = advantageOverFold(callRaw, key);
       const difference = jamRaw - callRaw;
       const smallerAction = Number(jamRow?.n) < Number(callRow?.n) ? "олл-инов" : "коллов";
       const thinSample = Math.min(Number(jamRow?.n) || 0, Number(callRow?.n) || 0) < 5000;
       return `<div class="compare-row ${thinSample ? "is-thin-sample" : ""}">
         <div class="compare-category"><strong>${categoryLabels[key] || key}</strong><small>${categoryDetails[key] || ""}</small>${thinSample ? `<span>меньше 5 000 ${smallerAction}</span>` : ""}</div>
         <div class="compare-lines">
-          <div class="compare-line ${jam < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(jamRaw, 2)} BB · пас: ${compactSigned(comparisonFoldBaselineBb, 2)} BB"><span class="compare-action"><b>Олл-ин</b><small>${sampleSize(jamRow?.n)} раздач</small></span><i><b style="width:${Math.abs(jam) / max * 100}%"></b></i><strong>${compactSigned(jam, 2)} BB</strong></div>
-          <div class="compare-line is-call ${call < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(callRaw, 2)} BB · пас: ${compactSigned(comparisonFoldBaselineBb, 2)} BB"><span class="compare-action"><b>Колл</b><small>${sampleSize(callRow?.n)} раздач</small></span><i><b style="width:${Math.abs(call) / max * 100}%"></b></i><strong>${compactSigned(call, 2)} BB</strong></div>
+          <div class="compare-line ${jam < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(jamRaw, 2)} BB · пас этой категории: ${compactSigned(baseline, 2)} BB"><span class="compare-action"><b>Олл-ин</b><small>${sampleSize(jamRow?.n)} раздач</small></span><i><b style="width:${Math.abs(jam) / max * 100}%"></b></i><strong>${compactSigned(jam, 2)} BB</strong></div>
+          <div class="compare-line is-call ${call < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(callRaw, 2)} BB · пас этой категории: ${compactSigned(baseline, 2)} BB"><span class="compare-action"><b>Колл</b><small>${sampleSize(callRow?.n)} раздач</small></span><i><b style="width:${Math.abs(call) / max * 100}%"></b></i><strong>${compactSigned(call, 2)} BB</strong></div>
         </div>
         <div class="compare-delta ${difference < 0 ? "is-negative" : Math.abs(difference) < 0.2 ? "is-close" : ""}"><span>Олл-ин − колл</span><strong>${compactSigned(difference, 2)} BB</strong></div>
       </div>`;
@@ -828,6 +855,15 @@
     setupWisdomCarousel();
     setupEvents();
     syncOutputs();
+    const saved = readProgress();
+    if (saved.unlocked) {
+      state.firstChoice = saved.firstChoice || "jam";
+      $$(".step-tab").forEach((tab) => { tab.disabled = false; });
+      $("#firstEncounter").classList.add("has-answer");
+      renderFirstTable();
+      renderFirstCoach();
+      if (["idea", "wisdom", "deep", "practice"].includes(saved.step)) showStep(saved.step);
+    }
     setTimeout(() => ensureData().catch(() => {}), 180);
   }
 

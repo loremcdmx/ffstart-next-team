@@ -1290,3 +1290,5 @@
   }
 
 }
+.bb-call-lesson .lesson-home{color:var(--muted);font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}.bb-call-lesson .lesson-home:hover{color:var(--brand-yellow)}
+.bb-call-lesson .lesson-footer{display:flex;justify-content:space-between;gap:18px;margin:22px auto 0;padding:18px 4px;border-top:1px solid var(--line)}.bb-call-lesson .lesson-footer a{color:var(--brand-yellow);font-weight:800;text-decoration:none}

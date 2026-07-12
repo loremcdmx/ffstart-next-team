@@ -94,6 +94,11 @@ html[data-resteal-drill="true"] .top-actions {
   display: none !important;
 }
 
+html[data-resteal-drill="true"] .session-hud,
+html[data-resteal-drill="true"] .session-strip {
+  display: none !important;
+}
+
 html[data-resteal-drill="true"] .client-controls.is-session-complete {
   border-color: rgba(87, 214, 154, .42);
   color: #d8ffea;

@@ -4,6 +4,7 @@
   var Engine = window.PokerBbCallEngine;
   var Content = window.PokerBbCallData;
   var ASSET_ROOT = "assets/poker-bb-call-defense-lesson/";
+  var PROGRESS_KEY = "ff-learning-hub:bb-call:v1";
   var state = {
     step: "idea",
     introStarted: false,
@@ -17,7 +18,7 @@
     practiceIndex: 0,
     practiceChoice: "",
     practiceAnswered: false,
-    stats: { correct: 0, missedCalls: 0, wideCalls: 0 }
+    stats: { correct: 0, missedCalls: 0, wideCalls: 0, missedThreeBets: 0 }
   };
 
   function $(selector) {
@@ -31,6 +32,14 @@
   function fmt(value, digits) {
     var count = digits == null ? 1 : digits;
     return Number(value).toFixed(count).replace(".", ",");
+  }
+
+  function readProgress() {
+    try { return JSON.parse(window.localStorage.getItem(PROGRESS_KEY) || "null") || {}; } catch (error) { return {}; }
+  }
+
+  function saveProgress() {
+    try { window.localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: Boolean(state.firstChoice), firstChoice: state.firstChoice })); } catch (error) {}
   }
 
   function focusProgress(target) {
@@ -50,6 +59,7 @@
   function showStep(next, options) {
     var config = options || {};
     state.step = next;
+    saveProgress();
     $$(".screen").forEach(function (screen) {
       screen.classList.toggle("is-active", screen.dataset.step === next);
     });
@@ -161,7 +171,7 @@
         '<p>BTN открыл 2 BB, малый блайнд выбросил. Ты на большом блайнде.</p>' +
         '<div class="spot-facts">' +
           '<div class="spot-fact is-price"><i>18%</i><div><b>Дешёвая цена</b><small>добавить 1 BB в итоговый банк 5,5 BB</small></div></div>' +
-          '<div class="spot-fact is-position"><i>BTN</i><div><b>Широкий рейзер</b><small>в методичке ориентир открытия 52%</small></div></div>' +
+          '<div class="spot-fact is-position"><i>BTN</i><div><b>Широкий рейзер</b><small>52% — допущение чартов защиты; RFI-цель урока шире</small></div></div>' +
           '<div class="spot-fact is-hand"><i>K4</i><div><b>Некрасивая, но зелёная</b><small>K4o — колдколл 100% в исходной матрице</small></div></div>' +
         '</div>' +
         '<p class="coach-nudge">Нажми «Пас», «Колл» или «3-бет» под столом.</p>';
@@ -188,6 +198,7 @@
   function answerFirst(key) {
     if (state.firstChoice || !optionFor(Content.firstSpot, key)) return;
     state.firstChoice = key;
+    saveProgress();
     $$(".step-tab").forEach(function (tab) {
       tab.disabled = false;
       tab.tabIndex = tab.dataset.stepTarget === state.step ? 0 : -1;
@@ -410,7 +421,7 @@
     state.practiceIndex = 0;
     state.practiceChoice = "";
     state.practiceAnswered = false;
-    state.stats = { correct: 0, missedCalls: 0, wideCalls: 0 };
+    state.stats = { correct: 0, missedCalls: 0, wideCalls: 0, missedThreeBets: 0 };
     document.body.classList.add("practice-is-running");
     $("#practiceScreen").classList.add("is-running");
     $("#practiceSetup").hidden = true;
@@ -432,6 +443,7 @@
     $("#practiceCorrect").textContent = String(state.stats.correct);
     $("#practiceMissedCalls").textContent = String(state.stats.missedCalls);
     $("#practiceWideCalls").textContent = String(state.stats.wideCalls);
+    $("#practiceMissedThreeBets").textContent = String(state.stats.missedThreeBets);
   }
 
   function renderPracticeCoach() {
@@ -500,6 +512,7 @@
     if (chosen.correct) state.stats.correct += 1;
     if (spot.correct === "call" && key !== "call") state.stats.missedCalls += 1;
     if (key === "call" && spot.correct !== "call") state.stats.wideCalls += 1;
+    if (spot.correct === "raise" && key !== "raise") state.stats.missedThreeBets += 1;
     renderPracticeSpot();
     requestAnimationFrame(function () {
       var next = $("#practiceTable [data-practice-next]");
@@ -517,8 +530,8 @@
     $("#practiceCoach").closest(".practice-layout").classList.remove("has-answer");
     $("#practiceCoach").innerHTML = '<p class="eyebrow">Итог</p>' +
       '<h3>' + String(score) + ' из ' + String(total) + ' верно</h3>' +
-      (score === total && state.stats.missedCalls === 0 && state.stats.wideCalls === 0 ? '<div class="defender-medal"><strong>Защитник большого блайнда</strong><span>Все решения верны, ни одного правильного колла не пропущено</span></div>' : '') +
-      '<div class="practice-final-grid"><div><span>Пропущенные коллы</span><strong>' + String(state.stats.missedCalls) + '</strong></div><div><span>Лишние коллы</span><strong>' + String(state.stats.wideCalls) + '</strong></div></div>' +
+      (score === total && state.stats.missedCalls === 0 && state.stats.wideCalls === 0 && state.stats.missedThreeBets === 0 ? '<div class="defender-medal"><strong>Защитник большого блайнда</strong><span>Все решения верны, ни одного правильного продолжения не пропущено</span></div>' : '') +
+      '<div class="practice-final-grid"><div><span>Пропущенные коллы</span><strong>' + String(state.stats.missedCalls) + '</strong></div><div><span>Лишние коллы</span><strong>' + String(state.stats.wideCalls) + '</strong></div><div><span>Пропущенные 3-беты</span><strong>' + String(state.stats.missedThreeBets) + '</strong></div></div>' +
       '<p>Если ошибки сконцентрированы на 2,5x и 3x, вернись к цене колла. Если на EP/MP — к позиции рейзера.</p>' +
       '<button class="btn primary" type="button" id="restartPractice">Сыграть ещё ' + String(total) + '</button>' +
       '<button class="btn secondary" type="button" id="finishPractice">К уроку</button>';
@@ -598,6 +611,15 @@
     renderPracticeSetup();
     setupWisdomCarousel();
     setupEvents();
+    var saved = readProgress();
+    if (saved.unlocked) {
+      state.firstChoice = saved.firstChoice || "call";
+      $$(".step-tab").forEach(function (tab) { tab.disabled = false; });
+      $("#firstEncounter").classList.add("has-answer");
+      renderFirstTable();
+      renderFirstCoach();
+      if (["idea", "wisdom", "deep", "practice"].includes(saved.step)) showStep(saved.step);
+    }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init, { once: true });

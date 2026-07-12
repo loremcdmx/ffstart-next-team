@@ -121,6 +121,24 @@
       // engine default so a mid-turn re-render doesn't reset the slider.
       const draft = table.heroBetDraft;
       if (
+        !draft
+        && root.PokerRestealSimulatorPack?.active
+        && table.street === "preflop"
+        && Number(table.toCall || 0) > 0
+      ) {
+        value = max;
+      }
+      if (
+        !draft
+        && root.PokerRfiOpenSimulatorPack?.active
+        && table.rfiOpenDrill
+        && table.street === "preflop"
+        && table.preflopOpenerSeatId == null
+        && Number(table.currentBet || 0) <= 1
+      ) {
+        value = Math.min(max, Math.max(min, 2.2));
+      }
+      if (
         draft
         && draft.kind === "amount"
         && draft.street === table.street

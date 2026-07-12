@@ -186,7 +186,7 @@
       priority: 111,
       title: "Фиш защищает опен шире обычного",
       copy: "Колл с {{callerCombo}} показывает, что одной фолд-эквити против этого игрока будет меньше. Сдвигай пуши к рукам, которые хорошо стоят против его любопытных ответов.",
-      when: { heroAction: "jam", response: "call", botTier: "green", callerCombo: ["JTs", "KJs", "QTs", "JTo", "KJo"] }
+      when: { heroAction: "jam", response: "call", botTier: "green", callerCombo: ["A8o", "A7o", "KTo", "QJo", "98s", "87s", "76s"] }
     },
     {
       id: "green-call-pair",

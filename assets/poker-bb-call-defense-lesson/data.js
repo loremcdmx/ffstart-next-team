@@ -66,7 +66,9 @@
       return {
         label: label,
         state: label === "BB" ? "hero" : /SB|BB/.test(label) ? "blind" : "waiting",
-        stackBb: stack
+        // The shared renderer subtracts current-street bets itself. Only the
+        // BB ante is outside that ledger and must be reflected up front.
+        stackBb: label === "BB" ? stack - 1 : stack
       };
     });
   }
@@ -130,15 +132,19 @@
       table: {
         seats: seats(config.stack || 40),
         heroPosition: "BB",
-        heroStack: String(config.stack || 40) + " BB",
+        heroStack: String((config.stack || 40) - 1) + " BB",
         effectiveStack: String(config.stack || 40) + " BB",
-        pot: String(size.openSize + 2.5).replace(".", ",") + " BB",
+        // Current-street bets remain in front of seats; only the BB ante is in
+        // the center so the visual total is not counted twice.
+        pot: "1 BB",
         anteBb: 1,
         heroCards: config.cards,
         boardCards: [],
         street: "preflop",
         actionLine: actionLineFor(openPosition, size.openSize),
-        historyLine: "Хедз-ап · после твоего решения экшен закрыт",
+        historyLine: config.correct === "raise"
+          ? "Хедз-ап · после 3-бета опенер ещё может ответить"
+          : "Хедз-ап · после колла или паса экшен закрыт",
         toCall: size.toCall,
         currentBet: size.openSize,
         dealerPosition: "BTN"

@@ -24,6 +24,7 @@
 
   function combosLeft(villainHand, heroHand) {
     const villain = parseHand(villainHand);
+    const hero = parseHand(heroHand);
     const blocked = rankCounts(heroHand);
     if (villain.pair) return choose(4 - (blocked[villain.ranks[0]] || 0), 2);
     const a = 4 - (blocked[villain.ranks[0]] || 0);
@@ -32,7 +33,11 @@
       const suitedOverlap = Math.max(0, 4 - (blocked[villain.ranks[0]] || 0) - (blocked[villain.ranks[1]] || 0));
       return Math.max(0, a * b - suitedOverlap);
     }
-    return Math.max(0, 4 - (blocked[villain.ranks[0]] || 0) - (blocked[villain.ranks[1]] || 0));
+    const sameTwoRanks = !hero.pair
+      && new Set(hero.ranks).size === 2
+      && hero.ranks.every((rank) => villain.ranks.includes(rank));
+    const sharedSuitedBlocker = hero.suited && sameTwoRanks ? 1 : 0;
+    return Math.max(0, 4 - (blocked[villain.ranks[0]] || 0) - (blocked[villain.ranks[1]] || 0) + sharedSuitedBlocker);
   }
 
   function totalCombos(hand) {
@@ -55,13 +60,14 @@
   function buildRange(ranking, percent, heroHand) {
     const target = Math.max(0, Math.min(1, percent / 100)) * 1326;
     const result = [];
-    let combos = 0;
+    let nominalCombos = 0;
     for (const hand of ranking) {
       const available = heroHand ? combosLeft(hand, heroHand) : totalCombos(hand);
-      if (!available) continue;
-      result.push({ hand, combos: available });
-      combos += available;
-      if (combos >= target) break;
+      if (available) result.push({ hand, combos: available });
+      // Select the range before seeing Hero's cards. Removal changes only the
+      // weights of hands already inside that nominal range.
+      nominalCombos += totalCombos(hand);
+      if (nominalCombos >= target) break;
     }
     return result;
   }
@@ -81,7 +87,12 @@
     return { hand, foldEquity, equity, ev: jamEv({ stack, openSize, ante, foldEquity, equity, bounty }), callCombos, openCombos };
   }
 
-  function fieldHand({ hand, foldEquity, callWeights, stack, openSize, ante, bounty, equityFor }) {
+  function fieldHand({ hand, openPct, callPct, callWeights, stack, openSize, ante, bounty, ranking, equityFor }) {
+    const openRange = buildRange(ranking, openPct, hand);
+    const callRange = buildRange(ranking, Math.min(callPct, openPct), hand);
+    const openCombos = rangeCombos(openRange);
+    const callCombos = rangeCombos(callRange);
+    const foldEquity = openCombos ? Math.max(0, Math.min(0.999, 1 - callCombos / openCombos)) : 0;
     const entries = Object.entries(callWeights || {}).filter(([candidate]) => candidate !== "unknown" && combosLeft(candidate, hand) > 0);
     const weighted = entries.reduce((out, [candidate, count]) => {
       const weight = Number(count) * (combosLeft(candidate, hand) / totalCombos(candidate));
@@ -90,7 +101,7 @@
       return out;
     }, { total: 0, equity: 0 });
     const equity = weighted.total ? weighted.equity / weighted.total : 0;
-    return { hand, foldEquity, equity, ev: jamEv({ stack, openSize, ante, foldEquity, equity, bounty }) };
+    return { hand, foldEquity, equity, ev: jamEv({ stack, openSize, ante, foldEquity, equity, bounty }), callCombos, openCombos };
   }
 
   return { RANKS, parseHand, combosLeft, totalCombos, jamEv, handFromPosition, buildRange, theoreticalHand, fieldHand };

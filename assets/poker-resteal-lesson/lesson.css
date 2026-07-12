@@ -1270,3 +1270,5 @@ body.practice-is-running .topline { display: none; }
   .practice-screen:not(.is-running) .session-lengths,
   .practice-screen:not(.is-running) .practice-start { display: none; }
 }
+.lesson-home{color:var(--muted);font-size:12px;font-weight:800;text-decoration:none;white-space:nowrap}.lesson-home:hover{color:var(--brand-yellow)}
+.lesson-footer{display:flex;justify-content:space-between;gap:18px;margin:22px auto 0;padding:18px 4px;border-top:1px solid var(--line)}.lesson-footer a{color:var(--brand-yellow);font-weight:800;text-decoration:none}

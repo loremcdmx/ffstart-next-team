@@ -57,7 +57,7 @@
   const firstSpot = spot({
     id: "intro-qjo-vs-btn", title: "Первая раздача", hand: "QJo", cards: ["Qh", "Jd"], stack: 30, openSize: 2, smallRaiseSize: 8,
     question: "Все выбросили до BTN. Он открыл 2 BB, ты на BB с QJo. Что нажмёшь?",
-    history: "Все до BTN выбросили · BTN открыл 2 BB · SB пас",
+    history: "Учебный спот · активный BTN против BB",
     profile: { label: "Активный рег", openPct: 50, foldPct: 80, sample: 158081 },
     recent: ["fold", "open", "open", "fold", "open"], correct: "jam",
     feedback: {
@@ -79,7 +79,7 @@
       lesson: "Маленькие пары — хорошие кандидаты: при колле у них всегда есть готовая пара." }),
     spot({ id: "practice-a5s-station", title: "Спот 2 · Колл против станции", hand: "A5s", cards: ["Ah", "5h"], stack: 40, openSize: 2,
       question: "BTN редко пасует на олл-ин. Ты на BB с A5s против опена 2 BB.", history: "BTN продолжил против давления в 5 из 10 случаев",
-      profile: { label: "Любит коллировать", openPct: 32, foldPct: 50, sample: 2957 }, recent: ["fold", "open", "fold", "open", "fold"], correct: "call",
+      profile: { label: "Любит коллировать", openPct: 11, foldPct: 50, sample: 2957 }, recent: ["fold", "open", "fold", "open", "fold"], correct: "call",
       feedback: { fold: "Слишком тайтово: A5s далеко от нижней границы защиты BB и хорошо играет коллом.", call: "Верно: дешёвый колл сохраняет одномастность и туза, не рискуя 40 BB против частых продолжений.", jam: "Слишком много риска: соперник пасует лишь примерно в половине случаев, поэтому олл-ин теряет главный источник прибыли." },
       answer: "Базовая линия — колл. Нужно добавить 1 BB в банк 4,5 BB; A5s имеет достаточно силы и хорошо разыгрывается после флопа. Низкий fold-to-jam ухудшает олл-ин, но не превращает руку в пас.",
       cue: "Убери лишний риск: сильная защита коллом, мало фолд-эквити для пуша.",
@@ -115,7 +115,7 @@
   ];
   window.PokerRestealData = Object.freeze({
     version: "resteal-lesson-20260711-v1",
-    source: "docs/methodics-15-11.md",
+    source: "docs/resteal-lesson-plan.md + field datasets",
     // The tracker export reports net chips_ev / BB, including the blind and
     // average ante already posted. For the BB lesson, rebase comparison rows
     // to the decision the student is replacing: folding costs 1.12 BB.
