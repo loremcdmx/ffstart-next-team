@@ -236,15 +236,15 @@
       <div class="field-grid field-grid-single">
         <article class="panel comparison-panel">
           <div class="comparison-heading"><div><p class="eyebrow">Реальные раздачи · январь–июнь 2026</p><h3>Сколько олл-ин и колл выигрывали относительно паса</h3></div><span>Не солвер</span></div>
-          <p class="comparison-note">Пас принят за 0 отдельно внутри каждой категории рук. Его фактическая цена берётся из fold-строки той же выгрузки (примерно −0,66…−0,82 BB), поэтому сравнение не смешивает SB- и BB-споты одним фиксированным бейзлайном.</p>
+          <p class="comparison-note">Пас принят за 0 на одной шкале для всех категорий. Его цена фиксирована как −1,12 BB: большой блайнд и средний уже поставленный ante. В короткой подсказке это округляется до −1,1 BB.</p>
           <div class="comparison-method" aria-label="Откуда взялись числа">
             <div><span>Выборка</span><strong>Игроки проекта с известными картами</strong><small>База трекера; группы 1–15; руки без распознанных карт исключены.</small></div>
             <div><span>Один фильтр спота</span><strong>SB/BB против одного CO/BTN</strong><small>25–40 BB · без лимперов · опен не больше 3 BB · можно было сыграть 3-бет.</small></div>
-            <div><span>Одна шкала</span><strong>EV относительно паса</strong><small>Из среднего chips_ev ÷ BB вычитаем fold EV той же категории. Например, −0,28 у низких связок против −0,66 паса становится примерно +0,38 BB.</small></div>
+            <div><span>Одна шкала</span><strong>EV относительно паса с BB</strong><small>Из среднего chips_ev ÷ BB вычитаем единый BB-бейзлайн −1,12. Например, −0,28 у низких связок становится примерно +0,84 BB относительно паса.</small></div>
           </div>
           <div class="comparison-caveat"><strong>Важно:</strong><span>это не две линии одной и той же раздачи. Игроки сами выбирали действие, поэтому внутри категории могли отличаться конкретные руки, позиции и соперники. Исходная выборка объединяет SB и BB, а учебная шкала приведена к цене паса именно с BB.</span></div>
           <div class="bars" id="outcomeBars"></div>
-          <p class="comparison-footnote"><strong>Значение линии</strong> = средний chips_ev ÷ BB − fold EV той же категории. <strong>Олл-ин − колл</strong> рассчитан до округления; общая поправка за пас сокращается и не меняет эту разницу. У каждой линии показан размер выборки. Разницы около 0,1 BB считаем «примерно одинаково»: в выгрузке нет дисперсии и доверительных интервалов.</p>
+          <p class="comparison-footnote"><strong>Значение линии</strong> = средний chips_ev ÷ BB − (−1,12 BB паса с BB). <strong>Олл-ин − колл</strong> рассчитан до округления; общий BB-бейзлайн сокращается и не меняет эту разницу. У каждой линии показан размер выборки. Разницы около 0,1 BB считаем «примерно одинаково»: в выгрузке нет дисперсии и доверительных интервалов.</p>
         </article>
       </div>
       </div>
@@ -305,6 +305,6 @@
   <script defer src="assets/poker-resteal-lesson/data/browser-bundle.js?v=63cee47708b4"></script>
   <script defer src="assets/poker-resteal-lesson/data.js?v=20260713-2"></script>
   <script defer src="assets/poker-resteal-lesson/engine.js?v=20260713-2"></script>
-  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260713-2"></script>
+  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260713-3"></script>
 </body>
 </html>

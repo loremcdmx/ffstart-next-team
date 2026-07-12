@@ -86,9 +86,8 @@
     try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: Boolean(state.firstChoice), firstChoice: state.firstChoice })); } catch (error) {}
   };
   const sampleSize = (value) => Math.round(Number(value) || 0).toLocaleString("ru-RU");
-  const fallbackFoldBaselineBb = Number(Content?.comparisonFoldBaselineBb ?? -1.12);
-  const foldBaselineFor = (category) => Number(state.data?.hero_outcomes?.pooled?.ALL?.[category]?.fold?.avg_ev_bb ?? fallbackFoldBaselineBb);
-  const advantageOverFold = (rawEvBb, category) => Number(rawEvBb || 0) - foldBaselineFor(category);
+  const foldBaselineBb = Number(Content?.comparisonFoldBaselineBb ?? -1.12);
+  const advantageOverFold = (rawEvBb) => Number(rawEvBb || 0) - foldBaselineBb;
 
   function showStep(next, options = {}) {
     if (!state.firstChoice && next !== "idea") return;
@@ -573,25 +572,25 @@
     const all = state.data.hero_outcomes.pooled.ALL;
     const keys = ["pair_22_66", "pair_77_99", "ax_strong", "broadway_offsuit", "pair_TT_plus", "suited_conn_low"].filter((key) => all[key]);
     const max = Math.max(...keys.flatMap((key) => [
-      Math.abs(advantageOverFold(all[key].jam?.avg_ev_bb, key)),
-      Math.abs(advantageOverFold(all[key].call?.avg_ev_bb, key))
+      Math.abs(advantageOverFold(all[key].jam?.avg_ev_bb)),
+      Math.abs(advantageOverFold(all[key].call?.avg_ev_bb))
     ]), 1);
     $("#outcomeBars").innerHTML = keys.map((key) => {
       const jamRow = all[key].jam;
       const callRow = all[key].call;
       const jamRaw = Number(jamRow?.avg_ev_bb) || 0;
       const callRaw = Number(callRow?.avg_ev_bb) || 0;
-      const baseline = foldBaselineFor(key);
-      const jam = advantageOverFold(jamRaw, key);
-      const call = advantageOverFold(callRaw, key);
+      const baseline = foldBaselineBb;
+      const jam = advantageOverFold(jamRaw);
+      const call = advantageOverFold(callRaw);
       const difference = jamRaw - callRaw;
       const smallerAction = Number(jamRow?.n) < Number(callRow?.n) ? "олл-инов" : "коллов";
       const thinSample = Math.min(Number(jamRow?.n) || 0, Number(callRow?.n) || 0) < 5000;
       return `<div class="compare-row ${thinSample ? "is-thin-sample" : ""}">
         <div class="compare-category"><strong>${categoryLabels[key] || key}</strong><small>${categoryDetails[key] || ""}</small>${thinSample ? `<span>меньше 5 000 ${smallerAction}</span>` : ""}</div>
         <div class="compare-lines">
-          <div class="compare-line ${jam < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(jamRaw, 2)} BB · пас этой категории: ${compactSigned(baseline, 2)} BB"><span class="compare-action"><b>Олл-ин</b><small>${sampleSize(jamRow?.n)} раздач</small></span><i><b style="width:${Math.abs(jam) / max * 100}%"></b></i><strong>${compactSigned(jam, 2)} BB</strong></div>
-          <div class="compare-line is-call ${call < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(callRaw, 2)} BB · пас этой категории: ${compactSigned(baseline, 2)} BB"><span class="compare-action"><b>Колл</b><small>${sampleSize(callRow?.n)} раздач</small></span><i><b style="width:${Math.abs(call) / max * 100}%"></b></i><strong>${compactSigned(call, 2)} BB</strong></div>
+          <div class="compare-line ${jam < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(jamRaw, 2)} BB · пас с BB: ${signed(baseline, 1)}"><span class="compare-action"><b>Олл-ин</b><small>${sampleSize(jamRow?.n)} раздач</small></span><i><b style="width:${Math.abs(jam) / max * 100}%"></b></i><strong>${compactSigned(jam, 2)} BB</strong></div>
+          <div class="compare-line is-call ${call < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(callRaw, 2)} BB · пас с BB: ${signed(baseline, 1)}"><span class="compare-action"><b>Колл</b><small>${sampleSize(callRow?.n)} раздач</small></span><i><b style="width:${Math.abs(call) / max * 100}%"></b></i><strong>${compactSigned(call, 2)} BB</strong></div>
         </div>
         <div class="compare-delta ${difference < 0 ? "is-negative" : Math.abs(difference) < 0.2 ? "is-close" : ""}"><span>Олл-ин − колл</span><strong>${compactSigned(difference, 2)} BB</strong></div>
       </div>`;

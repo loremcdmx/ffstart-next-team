@@ -86,5 +86,14 @@ assert(epReviewChart.includes("is-hit is-correct"), "post-hand review marks the 
 const actionControls = readFileSync(resolve(root, "assets/poker-simulator/simulator-action-controls.js"), "utf8");
 assert(actionControls.includes("rfi-play-again"), "RFI terminal state offers an in-frame restart");
 
+const restealDataSource = readFileSync(resolve(root, "assets/poker-resteal-lesson/data.js"), "utf8");
+const restealLessonSource = readFileSync(resolve(root, "assets/poker-resteal-lesson/lesson.js"), "utf8");
+const restealLessonHtml = readFileSync(resolve(root, "resteal-lesson.html"), "utf8");
+assert(restealDataSource.includes("comparisonFoldBaselineBb: -1.12"), "resteal comparison defines the canonical BB fold baseline");
+assert(restealLessonSource.includes("const foldBaselineBb = Number(Content?.comparisonFoldBaselineBb"), "resteal comparison reads the canonical BB fold baseline");
+assert(!restealLessonSource.includes("[category]?.fold?.avg_ev_bb"), "mixed SB/BB category folds do not leak into the BB tooltip or bars");
+assert(restealLessonSource.includes("пас с BB: ${signed(baseline, 1)}"), "resteal tooltip shows the BB fold price rounded to one decimal");
+assert(restealLessonHtml.includes("единый BB-бейзлайн −1,12"), "resteal methodology documents the fixed BB rebase");
+
 console.log(`✓ resteal field grids: reg ${goodRegGrid.toFixed(1)}% · nit ${nitGrid.toFixed(1)}% · active fish ${activeFishGrid.toFixed(1)}%`);
 console.log("✓ learning contracts passed");

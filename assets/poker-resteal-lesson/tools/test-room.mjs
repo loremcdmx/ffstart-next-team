@@ -49,9 +49,11 @@ assert.equal((lessonHtml.match(/id="openPctOut"/g) || []).length, 1, "open frequ
 assert.match(lessonHtml, /class="fold-summary" id="foldSummary"/);
 assert.match(lessonJs, /const field = usesFieldProfile \? fieldMetrics\(state\.opponent\) : null/, "field profile summary keeps observed fold data separate from the recommendation model");
 assert.match(lessonJs, /openPct: controls\.openPct,[\s\S]*callPct: controls\.callPct/, "field matrix uses a structural open and continuation range");
-assert.match(lessonJs, /foldBaselineFor = \(category\)[\s\S]*advantageOverFold = \(rawEvBb, category\)/, "comparison lines use each category's own fold baseline");
+assert.match(lessonJs, /const foldBaselineBb = Number\(Content\?\.comparisonFoldBaselineBb[\s\S]*advantageOverFold = \(rawEvBb\) => Number\(rawEvBb \|\| 0\) - foldBaselineBb/, "comparison lines use the canonical BB fold baseline");
+assert.doesNotMatch(lessonJs, /hero_outcomes\?\.pooled\?\.ALL\?\.\[category\]\?\.fold/, "mixed SB/BB category folds never replace the BB baseline");
 assert.match(lessonJs, /const difference = jamRaw - callRaw/, "jam-call delta stays on the original unrounded observations");
-assert.match(lessonHtml, /−0,28 у низких связок против −0,66 паса становится примерно \+0,38 BB/, "comparison methodology explains the category-specific fold rebase");
+assert.match(lessonJs, /пас с BB: \$\{signed\(baseline, 1\)\}/, "tooltip labels the rounded BB fold price");
+assert.match(lessonHtml, /−0,28 у низких связок становится примерно \+0,84 BB относительно паса/, "comparison methodology explains the fixed BB rebase");
 
 const introPot = context.PokerChipKit.renderAmount(4.5, { maxVisual: 3, detail: true });
 assert.match(introPot, /poker-chip--one/);
