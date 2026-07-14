@@ -58,6 +58,11 @@ assert.deepEqual(Object.fromEntries(url.searchParams), {
   tempo: "fast",
   run: "run-2"
 });
+adapter.mountPractice("#frame", { practice: "rfi-open", tables: 1, tempo: "fast", run: "run-endless" });
+const endlessUrl = new URL(iframe.src);
+assert.equal(endlessUrl.searchParams.has("hands"), false, "omitting hands preserves an unlimited practice session");
+assert.equal(endlessUrl.searchParams.get("practice"), "rfi-open");
+assert.equal(endlessUrl.searchParams.get("run"), "run-endless");
 
 for (const lesson of [
   "assets/poker-rfi-open-lesson/lesson.js",
@@ -66,10 +71,7 @@ for (const lesson of [
 ]) {
   const source = readFileSync(resolve(repo, lesson), "utf8");
   assert(source.includes("FFTrainerSimulator"), `${lesson} uses the shared adapter`);
-  assert(
-    !/(?:frame|restealSimulator[^;]*)\.src\s*=|practiceSimulatorUrl|function simulatorUrl\(/.test(source),
-    `${lesson} does not build an iframe integration itself`
-  );
+  assert(!/\.src\s*=/.test(source), `${lesson} does not build an iframe integration itself`);
 }
 for (const forbidden of ["seatX", "seatY", "cardX", "cardY", "markerX", "markerY"]) {
   assert(!adapterSource.includes(forbidden), `adapter API exposes no ${forbidden}`);

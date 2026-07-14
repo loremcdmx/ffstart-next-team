@@ -10,23 +10,30 @@ const simulatorHtml = readFileSync(new URL("poker-simulator.html", repo), "utf8"
 const advice = readFileSync(new URL("assets/poker-resteal-lesson/advice.js", repo), "utf8");
 const simulatorPack = readFileSync(new URL("assets/poker-resteal-lesson/simulator-pack.js", repo), "utf8");
 const simulatorPackCss = readFileSync(new URL("assets/poker-resteal-lesson/simulator-pack.css", repo), "utf8");
+const trainerShellCss = readFileSync(new URL("assets/poker-trainer-shell/shell.css", repo), "utf8");
+const practiceRegistry = readFileSync(new URL("assets/poker-simulator/simulator-practice-packs.js", repo), "utf8");
+const featureLoader = readFileSync(new URL("assets/poker-simulator/simulator-feature-loader.js", repo), "utf8");
 
-for (const id of ["lessonIntro", "startLesson", "introBtnChips", "introPotChips", "introJamChips", "introHeroCards", "introDealerButton", "firstEncounter", "firstTable", "firstCoach", "wisdomScreen", "wisdomCarouselTrack", "wisdomStoryCounter", "wisdomStoryDots", "wisdomFoldRate", "wisdomPassRate", "wisdomCallRate", "wisdomDoubleRate", "wisdomRiskDots", "deepScreen", "deepMathPanel", "deepFieldPanel", "opponentTabs", "foldSummary", "handMatrix", "practiceSimulatorShell", "restealSimulator", "startPracticeSession", "exitPractice", "infoPopover"]) {
+for (const id of ["lessonIntro", "startLesson", "introBtnChips", "introPotChips", "introJamChips", "introHeroCards", "introDealerButton", "firstEncounter", "firstTable", "firstCoach", "wisdomScreen", "wisdomCarouselTrack", "wisdomStoryCounter", "wisdomStoryDots", "wisdomFoldRate", "wisdomHandSummary", "wisdomHandPicker", "wisdomPassRate", "wisdomCallRate", "wisdomDoubleRate", "wisdomRiskDots", "deepScreen", "deepMathPanel", "deepFieldPanel", "opponentTabs", "foldSummary", "handMatrix", "practiceSimulatorShell", "restealSimulator", "startPracticeSession", "exitPractice", "infoPopover"]) {
   assert.match(html, new RegExp(`id=["']${id}["']`), `${id} exists`);
 }
 for (const script of [
   "deck-library.js", "chip-library.js", "simulator-board-render.js", "simulator-seat-slots.js",
   "simulator-seat-renderer.js", "simulator-table-renderer.js", "simulator-snapshot.js", "browser-bundle.js",
-  "data.js", "engine.js", "lesson.js"
+  "embed.js", "simulator-practice.js", "data.js", "engine.js", "lesson.js"
 ]) {
   assert.ok(html.indexOf(script) >= 0, `${script} is wired`);
 }
 assert.ok(html.indexOf("simulator-snapshot.js") < html.indexOf("lesson.js"), "snapshot loads before lesson runtime");
 assert.ok(html.indexOf("browser-bundle.js") < html.indexOf("lesson.js"), "file-safe data bundle loads before lesson runtime");
-assert.match(simulatorHtml, /assets\/poker-resteal-lesson\/simulator-pack\.js/);
-assert.match(simulatorHtml, /assets\/poker-resteal-lesson\/simulator-pack\.css/);
-assert.match(simulatorHtml, /assets\/poker-resteal-lesson\/advice\.js/);
-assert.ok(simulatorHtml.indexOf("advice.js") < simulatorHtml.indexOf("simulator-pack.js"), "advice catalog loads before the practice pack");
+assert.match(simulatorHtml, /assets\/poker-simulator\/simulator-practice-packs\.js/);
+assert.doesNotMatch(simulatorHtml, /assets\/poker-resteal-lesson\/(?:advice|simulator-pack)\.(?:js|css)/, "practice assets are lazy-loaded only for the requested pack");
+for (const asset of ["assets/poker-resteal-lesson/simulator-pack.css", "assets/poker-resteal-lesson/advice.js", "assets/poker-resteal-lesson/simulator-pack.js"]) {
+  assert.match(practiceRegistry, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")), `${asset} is allowlisted`);
+}
+const restealCatalog = practiceRegistry.slice(practiceRegistry.indexOf("resteal: Object.freeze"));
+assert.ok(restealCatalog.indexOf("advice.js") < restealCatalog.indexOf("simulator-pack.js"), "advice catalog loads before the practice pack");
+assert.match(featureLoader, /function readyForBoot\(\)[\s\S]*loadPracticePack\(\)/, "simulator boot waits for the requested practice pack");
 assert.doesNotMatch(html, /poker-progress|FFPlayerProgress|FFTrainerEvents/);
 assert.doesNotMatch(html, /data-control=["']ante["']|pkoToggle|waterfall|<details|Источник|Как посчитано/);
 assert.match(html, /Всегда включён · 1 BB/);
@@ -45,9 +52,19 @@ assert.doesNotMatch(html, /id="fieldMatrix"|id="fieldHandReadout"/, "duplicate f
 assert.doesNotMatch(html, /class="panel risk-card"|id="bustHeadline"/, "generic bustout card is removed");
 assert.ok(html.indexOf("pko-card-under-matrix") < html.indexOf('id="deepFieldPanel"'), "PKO controls sit directly below the shared matrix section");
 assert.match(html, /Реальные раздачи · январь–июнь 2026/);
-assert.match(html, /средний chips_ev ÷ BB/i);
-assert.match(html, /это не две линии одной и той же раздачи/);
+assert.match(html, /Плюс по эквити считаем относительно паса: исходный EV действия − EV паса/);
+assert.match(html, /абсолютный EV действия может быть отрицательным/);
+assert.doesNotMatch(html, /это не две линии одной и той же раздачи|class="comparison-caveat"/, "removed methodology caveat stays removed");
+assert.doesNotMatch(html, /class="comparison-method"|Игроки проекта с известными картами|Один фильтр спота/, "removed methodology cards stay removed");
+assert.doesNotMatch(html, /class="comparison-footnote"|Значение линии|Разницы около 0,1 BB/, "removed methodology footnote stays removed");
 assert.match(html, /Но я могу вылететь/);
+assert.match(html, /Ты не даришь 30 BB даже если вписался/);
+assert.match(html, /Чеклист перед пушем/);
+for (const cue of ["Один рейзер, без коллеров", "Опен с поздней позиции", "Эффективный стек 25–40 BB", "Оппонент не фиш"]) assert.match(html, new RegExp(cue));
+assert.equal((html.match(/class="is-optional"/g) || []).length, 1, "push checklist has one clearly optional filter");
+assert.equal((html.match(/data-wisdom-hand=/g) || []).length, 4, "risk slide offers four hand examples");
+for (const hand of ["QJo", "22", "K4o", "87s"]) assert.match(html, new RegExp(`data-wisdom-hand=["']${hand}["']`));
+assert.match(html, /data-wisdom-hand="QJo" aria-pressed="true"/, "QJo is the default hand example");
 assert.match(html, /Почему не просто колл/);
 assert.match(html, /Боты не поддаются, ГСЧ честный/);
 assert.match(html, /современных AI-технологий/);
@@ -56,27 +73,54 @@ assert.match(html, /Синий[\s\S]*средняя сила/);
 assert.match(html, /Зелёный[\s\S]*слабый бот/);
 for (const hands of [10, 25, 50, 100]) assert.match(html, new RegExp(`data-session-hands=["']${hands}["']`));
 
-for (const contract of ["renderIntroTableArt", "startLesson", "renderFirstTable", "answerFirst", "renderPracticeSetup", "practiceSimulatorUrl", "startPracticeSession", "renderWisdomEvidence", "renderWisdomStory", "setupWisdomCarousel", "applyOpponentProfile", "showInfo", "closeInfo"]) {
+for (const contract of ["renderIntroTableArt", "startLesson", "renderFirstTable", "answerFirst", "renderPracticeSetup", "practiceSimulatorOptions", "startPracticeSession", "renderWisdomEvidence", "renderWisdomHandPicker", "selectWisdomHand", "renderWisdomStory", "setupWisdomCarousel", "applyOpponentProfile", "showInfo", "closeInfo"]) {
   assert.match(js, new RegExp(`function ${contract}\\(`), `${contract} runtime exists`);
 }
 assert.match(js, /data-option-key/);
-assert.match(js, /lesson["'], ["']resteal/);
+assert.match(js, /practice:\s*"resteal"/);
+assert.match(js, /FFTrainerSimulator\.mountPractice/);
 assert.match(js, /result\.foldEquity/);
+assert.match(js, /Плюс по эквити считаем относительно паса:[\s\S]*Показанное число — преимущество над пасом, а не абсолютный EV/);
 assert.doesNotMatch(js, /hero_bustouts|bustHeadline|bustVisual/);
 assert.doesNotMatch(js, /BB ante 1 BB · стек/, "ready matrix status does not repeat visible controls");
 assert.doesNotMatch(js, /pointerover|focusin|renderFirstWisdom|metricContent|showMetric|cleanup_waterfall|answerPractice/);
 assert.doesNotMatch(data, /ante:\s*0/);
 assert.match(data, /hand:\s*"QJo"/);
 assert.match(js, /PokerChipKit/);
+assert.match(js, /wisdomHand:\s*"QJo"/, "QJo is the runtime default example");
+assert.match(js, /theoreticalResultFor\(state\.wisdomHand\)/, "selected hand uses the shared theoretical model");
+assert.match(js, /const firstPassShare = Math\.round\(firstExample\.foldEquity \* 100\)/, "the previous slide stays tied to the original QJo spot");
+assert.match(css, /risk-example-layout[\s\S]*grid-template-areas:[\s\S]*"copy picker"[\s\S]*"metrics picker"/, "desktop hand picker sits to the right of the model");
+assert.match(css, /wisdom-hand-options[^{]*\{[^}]*grid-template-columns:\s*repeat\(2/, "hand choices use a compact two-column grid");
+
+assert.match(js, /firstChoice:\s*"",\s*\n\s*unlocked:\s*false/, "first-hand answer and persistent lesson unlock are separate state");
+assert.match(js, /if \(!state\.unlocked && next !== "idea"\) return;/, "saved lesson unlock controls tab navigation");
+assert.match(js, /JSON\.stringify\(\{ step: state\.step, unlocked: state\.unlocked \}\)/, "progress persists unlock without persisting the selected answer");
+assert.doesNotMatch(js, /JSON\.stringify\(\{[^}]*firstChoice/, "first-hand answer is never persisted");
+assert.match(js, /state\.firstChoice = key;\s*state\.unlocked = true;/, "answering the first hand unlocks the lesson");
+assert.match(js, /const restoredUnlock = Boolean\(saved\.unlocked \|\| saved\.firstChoice\);/, "legacy saved answers migrate to unlock-only progress");
+const initSource = js.slice(js.indexOf("  function init()"), js.indexOf("\n\n  init();"));
+assert.doesNotMatch(initSource, /state\.firstChoice\s*=/, "page load never restores a previous answer");
+assert.doesNotMatch(initSource, /has-answer/, "page load never renders the first hand as answered");
 
 assert.doesNotMatch(
   css,
   /\.seat\.is-hero \.hero-felt-bet[\s\S]{0,220}display:\s*inline-flex\s*!important/,
   "lesson leaves Hero marker visibility to the shared simulator-slot geometry"
 );
-assert.match(css, /--hero-card-pocket-y:\s*-18px/);
-assert.match(css, /\.seat\.is-hero \.seat-position-label[\s\S]*white-space:\s*nowrap/);
-assert.match(css, /--hero-card-width:\s*clamp\(51px/);
+assert.match(trainerShellCss, /--hero-card-pocket-y:\s*-18px/, "shared trainer shell owns the compact hero-card pocket");
+assert.match(
+  trainerShellCss,
+  /\.seat\.is-hero \.seat-position-label[\s\S]*white-space:\s*nowrap/,
+  "shared trainer shell owns the compact Hero position label"
+);
+assert.doesNotMatch(
+  css,
+  /\.seat\.is-hero \.seat-position-label[\s\S]*white-space:\s*nowrap/,
+  "lesson CSS does not own compact simulator-seat geometry"
+);
+assert.match(trainerShellCss, /--hero-card-width:\s*clamp\(51px/, "shared trainer shell owns compact hero-card sizing");
+assert.doesNotMatch(css, /--hero-card-(?:pocket-y|width)/, "lesson CSS does not override shared simulator card geometry");
 assert.match(css, /--poker-card-width:\s*34\.5px\s*!important/);
 assert.match(css, /@keyframes intro-route-flow/);
 assert.match(css, /\.wisdom-carousel-track/);
@@ -92,7 +136,11 @@ assert.match(simulatorPack, /handTempo:\s*"fast"/);
 assert.doesNotMatch(simulatorPack, /simulatorStageProfile\s*=\s*"readable-single"/);
 assert.match(simulatorPack, /delete\s+root\.document\.documentElement\.dataset\.simulatorStageProfile/);
 assert.match(css, /practice-screen\.is-running[^\{]*\{[^\}]*min-height:\s*0[^\}]*overflow:\s*hidden/);
-assert.match(simulatorPackCss, /hero-marker-ty[^;]*-\s*2\.5cqh/, "Hero bet marker keeps a clear lane above the cards");
+assert.doesNotMatch(
+  simulatorPackCss,
+  /--(?:hero-marker|seat-cards|reveal-card|mini-card|hero-card)/,
+  "practice pack leaves seat, marker, and card geometry to the shared simulator"
+);
 assert.match(
   simulatorPackCss,
   /html\[data-resteal-drill="true"\][^\{]*\.action-status\s*\{\s*display:\s*none/,

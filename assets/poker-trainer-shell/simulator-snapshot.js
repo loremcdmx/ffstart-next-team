@@ -844,7 +844,8 @@
       actionBarClass: () => `is-hero-turn ${table.__answered ? "is-result" : ""}`,
       renderActionStatus,
       renderActions,
-      formatAmount: amountDisplay
+      formatAmount: amountDisplay,
+      potTotalLabel: "БАНК"
     });
     return `
       <div class="ff-shell-simulator-snapshot table-grid ${conceptClass} ${compactConceptClass} ${zeroPotClass}" data-count="1" data-snapshot-version="${VERSION}" data-marker-geometry="simulator-slot-v1">

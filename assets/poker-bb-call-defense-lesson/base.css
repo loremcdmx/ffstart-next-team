@@ -250,6 +250,14 @@ p { margin-bottom: 12px; color: var(--muted); line-height: 1.45; }
 .intro-pot strong { border-color: rgba(255, 226, 124, .28); color: #fff1a7; font-size: 15px; }
 .intro-bb-jam { bottom: 28%; left: 50%; flex-direction: row; gap: 6px; transform: translateX(-50%); }
 .intro-bb-jam strong { border-color: rgba(87, 214, 154, .36); color: #dcffed; background: rgba(18, 76, 52, .88); }
+.intro-chip-marker.intro-bb-call strong {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, .78);
+}
 .intro-btn-bet .poker-chip-stack { --poker-chip-size: 20px; }
 .intro-pot .poker-chip-stack { --poker-chip-size: 24px; }
 .intro-bb-jam .poker-chip-stack { --poker-chip-size: 22px; }
@@ -1076,12 +1084,39 @@ p { margin-bottom: 12px; color: var(--muted); line-height: 1.45; }
 .deep-panel { animation: appear .18s ease; }
 .deep-panel > .section-heading { margin-top: 3px; }
 
-/* Once play starts, give the actual simulator almost the whole viewport. */
+/* Once play starts, keep the simulator large without trapping the learner in it. */
 .practice-exit { display: none; }
-body.practice-is-running { height: 100svh; overflow: hidden; }
-body.practice-is-running .app { width: 100%; height: 100svh; padding: 6px; overflow: hidden; }
-body.practice-is-running .topline { display: none; }
-.practice-screen.is-running { grid-template-rows: auto auto minmax(0, 1fr); min-width: 0; min-height: 0; height: calc(100svh - 12px); overflow: hidden; }
+body.practice-is-running { min-height: 100svh; overflow-x: hidden; overflow-y: auto; }
+body.practice-is-running .app { width: 100%; min-height: 100svh; height: auto; padding: 6px; overflow: visible; }
+body.practice-is-running .topline {
+  position: sticky;
+  z-index: 60;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  margin-bottom: 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(13, 11, 19, .96);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .28);
+  backdrop-filter: blur(14px);
+}
+body.practice-is-running .lesson-brand { flex: 0 1 auto; min-width: 0; }
+body.practice-is-running .step-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  flex: 1 1 auto;
+  gap: 6px;
+  min-width: 0;
+  overflow: visible;
+  padding: 0;
+}
+body.practice-is-running .step-tab { width: 100%; min-width: 0; padding: 7px 9px; }
+.practice-screen.is-running { grid-template-rows: auto auto minmax(0, 1fr); min-width: 0; min-height: 620px; height: max(620px, calc(100svh - 68px)); overflow: hidden; }
 .practice-screen.is-running.is-active { display: grid; }
 .practice-screen.is-running .practice-heading { display: none; }
 .practice-screen.is-running .practice-disclaimer { display: grid; grid-template-columns: auto minmax(430px, 1fr); gap: 12px; min-height: 42px; margin: 0 0 5px; padding: 5px 9px; border-radius: 10px; }
@@ -1098,6 +1133,17 @@ body.practice-is-running .topline { display: none; }
 .practice-screen.is-running .practice-simulator-shell { width: 100%; height: 100%; min-width: 0; min-height: 0; margin-top: 6px; border-radius: 12px; }
 .practice-screen.is-running .practice-simulator-shell iframe { width: 100%; height: 100%; min-width: 0; min-height: 0; }
 .practice-device-note { display: none; margin: 0; color: rgba(255, 234, 146, .86); font-size: 13px; font-weight: 750; }
+
+@media (max-width: 900px) {
+  body.practice-is-running .topline { flex-direction: column; align-items: stretch; }
+  body.practice-is-running .lesson-brand { width: 100%; }
+  .practice-screen.is-running { min-height: calc(100svh - 126px); height: auto; overflow: visible; }
+}
+
+@media (max-width: 620px) {
+  body.practice-is-running .step-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.practice-is-running .step-tab:last-child { grid-column: 1 / -1; }
+}
 
 @media (max-width: 1120px) {
   .practice-disclaimer { grid-template-columns: 1fr; gap: 10px; }

@@ -47,6 +47,8 @@ for (const [category, checks] of Object.entries(expected)) {
 }
 
 assert.equal(Number((all.broadway_offsuit.call.avg_ev_bb - foldBaselineBb).toFixed(4)), 1.2469, "broadway call displays +1.2469 BB relative to folding");
+assert.equal(Number((all.suited_conn_low.jam.avg_ev_bb - foldBaselineBb).toFixed(4)), 0.8411, "negative raw jam EV becomes positive relative to folding");
+assert.equal(Number((all.suited_conn_low.call.avg_ev_bb - foldBaselineBb).toFixed(4)), 0.9265, "negative raw call EV becomes positive relative to folding");
 
 assert.ok(all.pair_TT_plus.call.n < 5000, "TT+ call line is explicitly a thinner sample");
 assert.ok(all.suited_conn_low.jam.n < 5000, "low suited connector jam line is explicitly a thinner sample");

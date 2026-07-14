@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "check": "node scripts/check-static.mjs && node scripts/check-learning-contracts.mjs && node assets/poker-rfi-open-lesson/tools/test-contract.mjs"
+    "dev": "node scripts/serve-local.mjs",
+    "check": "node scripts/check-static.mjs && node scripts/check-local-routes.mjs && node scripts/check-learning-contracts.mjs && node assets/poker-bb-call-defense-lesson/tools/test-page-contract.mjs && node assets/poker-rfi-open-lesson/tools/test-contract.mjs && node assets/poker-resteal-lesson/tools/test-lesson-contract.mjs && node assets/poker-simulator/tools/test-practice-pack-registry.mjs && node assets/poker-simulator/tools/test-practice-pack-loader.mjs && node assets/poker-simulator/tools/test-trainer-practice-adapter.mjs && node assets/poker-simulator/tools/test-snapshot-css-contract.mjs && node assets/poker-simulator/tools/test-reveal-card-geometry.mjs && node assets/poker-bb-call-defense-lesson/tools/test-room.mjs && node assets/poker-rfi-open-lesson/tools/test-room.mjs && node assets/poker-resteal-lesson/tools/test-room.mjs && node assets/poker-rfi-open-lesson/tools/test-simulator-pack.mjs && node assets/poker-resteal-lesson/tools/test-simulator-pack.mjs"
   }
 }

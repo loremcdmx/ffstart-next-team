@@ -4,6 +4,13 @@
   // Rank values from engine.parseCardCode: 2..14 (T=10, J=11, Q=12, K=13, A=14).
   const RANK_LABELS = ["", "", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
   const RANK_VALUES_BY_LABEL = { 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, T: 10, J: 11, Q: 12, K: 13, A: 14 };
+  const FALLBACK_SUITS = {
+    h: { key: "h", symbol: "♥" },
+    d: { key: "d", symbol: "♦" },
+    c: { key: "c", symbol: "♣" },
+    s: { key: "s", symbol: "♠" }
+  };
+  const FALLBACK_SUIT_KEYS = { h: "h", d: "d", c: "c", s: "s", "♥": "h", "♦": "d", "♣": "c", "♠": "s" };
 
   function fallbackEscapeHtml(value) {
     return String(value ?? "")
@@ -12,6 +19,40 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function fallbackParseCard(card) {
+    const raw = String(card || "").trim();
+    if (raw.length < 2) return null;
+    const suitKey = FALLBACK_SUIT_KEYS[raw.slice(-1).toLowerCase()] || FALLBACK_SUIT_KEYS[raw.slice(-1)];
+    const rankRaw = raw.slice(0, -1).toUpperCase();
+    const rank = rankRaw === "10" ? "T" : rankRaw;
+    if (!suitKey || !Object.prototype.hasOwnProperty.call(RANK_VALUES_BY_LABEL, rank)) return null;
+    return { rank, ...FALLBACK_SUITS[suitKey] };
+  }
+
+  function fallbackRenderCard(card, options = {}, safeEscape = fallbackEscapeHtml) {
+    const parsed = fallbackParseCard(card);
+    const sizeClasses = [
+      options.mini ? "poker-deck-card--mini" : "",
+      options.board ? "poker-deck-card--board" : "",
+      options.hero ? "poker-deck-card--hero" : "",
+      options.className || ""
+    ].filter(Boolean).join(" ");
+    const attributes = String(options.attributes || "");
+    if (!parsed) {
+      return `<article class="poker-deck-card poker-deck-card--color-block ${sizeClasses}" aria-label="карта недоступна" data-fallback-card="true" ${attributes}></article>`;
+    }
+    const rank = safeEscape(parsed.rank);
+    const symbol = safeEscape(parsed.symbol);
+    const label = `${rank}${symbol}`;
+    return `
+      <article class="poker-deck-card poker-deck-card--color-block poker-deck-card--suit-${parsed.key} ${sizeClasses}" data-card="${rank}${parsed.key}" data-fallback-card="true" aria-label="${label}" ${attributes}>
+        <span class="poker-deck-card__cb-index poker-deck-card__cb-index--tl" aria-hidden="true"><span>${rank}</span><small>${symbol}</small></span>
+        <span class="poker-deck-card__cb-rank">${rank}</span>
+        <span class="poker-deck-card__cb-index poker-deck-card__cb-index--br" aria-hidden="true"><span>${rank}</span><small>${symbol}</small></span>
+      </article>
+    `;
   }
 
   function rankLabel(value) {
@@ -78,7 +119,8 @@
 
   function model({ deckKit, engine, getDeckTheme, escapeHtml, visibleBoardLength } = {}) {
     const safeEscape = typeof escapeHtml === "function" ? escapeHtml : fallbackEscapeHtml;
-    const rankValue = (card) => cardRankValue(card, deckKit);
+    const availableDeckKit = () => deckKit?.renderCard ? deckKit : root.PokerDeckKit;
+    const rankValue = (card) => cardRankValue(card, availableDeckKit());
     const currentDeckTheme = () => String(typeof getDeckTheme === "function" ? getDeckTheme() : "");
 
     return {
@@ -105,7 +147,6 @@
         return formatMadeHandFromScore(result.score, "", heroCards, rankValue);
       },
       renderCard(card, options = {}) {
-        if (!deckKit?.renderCard) return `<span>${safeEscape(card)}</span>`;
         const cardRole = options.cardRole || (options.winning ? "winning" : "");
         const showdownRole = ["core", "support", "kicker"].includes(cardRole) ? cardRole : "";
         const attributes = [
@@ -118,7 +159,7 @@
           showdownRole ? `is-showdown-${showdownRole}` : ""
         ].filter(Boolean).join(" ");
         const deckTheme = String(options.theme || options.deckTheme || currentDeckTheme());
-        return deckKit.renderCard(card, {
+        const renderOptions = {
           theme: deckTheme,
           board: Boolean(options.board),
           hero: Boolean(options.hero),
@@ -126,7 +167,11 @@
           fourColor: deckTheme === "online-four-color",
           className: classNames,
           attributes
-        });
+        };
+        const currentDeckKit = availableDeckKit();
+        return currentDeckKit?.renderCard
+          ? currentDeckKit.renderCard(card, renderOptions)
+          : fallbackRenderCard(card, renderOptions, safeEscape);
       }
     };
   }

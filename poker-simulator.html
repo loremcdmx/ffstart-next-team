@@ -24,14 +24,19 @@
     try { if (window.self !== window.top) document.documentElement.dataset.framed = "1"; }
     catch (e) { document.documentElement.dataset.framed = "1"; }
   </script>
-  <link rel="stylesheet" href="assets/poker-kit/decks/decks.css">
+  <link
+    id="poker-decks-style"
+    rel="stylesheet"
+    href="assets/poker-kit/decks/decks.css?v=20260713-card-layout"
+    onload="document.documentElement.dataset.pokerDeckCss='ready'"
+    onerror="this.onerror=function(){document.documentElement.dataset.pokerDeckCss='failed'};this.href='assets/poker-kit/decks/decks.css?v=20260713-card-layout-retry'">
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
   <link rel="stylesheet" href="assets/poker-simulator/simulator.css?v=c861e7702cc6">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-table.css?v=db213746612e">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-dialogs.css?v=ddeb864f65b7">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-polish.css?v=d5b525b07ce0">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-identity.css?v=7b75c0708510">
-  <script defer src="assets/poker-simulator/simulator-practice-packs.js?v=20260714-practice-geometry"></script>
+  <script defer src="assets/poker-simulator/simulator-practice-packs.js?v=20260714-endless-practice"></script>
   <script defer src="assets/poker-kit/decks/deck-library.js?v=b03058b680c1"></script>
   <script defer src="assets/poker-kit/chips/chip-library.js"></script>
   <script defer src="assets/poker-kit/simulator/bot-strategy-profile.js?v=6388b0e93c2b"></script>
@@ -97,7 +102,7 @@
   <script defer src="assets/poker-simulator/simulator-history-bridge.js?v=4145d23ca553"></script>
   <script defer src="assets/poker-simulator/simulator-dom.js?v=dd1ab2315884"></script>
   <script defer src="assets/poker-simulator/simulator-dom-controls.js?v=5269c9ec6416"></script>
-  <script defer src="assets/poker-simulator/simulator-cards.js?v=e331ca71825b"></script>
+  <script defer src="assets/poker-simulator/simulator-cards.js?v=20260713-card-fallback"></script>
   <script defer src="assets/poker-simulator/simulator-replay-ui.js?v=66e6140482a3"></script>
   <script defer src="assets/poker-simulator/simulator-replay-controller.js?v=223a208d9316"></script>
   <script defer src="assets/poker-simulator/simulator-auto-deal.js?v=b82e5ddba295"></script>
@@ -123,7 +128,7 @@
   <script defer src="assets/poker-simulator/simulator-showdown-visuals.js?v=66b8b552e074"></script>
   <script defer src="assets/poker-simulator/simulator-seat-visuals.js?v=152acd79fa1a"></script>
   <script defer src="assets/poker-simulator/simulator-seat-renderer.js?v=fe2184958bf0"></script>
-  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=876dfddebeb9"></script>
+  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260713-pot-label"></script>
   <script defer src="assets/poker-simulator/simulator-table-status.js?v=f72b891b55ee"></script>
   <script defer src="assets/poker-simulator/simulator-table-view-model.js?v=200e4e7fcf9a"></script>
   <script defer src="assets/poker-simulator/simulator-table-render-adapter.js?v=88e6e8495184"></script>

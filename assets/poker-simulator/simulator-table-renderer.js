@@ -32,6 +32,7 @@
     const renderActionStatus = typeof options.renderActionStatus === "function" ? options.renderActionStatus : () => "";
     const renderActions = typeof options.renderActions === "function" ? options.renderActions : () => "";
     const renderHeroTimebank = typeof options.renderHeroTimebank === "function" ? options.renderHeroTimebank : () => "";
+    const potTotalLabel = String(options.potTotalLabel || "ВСЕГО");
 
       function renderTable(table) {
         const isActive = table.id === getActiveTableId();
@@ -85,7 +86,7 @@
               <div class="board-row ${boardDealing ? "is-dealing-board" : ""}">${renderBoard(table)}</div>
               ${hasBoard ? `<div class="pot-total ${!isActionSequenceActive(table) && winnerSeat(table) ? "is-awarding" : ""}" aria-label="банк с учётом ставок">
                 <span class="pot-text">
-                  <span class="pot-label">ВСЕГО</span>
+                  <span class="pot-label">${potTotalLabel}</span>
                   <span class="pot-values">
                     <span class="pot-value pot-value-current">${formatAmount(potState.totalAmount)}</span>
                   </span>

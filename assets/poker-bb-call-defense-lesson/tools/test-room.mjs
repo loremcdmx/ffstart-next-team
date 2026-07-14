@@ -31,12 +31,16 @@ assert.doesNotMatch(lessonCss, /hero-felt-bet[^\{]*\{[^}]*transform/);
 
 const firstTable = renderer.buildTable(content.firstSpot, {});
 assert.equal(firstTable.__heroBet, 1);
-assert.equal(firstTable.seats.find((seat) => seat.isHero).stack, 39);
+assert.equal(firstTable.seats.find((seat) => seat.isHero).stack, 38, "BB stack reflects both the live blind and the one-BB ante");
+const firstTableUnanswered = renderer.renderTable(content.firstSpot, { answered: false, selectedKey: "" });
+assert.doesNotMatch(firstTableUnanswered, /data-answer-state=/, "fresh first hand has no graded action state");
+assert.doesNotMatch(firstTableUnanswered, /table-action-result-mark/, "fresh first hand has no result badges");
+assert.doesNotMatch(firstTableUnanswered, />Верно<|>Ошибка</, "fresh first hand does not reveal the answer");
 
 const decimalSpot = content.practiceSpots.find((spot) => spot.id === "qq-mp-25");
 const decimalTable = renderer.buildTable(decimalSpot, { answered: true, selectedKey: "raise" });
 assert.equal(decimalTable.__heroBet, 1, "2.5 BB must not split into a phantom BB action");
-assert.equal(decimalTable.seats.find((seat) => seat.isHero).stack, 39);
+assert.equal(decimalTable.seats.find((seat) => seat.isHero).stack, 38, "BB stack stays net of blind and ante at every open size");
 assert.equal(decimalTable.seats.find((seat) => seat.position === "MP").committedStreet, 2.5);
 assert.ok(!decimalTable.__actions.some((action) => action.seatKey === "BB" && action.amountBb === 5));
 

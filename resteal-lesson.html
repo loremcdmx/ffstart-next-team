@@ -13,10 +13,10 @@
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-table.css?v=db213746612e">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-polish.css?v=d5b525b07ce0">
-  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260714-practice-geometry-5">
+  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260714-practice-geometry">
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
-  <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=20260714-practice-geometry">
+  <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=20260714-prod-refresh-1">
 </head>
 <body>
   <main class="app">
@@ -107,10 +107,25 @@
 
         <article class="panel objection-card is-risk wisdom-slide" data-wisdom-slide>
           <div class="objection-icon risk-orbit" aria-hidden="true"><span></span><i></i></div>
-          <p class="eyebrow">«Но я могу вылететь»</p>
-          <h3>Твоя задача — просто принимать более выгодные решения</h3>
-          <p>Возьмём QJo из первой раздачи. BTN открывает около 50% рук, но коллирует рестил только с лучшими 10%. Против этих рук у QJo около <strong id="wisdomEquity">34% эквити</strong>. Из 100 таких пушей примерно в <strong id="wisdomPassRate">80</strong> случаях BTN выбросит сразу. Ещё примерно <strong id="wisdomCallRate">20</strong> раз он заколлирует: в <strong id="wisdomBustRate">13</strong> случаях QJo проиграет выставление, а в <strong id="wisdomDoubleRate">7</strong> — выиграет и удвоится. Средний результат этой модели: <strong id="wisdomJamEv">+1,9 BB</strong>.</p>
-          <div class="mini-risk-dots" id="wisdomRiskDots" aria-hidden="true"></div>
+          <div class="risk-example-layout">
+            <div class="risk-example-copy">
+              <p class="eyebrow">«Но я могу вылететь»</p>
+              <h3>Твоя задача — просто принимать более выгодные решения</h3>
+              <p id="wisdomHandSummary" aria-live="polite">Возьмём <strong>QJo</strong> из первой раздачи. BTN открывает около 50% рук, но коллирует рестил только с лучшими 10%. Против этих рук у QJo около <strong id="wisdomEquity">34% эквити</strong>. Из 100 таких пушей примерно в <strong id="wisdomPassRate">80</strong> случаях BTN выбросит сразу. Ещё примерно <strong id="wisdomCallRate">20</strong> раз он заколлирует: в <strong id="wisdomBustRate">13</strong> случаях QJo проиграет выставление, а в <strong id="wisdomDoubleRate">7</strong> — выиграет и удвоится. Средний результат этой модели: <strong id="wisdomJamEv">+2,0 BB</strong>.</p>
+            </div>
+            <aside class="wisdom-hand-picker" id="wisdomHandPicker" aria-label="Сравнение стартовых рук">
+              <p class="eyebrow">Сравни руки</p>
+              <strong>Что меняет сила руки</strong>
+              <div class="wisdom-hand-options" role="group" aria-label="Выбери стартовую руку">
+                <button class="wisdom-hand-option is-active" type="button" data-wisdom-hand="QJo" aria-pressed="true"><b>QJo</b><small>две высокие</small></button>
+                <button class="wisdom-hand-option" type="button" data-wisdom-hand="22" aria-pressed="false"><b>22</b><small>малая пара</small></button>
+                <button class="wisdom-hand-option" type="button" data-wisdom-hand="K4o" aria-pressed="false"><b>K4o</b><small>король + слабая</small></button>
+                <button class="wisdom-hand-option" type="button" data-wisdom-hand="87s" aria-pressed="false"><b>87s</b><small>связка одной масти</small></button>
+              </div>
+              <small>Спот тот же — меняется только твоя рука.</small>
+            </aside>
+            <div class="mini-risk-dots" id="wisdomRiskDots" aria-hidden="true"></div>
+          </div>
         </article>
 
         <article class="panel objection-card is-call wisdom-slide" data-wisdom-slide>
@@ -127,28 +142,24 @@
         <article class="panel objection-card is-pot wisdom-slide" data-wisdom-slide>
           <div class="objection-icon pot-icon" aria-hidden="true"><span>4,5</span><i>BB</i></div>
           <p class="eyebrow">«Зачем рисковать 30 BB ради 4,5?»</p>
-          <h3>Ты не даришь 30 BB каждый раз</h3>
+          <h3>Ты не даришь 30 BB даже если вписался</h3>
           <p>В большинстве случаев ты заберёшь раздачу на префлопе без какой-либо дисперсии.</p>
           <div class="risk-balance" aria-hidden="true"><span><i style="width:75%"></i></span><b>Чаще — пас без вскрытия</b></div>
           <small>Широкий опен содержит намного больше рук, чем соперник готов коллировать. Игроки нередко выбрасывают даже руки, которые по стратегии должны рейз-коллить. Если после долгого решения удаётся увидеть такую руку, запомни её: это сильный сигнал, что для соперника она пограничная, и подсказка о его реальном диапазоне колла.</small>
         </article>
 
-      <article class="panel spot-map wisdom-slide" data-wisdom-slide>
+      <article class="panel spot-map wisdom-slide" data-wisdom-slide aria-label="Чеклист перед пушем">
         <div class="spot-map-copy">
-          <p class="eyebrow">Играй не по карте, а по ситуации</p>
-          <h3>Не ставь бездумно алыны</h3>
-          <p>Базовый спот — один поздний опен, эффективный стек 25–40 BB и ты на большом блайнде. Если экшен другой, остановись и перечитай стол.</p>
-          <div class="hand-compass" aria-label="Примеры рук для первого ориентира">
-            <span class="is-green"><b>77 · A5s</b><small>частые кандидаты на пуш</small></span>
-            <span class="is-yellow"><b>QJo</b><small>в нашей первой раздаче — хороший пуш</small></span>
-            <span class="is-red"><b>65s</b><small>часто можно оставить в колле — подробнее о будущей подстройке на следующем слайде</small></span>
-          </div>
+          <p class="eyebrow">Сначала ситуация — потом рука</p>
+          <h3>Чеклист перед пушем</h3>
+          <p>Первые три пункта обязательны. Четвёртый — полезная подстройка против поля.</p>
         </div>
-        <div class="traffic-spots">
-          <div class="traffic-spot is-green"><i></i><div><strong>Можно искать рестил</strong><span>Один опен CO или BTN · 25–40 BB</span></div></div>
-          <div class="traffic-spot is-yellow"><i></i><div><strong>Пушь осторожнее</strong><span>Большой сайз · тайтовый игрок · любит коллировать</span></div></div>
-          <div class="traffic-spot is-red"><i></i><div><strong>Это уже другой спот</strong><span>Ранний опен · лимп · рейз и колл · близко к крупным выплатам или финальному столу (ICM)</span></div></div>
-        </div>
+        <ul class="push-checklist" aria-label="Условия для рестил-пуша">
+          <li><i aria-hidden="true">✓</i><div><strong>Один рейзер, без коллеров</strong><span>Лимп, рейз и колл — уже другой спот.</span></div></li>
+          <li><i aria-hidden="true">✓</i><div><strong>Опен с поздней позиции</strong><span>Рейзер находится на CO или BTN.</span></div></li>
+          <li><i aria-hidden="true">✓</i><div><strong>Эффективный стек 25–40 BB</strong><span>Смотри на меньший из двух стеков.</span></div></li>
+          <li class="is-optional"><i aria-hidden="true">+</i><div><strong>Оппонент не фиш</strong><span><b>Опционально:</b> против фиша жди больше коллов и пушь уже.</span></div></li>
+        </ul>
       </article>
 
       <article class="panel fgs-slide wisdom-slide" data-wisdom-slide aria-label="FGS и будущая подстройка соперника">
@@ -236,15 +247,8 @@
       <div class="field-grid field-grid-single">
         <article class="panel comparison-panel">
           <div class="comparison-heading"><div><p class="eyebrow">Реальные раздачи · январь–июнь 2026</p><h3>Сколько олл-ин и колл выигрывали относительно паса</h3></div><span>Не солвер</span></div>
-          <p class="comparison-note">Пас принят за 0 на одной шкале для всех категорий. Его цена фиксирована как −1,12 BB: большой блайнд и средний уже поставленный ante. В короткой подсказке это округляется до −1,1 BB.</p>
-          <div class="comparison-method" aria-label="Откуда взялись числа">
-            <div><span>Выборка</span><strong>Игроки проекта с известными картами</strong><small>База трекера; группы 1–15; руки без распознанных карт исключены.</small></div>
-            <div><span>Один фильтр спота</span><strong>SB/BB против одного CO/BTN</strong><small>25–40 BB · без лимперов · опен не больше 3 BB · можно было сыграть 3-бет.</small></div>
-            <div><span>Одна шкала</span><strong>EV относительно паса с BB</strong><small>Из среднего chips_ev ÷ BB вычитаем единый BB-бейзлайн −1,12. Например, −0,28 у низких связок становится примерно +0,84 BB относительно паса.</small></div>
-          </div>
-          <div class="comparison-caveat"><strong>Важно:</strong><span>это не две линии одной и той же раздачи. Игроки сами выбирали действие, поэтому внутри категории могли отличаться конкретные руки, позиции и соперники. Исходная выборка объединяет SB и BB, а учебная шкала приведена к цене паса именно с BB.</span></div>
+          <p class="comparison-note">Плюс по эквити считаем относительно паса: исходный EV действия − EV паса. Пас принят за 0 на общей шкале, а его исходная цена здесь −1,12 BB — большой блайнд и средний уже поставленный ante. Поэтому абсолютный EV действия может быть отрицательным, но действие всё равно может быть лучше паса.</p>
           <div class="bars" id="outcomeBars"></div>
-          <p class="comparison-footnote"><strong>Значение линии</strong> = средний chips_ev ÷ BB − (−1,12 BB паса с BB). <strong>Олл-ин − колл</strong> рассчитан до округления; общий BB-бейзлайн сокращается и не меняет эту разницу. У каждой линии показан размер выборки. Разницы около 0,1 BB считаем «примерно одинаково»: в выгрузке нет дисперсии и доверительных интервалов.</p>
         </article>
       </div>
       </div>
@@ -300,13 +304,13 @@
   <script defer src="assets/poker-simulator/simulator-board-render.js?v=cb215df9f7dd"></script>
   <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=20260714-card-pocket-20"></script>
   <script defer src="assets/poker-simulator/simulator-seat-renderer.js?v=fe2184958bf0"></script>
-  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=876dfddebeb9"></script>
-  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260714-opponent-reveal"></script>
+  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260713-pot-label"></script>
+  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260713-pot-layout"></script>
   <script defer src="assets/poker-simulator/embed.js?v=20260714-practice-api"></script>
   <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260714-practice-api"></script>
   <script defer src="assets/poker-resteal-lesson/data/browser-bundle.js?v=63cee47708b4"></script>
   <script defer src="assets/poker-resteal-lesson/data.js?v=20260713-2"></script>
   <script defer src="assets/poker-resteal-lesson/engine.js?v=20260713-2"></script>
-  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260714-practice-adapter"></script>
+  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260714-practice-api"></script>
 </body>
 </html>

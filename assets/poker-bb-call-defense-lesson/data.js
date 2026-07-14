@@ -1,6 +1,8 @@
 (function () {
   "use strict";
 
+  var RangeData = window.PokerBbCallRangeData;
+
   var positions = {
     EP: { label: "EP", tableSeat: "UTG", openerPct: 17 },
     MP: { label: "MP", tableSeat: "MP", openerPct: 20 },
@@ -41,6 +43,13 @@
 
   var MATRIX_RANKS = "AKQJT98765432";
 
+  function matrixHandAt(row, column) {
+    if (row === column) return MATRIX_RANKS[row] + MATRIX_RANKS[column];
+    return row < column
+      ? MATRIX_RANKS[row] + MATRIX_RANKS[column] + "s"
+      : MATRIX_RANKS[column] + MATRIX_RANKS[row] + "o";
+  }
+
   function matrixCellForHand(hand) {
     var match = String(hand || "").trim().match(/^([AKQJT98765432])([AKQJT98765432])([so])?$/i);
     if (!match) throw new Error("Unknown starting hand: " + String(hand || ""));
@@ -59,6 +68,25 @@
     return Object.freeze(suitedness === "s"
       ? { row: highIndex, column: lowIndex }
       : { row: lowIndex, column: highIndex });
+  }
+
+  function rangeCellFor(sizeKey, position, hand) {
+    if (!RangeData) throw new Error("BB range data is not loaded");
+    var coordinates = matrixCellForHand(hand);
+    var scenario = RangeData.scenarios[sizeKey + ":" + position];
+    if (!scenario || scenario.length !== 169) throw new Error("Unknown range scenario: " + sizeKey + ":" + position);
+    var code = scenario[coordinates.row * 13 + coordinates.column];
+    var split = RangeData.codes[code];
+    if (!split) throw new Error("Unknown range action code: " + code);
+    return Object.freeze({
+      hand: matrixHandAt(coordinates.row, coordinates.column),
+      row: coordinates.row,
+      column: coordinates.column,
+      code: code,
+      raisePct: split.raisePct,
+      callPct: split.callPct,
+      foldPct: split.foldPct
+    });
   }
 
   function seats(stack) {
@@ -105,7 +133,9 @@
         : "Колл не совпадает с цветом клетки в исходной матрице: " + sourceCell + ".",
       raise: correct === "raise"
         ? "Да. В исходной матрице " + hand + " — розовый 3-бет. Точный сайз 3-бета на этих слайдах не задан."
-        : "3-бет не совпадает с базовой клеткой методички: " + sourceCell + "."
+        : correct === "call"
+          ? "Стандартное решение тут колл."
+          : "3-бет не совпадает с базовой клеткой методички: " + sourceCell + "."
     };
   }
 
@@ -151,7 +181,7 @@
       },
       options: [
         { key: "fold", label: "Пас", correct: config.correct === "fold", feedback: feedback.fold },
-        { key: "call", label: "Колл + " + String(size.toCall).replace(".", ",") + " BB", correct: config.correct === "call", feedback: feedback.call },
+        { key: "call", label: "Колл " + String(size.toCall).replace(".", ",") + " BB", correct: config.correct === "call", feedback: feedback.call },
         { key: "raise", label: "3-бет", correct: config.correct === "raise", feedback: feedback.raise }
       ]
     };
@@ -203,8 +233,22 @@
     sizes: Object.freeze(sizes),
     rangeScenarios: Object.freeze(rangeScenarios),
     matrixRanks: MATRIX_RANKS,
+    matrixHandAt: matrixHandAt,
     matrixCellForHand: matrixCellForHand,
-    equityRealization: Object.freeze({ rawEquityPct: 38.5, realizedEquityPct: 27.8 }),
+    rangeCellFor: rangeCellFor,
+    rangeDataVersion: RangeData && RangeData.version,
+    equityRealization: Object.freeze({ rawEquityPct: 38.5, realizedEquityPct: 27.8, scope: "range-example" }),
+    equityModel: Object.freeze({
+      dataRoot: "assets/poker-resteal-lesson/data/",
+      files: Object.freeze(["equity169.json", "rank_vs_random169.json"]),
+      version: "showdown-equity-20260711-v2"
+    }),
+    ffRealizationModel: Object.freeze({
+      file: "assets/poker-bb-call-defense-lesson/data/ff-bb-call-realization.json",
+      version: "ff-bb-call-realization-20260714-v1",
+      minDisplayN: 500,
+      minReliableN: 2000
+    }),
     firstSpot: Object.freeze(firstSpot),
     practiceSpots: Object.freeze(practiceSpots)
   });

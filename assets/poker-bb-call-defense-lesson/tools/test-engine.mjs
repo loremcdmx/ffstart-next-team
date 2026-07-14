@@ -35,4 +35,16 @@ assert.equal(JSON.stringify(split), JSON.stringify({ foldPct: 10, continuePct: 9
 const unsplit = Engine.defenseSummary(45);
 assert.equal(JSON.stringify(unsplit), JSON.stringify({ foldPct: 45, continuePct: 55, threeBetPct: null, coldCallPct: null }));
 
+assert.equal(Engine.totalCombos("AA"), 6);
+assert.equal(Engine.totalCombos("AKs"), 4);
+assert.equal(Engine.totalCombos("AKo"), 12);
+assert.equal(Engine.combosLeft("AA", "AKo"), 3);
+assert.equal(Engine.combosLeft("AKs", "AKs"), 3);
+assert.equal(Engine.combosLeft("AKo", "AKs"), 6);
+
+const rangeEquity = Engine.equityAgainstRange("KQo", 0.4, ["AA", "KK", "AKs"], () => 0.25);
+assert.equal(rangeEquity.rawEquityPct, 25);
+assert.equal(rangeEquity.rangeHands, 1);
+assert.ok(Math.abs(Engine.minimumRealizationPct(18.2, 43.2) - 42.1296296) < 0.0001);
+
 console.log("BB call defense engine: ok");

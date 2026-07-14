@@ -52,10 +52,92 @@
     };
   }
 
+  function parseHand(hand) {
+    var value = String(hand || "");
+    if (value.length === 2) return { pair: true, ranks: [value[0], value[0]], suited: false };
+    return { pair: false, ranks: [value[0], value[1]], suited: value[2] === "s" };
+  }
+
+  function rankCounts(hand) {
+    return parseHand(hand).ranks.reduce(function (out, rank) {
+      out[rank] = (out[rank] || 0) + 1;
+      return out;
+    }, {});
+  }
+
+  function choose(n, k) {
+    if (k < 0 || n < k) return 0;
+    if (k === 0) return 1;
+    if (k === 1) return n;
+    return n * (n - 1) / 2;
+  }
+
+  function combosLeft(villainHand, heroHand) {
+    var villain = parseHand(villainHand);
+    var hero = parseHand(heroHand);
+    var blocked = rankCounts(heroHand);
+    if (villain.pair) return choose(4 - (blocked[villain.ranks[0]] || 0), 2);
+    var first = 4 - (blocked[villain.ranks[0]] || 0);
+    var second = 4 - (blocked[villain.ranks[1]] || 0);
+    var sameRanks = !hero.pair && new Set(hero.ranks).size === 2 && hero.ranks.every(function (rank) {
+      return villain.ranks.indexOf(rank) >= 0;
+    });
+    var sharedSuitedBlocker = hero.suited && sameRanks ? 1 : 0;
+    if (!villain.suited) {
+      var suitedOverlap = Math.max(0, 4 - (blocked[villain.ranks[0]] || 0) - (blocked[villain.ranks[1]] || 0) + sharedSuitedBlocker);
+      return Math.max(0, first * second - suitedOverlap);
+    }
+    return Math.max(0, 4 - (blocked[villain.ranks[0]] || 0) - (blocked[villain.ranks[1]] || 0) + sharedSuitedBlocker);
+  }
+
+  function totalCombos(hand) {
+    var parsed = parseHand(hand);
+    return parsed.pair ? 6 : parsed.suited ? 4 : 12;
+  }
+
+  function buildRange(ranking, percent, heroHand) {
+    var target = clamp(percent, 0, 100) / 100 * 1326;
+    var result = [];
+    var nominalCombos = 0;
+    for (var index = 0; index < ranking.length; index += 1) {
+      var hand = ranking[index];
+      var available = combosLeft(hand, heroHand);
+      if (available) result.push({ hand: hand, combos: available });
+      nominalCombos += totalCombos(hand);
+      if (nominalCombos >= target) break;
+    }
+    return result;
+  }
+
+  function equityAgainstRange(heroHand, openPct, ranking, equityFor) {
+    var range = buildRange(ranking, openPct, heroHand);
+    var weighted = range.reduce(function (out, item) {
+      out.combos += item.combos;
+      out.equity += item.combos * equityFor(heroHand, item.hand);
+      return out;
+    }, { combos: 0, equity: 0 });
+    return {
+      rawEquityPct: weighted.combos ? weighted.equity / weighted.combos * 100 : 0,
+      villainCombos: weighted.combos,
+      rangeHands: range.length
+    };
+  }
+
+  function minimumRealizationPct(potOddsPct, rawEquityPct) {
+    var raw = Math.max(0, Number(rawEquityPct) || 0);
+    if (!raw) return 100;
+    return Math.max(0, Number(potOddsPct) || 0) / raw * 100;
+  }
+
   return {
     clamp: clamp,
     potModel: potModel,
     equityRealization: equityRealization,
-    defenseSummary: defenseSummary
+    defenseSummary: defenseSummary,
+    combosLeft: combosLeft,
+    totalCombos: totalCombos,
+    buildRange: buildRange,
+    equityAgainstRange: equityAgainstRange,
+    minimumRealizationPct: minimumRealizationPct
   };
 });

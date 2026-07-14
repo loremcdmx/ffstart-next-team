@@ -3,23 +3,53 @@
 
   var Engine = window.PokerBbCallEngine;
   var Content = window.PokerBbCallData;
+  var Recall = window.PokerBbCallRecall;
   var ASSET_ROOT = "assets/poker-bb-call-defense-lesson/";
   var PROGRESS_KEY = "ff-learning-hub:bb-call:v1";
   var state = {
     step: "idea",
+    unlocked: false,
     introStarted: false,
     firstChoice: "",
     wisdomStory: 0,
     sizeKey: "2_0",
     position: "BTN",
-    practiceHands: 10,
+    selectedHand: "K4o",
+    equityData: null,
+    equityLoading: null,
+    equityError: "",
+    ffRealizationData: null,
+    ffRealizationLoading: null,
+    ffRealizationError: "",
+    memorySizeKey: "2_0",
+    memoryPosition: "BTN",
+    memoryPhase: "preview",
+    memoryDraft: {},
+    memoryTool: "C",
+    memoryGrade: null,
+    memorySeconds: 10,
+    memoryTimer: null,
+    memoryPainting: false,
+    memoryPaintCode: null,
+    memoryLastCell: null,
+    memoryFocusHand: "AA",
     practiceRun: 0,
-    practiceQueue: [],
     practiceIndex: 0,
     practiceChoice: "",
     practiceAnswered: false,
     stats: { correct: 0, missedCalls: 0, wideCalls: 0, missedThreeBets: 0 }
   };
+
+  var SIZE_DEFENSE_PREVIEW_COPY = Object.freeze({
+    "2_5": Object.freeze({
+      title: "2,5 BB: срезаем слабый offsuit",
+      boundary: "По сравнению с минрейзом первыми уходят K4o, Q6o, J6o, T6o и 96o: доплата стала больше, а эти руки хуже реализуют эквити без позиции."
+    }),
+    "3_0": Object.freeze({
+      title: "3 BB: остаётся плотное ядро",
+      boundary: "По сравнению с 2,5 BB дальше уходят K2s–K4s, Q2s–Q6s, A2o–A7o и часть слабых коннекторов. Пары и лучшие связанные руки вроде 76s ещё защищаются."
+    })
+  });
 
   function $(selector) {
     return document.querySelector(selector);
@@ -34,12 +64,98 @@
     return Number(value).toFixed(count).replace(".", ",");
   }
 
+  function fmtSigned(value, digits) {
+    var number = Number(value) || 0;
+    return (number > 0 ? "+" : "") + fmt(number, digits);
+  }
+
+  function fmtCount(value) {
+    return Math.round(Number(value) || 0).toLocaleString("ru-RU");
+  }
+
+  function clampPercent(value) {
+    return Math.max(0, Math.min(100, Number(value) || 0));
+  }
+
+  function actionLabel(cell) {
+    if (cell.raisePct && cell.callPct) return "микс 3-бет / колл";
+    if (cell.callPct && cell.foldPct) return "микс колл / пас";
+    if (cell.raisePct) return "3-бет";
+    if (cell.callPct) return "колл";
+    return "пас";
+  }
+
+  function actionDetail(cell) {
+    return [
+      cell.raisePct ? "3-бет " + String(cell.raisePct) + "%" : "",
+      cell.callPct ? "колл " + String(cell.callPct) + "%" : "",
+      cell.foldPct ? "пас " + String(cell.foldPct) + "%" : ""
+    ].filter(Boolean).join(" · ");
+  }
+
+  function ensureEquityData() {
+    if (state.equityData) return Promise.resolve(state.equityData);
+    if (state.equityLoading) return state.equityLoading;
+    var root = Content.equityModel.dataRoot;
+    state.equityLoading = Promise.all(Content.equityModel.files.map(function (file) {
+      return fetch(root + file + "?v=" + Content.equityModel.version).then(function (response) {
+        if (!response.ok) throw new Error(file + ": HTTP " + String(response.status));
+        return response.json();
+      });
+    })).then(function (loaded) {
+      var equity = loaded[0];
+      var ranks = loaded[1];
+      state.equityData = {
+        equity: equity,
+        handIndex: new Map(equity.hands.map(function (hand, index) { return [hand, index]; })),
+        ranking: ranks.hands.map(function (hand, index) {
+          return { hand: hand, score: ranks.equity_vs_random[index] };
+        }).sort(function (left, right) {
+          return right.score - left.score;
+        }).map(function (item) { return item.hand; })
+      };
+      state.equityLoading = null;
+      state.equityError = "";
+      renderRealization();
+      return state.equityData;
+    }).catch(function (error) {
+      state.equityLoading = null;
+      state.equityError = error && error.message ? error.message : "Данные эквити не загрузились";
+      renderRealization();
+      throw error;
+    });
+    return state.equityLoading;
+  }
+
+  function ensureFfRealizationData() {
+    if (state.ffRealizationData) return Promise.resolve(state.ffRealizationData);
+    if (state.ffRealizationLoading) return state.ffRealizationLoading;
+    var config = Content.ffRealizationModel;
+    state.ffRealizationLoading = fetch(config.file + "?v=" + config.version).then(function (response) {
+      if (!response.ok) throw new Error("FF realization: HTTP " + String(response.status));
+      return response.json();
+    }).then(function (payload) {
+      if (!payload || !payload.rows || !payload.meta) throw new Error("FF realization: invalid payload");
+      state.ffRealizationData = payload;
+      state.ffRealizationLoading = null;
+      state.ffRealizationError = "";
+      renderRealization();
+      return payload;
+    }).catch(function (error) {
+      state.ffRealizationLoading = null;
+      state.ffRealizationError = error && error.message ? error.message : "Срез FF не загрузился";
+      renderRealization();
+      throw error;
+    });
+    return state.ffRealizationLoading;
+  }
+
   function readProgress() {
     try { return JSON.parse(window.localStorage.getItem(PROGRESS_KEY) || "null") || {}; } catch (error) { return {}; }
   }
 
   function saveProgress() {
-    try { window.localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: Boolean(state.firstChoice), firstChoice: state.firstChoice })); } catch (error) {}
+    try { window.localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: state.unlocked })); } catch (error) {}
   }
 
   function focusProgress(target) {
@@ -58,6 +174,9 @@
 
   function showStep(next, options) {
     var config = options || {};
+    if (!state.unlocked && next !== "idea") return;
+    if (next !== "practice" && document.body.classList.contains("practice-is-running")) stopPractice(false);
+    if (next !== "memory" && state.memoryPhase === "watching") cancelMemoryWatch();
     state.step = next;
     saveProgress();
     $$(".screen").forEach(function (screen) {
@@ -71,6 +190,7 @@
     });
     if (next === "deep") renderDeep();
     if (next === "practice") renderPracticeSetup();
+    if (next === "memory") renderMemory();
     if (next === "wisdom") requestAnimationFrame(function () {
       renderWisdomStory(state.wisdomStory);
     });
@@ -114,7 +234,6 @@
         '<img src="' + ASSET_ROOT + spot.sourceChart + '" width="470" height="470" alt="Чарт защиты BB против ' + position.label + ', опен ' + size.label + '">' +
         '<span class="practice-range-overlay" aria-hidden="true"><i class="practice-range-cell"></i></span>' +
       '</div>' +
-      '<figcaption><strong>' + spot.hand + ' · ' + spot.sourceCell + '</strong><span>' + spot.answer + '</span><small>Посмотри на соседние клетки: смена цвета показывает, насколько рука близка к границе.</small></figcaption>' +
     '</figure>';
   }
 
@@ -131,6 +250,13 @@
       $("#introHeroCards").innerHTML = ["Kh", "4d"].map(function (card) {
         return deckKit.renderCard(card, { theme: "color-block", hero: true, fourColor: true, className: "intro-card" });
       }).join("");
+      $$('[data-leak-cards]').forEach(function (hand) {
+        var host = hand.querySelector(".leak-hand-cards");
+        if (!host) return;
+        host.innerHTML = hand.dataset.leakCards.split(",").map(function (card) {
+          return deckKit.renderCard(card, { theme: "color-block", mini: true, fourColor: true, className: "leak-color-card" });
+        }).join("");
+      });
     }
   }
 
@@ -147,7 +273,7 @@
   }
 
   function renderFirstTable() {
-    renderRoomTable($("#firstTable"), Content.firstSpot, state.firstChoice);
+    renderRoomTable($("#firstTable"), Content.firstSpot, state.firstChoice, { hideActionStatus: true });
   }
 
   function renderFirstCoach() {
@@ -174,7 +300,7 @@
       '<div class="reason-list">' +
         '<div class="reason-line"><i></i><div><b>Цена — 18,2%</b><small>нужно добавить 1 BB в итоговый банк 5,5 BB</small></div></div>' +
         '<div class="reason-line"><i></i><div><b>BTN открывает широко</b><small>ориентир методички — диапазон 52%</small></div></div>' +
-        '<div class="reason-line"><i></i><div><b>K4o лежит в колле</b><small>зелёная клетка 100%; именно такие руки часто пасуют на автопилоте</small></div></div>' +
+        '<div class="reason-line"><i></i><div><b>K4o — это колл</b><small>Именно такие руки часто пасуют на автопилоте.</small></div></div>' +
       '</div>' +
       '<div class="ev-callout bb-boundary-callout"><i>i</i><div><strong>Оддсы — не весь ответ</strong><span>Дальше добавим реализацию эквити, позицию рейзера и сайз.</span></div></div>' +
       '<button class="btn primary" type="button" id="openWisdom">Разобрать главную идею</button>';
@@ -186,6 +312,7 @@
   function answerFirst(key) {
     if (state.firstChoice || !optionFor(Content.firstSpot, key)) return;
     state.firstChoice = key;
+    state.unlocked = true;
     saveProgress();
     $$(".step-tab").forEach(function (tab) {
       tab.disabled = false;
@@ -212,7 +339,9 @@
       var active = index === state.wisdomStory;
       slide.setAttribute("aria-hidden", active ? "false" : "true");
       slide.classList.toggle("is-active", active);
+      slide.toggleAttribute("inert", !active);
     });
+    if (!activeSlide.classList.contains("bb-size-slide")) hideSizeDefensePreview();
     $$("#wisdomStoryDots button").forEach(function (dot, index) {
       var active = index === state.wisdomStory;
       dot.classList.toggle("is-active", active);
@@ -230,6 +359,7 @@
     slides.forEach(function (_, index) {
       var button = document.createElement("button");
       button.type = "button";
+      button.className = "wisdom-story-dot";
       button.setAttribute("aria-label", "Мысль " + String(index + 1));
       button.addEventListener("click", function () {
         renderWisdomStory(index);
@@ -267,12 +397,126 @@
     renderWisdomStory(0);
   }
 
-  function makeSegmented(root, items, selected, onSelect) {
+  function hideSizeDefensePreview() {
+    var root = $("#sizeDefensePreview");
+    var defaultCopy = $("#sizeDefenseDefaultCopy");
+    if (!root || !defaultCopy) return;
+    root.hidden = true;
+    root.removeAttribute("data-size-key");
+    defaultCopy.hidden = false;
+    $$('[data-size-preview]').forEach(function (button) {
+      button.setAttribute("aria-expanded", "false");
+    });
+  }
+
+  function comboWeightedDefensePct(sizeKey) {
+    var defendedCombos = 0;
+    var totalCombos = 0;
+    for (var row = 0; row < 13; row += 1) {
+      for (var column = 0; column < 13; column += 1) {
+        var hand = Content.matrixHandAt(row, column);
+        var cell = Content.rangeCellFor(sizeKey, "BTN", hand);
+        var combos = row === column ? 6 : row < column ? 4 : 12;
+        defendedCombos += combos * (cell.raisePct + cell.callPct) / 100;
+        totalCombos += combos;
+      }
+    }
+    return totalCombos ? defendedCombos / totalCombos * 100 : 0;
+  }
+
+  function renderSizeDefensePreview(sizeKey) {
+    var copy = SIZE_DEFENSE_PREVIEW_COPY[sizeKey];
+    var root = $("#sizeDefensePreview");
+    var defaultCopy = $("#sizeDefenseDefaultCopy");
+    var size = Content.sizes[sizeKey];
+    var scenario = Content.rangeScenarios[sizeKey] && Content.rangeScenarios[sizeKey].BTN;
+    if (!copy || !root || !defaultCopy || !size || !scenario) return;
+
+    var defendPct = 100 - scenario.foldPct;
+    var matrixDefendPct = comboWeightedDefensePct(sizeKey);
+    var toCall = fmt(size.toCall, 1).replace(",0", "");
+    var finalPot = fmt(size.finalPot, 1).replace(",0", "");
+    root.innerHTML = '<div class="size-preview-head"><div><p class="eyebrow">Исходная матрица · BTN</p><h3>' + copy.title + '</h3></div><strong>' + String(defendPct) + '%</strong></div>' +
+      '<div class="size-preview-matrix" aria-hidden="true"></div>' +
+      '<div class="size-preview-copy">' +
+        '<div class="size-preview-legend" aria-label="Розовый — 3-бет, зелёный — колл, белый — пас"><span><i class="is-raise"></i>3-бет</span><span><i class="is-call"></i>Колл</span><span><i class="is-fold"></i>Пас</span></div>' +
+        '<p class="size-preview-equation">' + toCall + ' ÷ ' + finalPot + ' = ' + fmt(size.potOddsPct, 1) + '%</p>' +
+        '<p><strong>' + String(defendPct) + '% = 100% − ' + String(scenario.foldPct) + '% паса</strong> в сводке исходной матрицы.</p>' +
+        '<p>' + copy.boundary + '</p>' +
+        '<small>Сводка методички: ' + String(defendPct) + '%. Комбинационно-взвешенная транскрипция 169 клеток: ≈' + fmt(matrixDefendPct, 1) + '%. Цена колла объясняет сужение, а не сама задаёт точную границу.</small>' +
+      '</div>';
+
+    var matrix = root.querySelector(".size-preview-matrix");
+    var fragment = document.createDocumentFragment();
+    for (var row = 0; row < 13; row += 1) {
+      for (var column = 0; column < 13; column += 1) {
+        var hand = Content.matrixHandAt(row, column);
+        var cell = Content.rangeCellFor(sizeKey, "BTN", hand);
+        var block = document.createElement("i");
+        block.className = "size-preview-cell";
+        block.style.setProperty("--raise-end", String(cell.raisePct) + "%");
+        block.style.setProperty("--call-end", String(cell.raisePct + cell.callPct) + "%");
+        fragment.appendChild(block);
+      }
+    }
+    matrix.appendChild(fragment);
+    root.dataset.sizeKey = sizeKey;
+    root.setAttribute("aria-label", "Разбор дефенда BB против BTN " + size.label + ": " + String(defendPct) + " процентов");
+    root.hidden = false;
+    defaultCopy.hidden = true;
+    $$('[data-size-preview]').forEach(function (button) {
+      button.setAttribute("aria-expanded", button.dataset.sizePreview === sizeKey ? "true" : "false");
+    });
+  }
+
+  function setupSizeDefensePreviews() {
+    var ladder = $(".bb-size-slide .size-ladder");
+    var triggers = $$('[data-size-preview]');
+    if (!ladder || !triggers.length) return;
+    function restoreFocusedPreview() {
+      var active = document.activeElement;
+      var focusedTrigger = active && active.closest ? active.closest("[data-size-preview]") : null;
+      if (focusedTrigger && ladder.contains(focusedTrigger)) {
+        renderSizeDefensePreview(focusedTrigger.dataset.sizePreview);
+        return;
+      }
+      hideSizeDefensePreview();
+    }
+    triggers.forEach(function (button) {
+      button.addEventListener("pointerenter", function () {
+        renderSizeDefensePreview(button.dataset.sizePreview);
+      });
+      button.addEventListener("focus", function () {
+        renderSizeDefensePreview(button.dataset.sizePreview);
+      });
+      button.addEventListener("pointerleave", restoreFocusedPreview);
+      button.addEventListener("click", function () {
+        renderSizeDefensePreview(button.dataset.sizePreview);
+      });
+      button.addEventListener("keydown", function (event) {
+        if (event.key !== "Escape") return;
+        event.preventDefault();
+        event.stopPropagation();
+        hideSizeDefensePreview();
+      });
+    });
+    ladder.addEventListener("pointerleave", restoreFocusedPreview);
+    ladder.addEventListener("focusout", function () {
+      requestAnimationFrame(function () {
+        if (!ladder.contains(document.activeElement) && !ladder.matches(":hover")) hideSizeDefensePreview();
+      });
+    });
+  }
+
+  function makeSegmented(root, items, selected, onSelect, options) {
+    var config = options || {};
     root.innerHTML = "";
     var controlsByRoot = {
       oddsSizeTabs: "oddsSummary",
       rangeSizeTabs: "rangeChart",
-      positionTabs: "rangeChart"
+      positionTabs: "rangeChart",
+      memorySizeTabs: "memoryChart",
+      memoryPositionTabs: "memoryChart"
     };
     items.forEach(function (item) {
       var button = document.createElement("button");
@@ -284,6 +528,7 @@
       button.setAttribute("aria-controls", controlsByRoot[root.id] || root.id);
       button.tabIndex = item.key === selected ? 0 : -1;
       button.classList.toggle("is-active", item.key === selected);
+      button.disabled = Boolean(config.disabled);
       button.addEventListener("click", function () {
         onSelect(item.key);
         requestAnimationFrame(function () {
@@ -332,11 +577,69 @@
       '<div class="is-key"><span>Цена колла</span><strong>' + fmt(model.potOddsPct, 1) + '%</strong><small>минимум до поправки на реализацию</small></div>';
   }
 
+  function renderRangeMatrix() {
+    var root = $("#rangeChart");
+    var fragment = document.createDocumentFragment();
+    root.innerHTML = "";
+    for (var row = 0; row < 13; row += 1) {
+      for (var column = 0; column < 13; column += 1) {
+        var hand = Content.matrixHandAt(row, column);
+        var cell = Content.rangeCellFor(state.sizeKey, state.position, hand);
+        var button = document.createElement("button");
+        var shape = row === column ? "pair" : row < column ? "suited" : "offsuit";
+        button.type = "button";
+        button.className = "bb-range-cell is-" + shape;
+        button.dataset.hand = hand;
+        button.dataset.row = String(row);
+        button.dataset.column = String(column);
+        button.setAttribute("role", "gridcell");
+        button.setAttribute("aria-selected", hand === state.selectedHand ? "true" : "false");
+        button.setAttribute("aria-label", hand + ": " + actionDetail(cell));
+        button.tabIndex = hand === state.selectedHand ? 0 : -1;
+        button.style.setProperty("--raise-end", String(cell.raisePct) + "%");
+        button.style.setProperty("--call-end", String(cell.raisePct + cell.callPct) + "%");
+        button.innerHTML = "<span>" + hand + "</span><small>" + String(cell.raisePct + cell.callPct) + "%</small>";
+        fragment.appendChild(button);
+      }
+    }
+    root.appendChild(fragment);
+  }
+
+  function selectRangeHand(hand, shouldFocus) {
+    state.selectedHand = hand;
+    $$("#rangeChart .bb-range-cell").forEach(function (button) {
+      var selected = button.dataset.hand === hand;
+      button.setAttribute("aria-selected", selected ? "true" : "false");
+      button.tabIndex = selected ? 0 : -1;
+    });
+    renderRealization();
+    if (shouldFocus) {
+      var selectedButton = $('#rangeChart .bb-range-cell[data-hand="' + hand + '"]');
+      if (selectedButton) selectedButton.focus({ preventScroll: true });
+    }
+  }
+
+  function handleRangeMatrixKeydown(event) {
+    var current = event.target.closest(".bb-range-cell");
+    if (!current) return;
+    var row = Number(current.dataset.row);
+    var column = Number(current.dataset.column);
+    if (event.key === "ArrowLeft") column -= 1;
+    else if (event.key === "ArrowRight") column += 1;
+    else if (event.key === "ArrowUp") row -= 1;
+    else if (event.key === "ArrowDown") row += 1;
+    else if (event.key === "Home") column = 0;
+    else if (event.key === "End") column = 12;
+    else return;
+    event.preventDefault();
+    row = Math.max(0, Math.min(12, row));
+    column = Math.max(0, Math.min(12, column));
+    selectRangeHand(Content.matrixHandAt(row, column), true);
+  }
+
   function renderRange() {
     var size = Content.sizes[state.sizeKey];
     var position = Content.positions[state.position];
-    var scenario = Content.rangeScenarios[state.sizeKey][state.position];
-    var summary = Engine.defenseSummary(scenario.foldPct, scenario.threeBetPct);
     makeSegmented($("#rangeSizeTabs"), sizeItems(), state.sizeKey, function (key) {
       state.sizeKey = key;
       renderDeep();
@@ -347,65 +650,572 @@
     });
     $("#rangeScenarioTitle").textContent = position.label + " · " + size.label;
     $("#rangeOpenerWidth").textContent = "Ренж рейзера " + String(position.openerPct) + "%";
-    var image = $("#rangeChart");
-    image.src = ASSET_ROOT + scenario.chart;
-    image.alt = "Матрица защиты большого блайнда против " + position.label + " " + size.label;
-    var splitHtml = summary.threeBetPct == null
-      ? '<div><span>Колл + 3-бет</span><strong>' + fmt(summary.continuePct, 0) + '%</strong><small>точная смесь видна в клетках матрицы</small></div>'
-      : '<div><span>Колдколл</span><strong>' + fmt(summary.coldCallPct, 0) + '%</strong><small>зелёная часть</small></div><div><span>3-бет</span><strong>' + fmt(summary.threeBetPct, 0) + '%</strong><small>розовая часть</small></div>';
-    $("#rangeFacts").innerHTML = '<p class="eyebrow">Агрегаты методички</p>' +
-      '<h3>' + position.label + ' против ' + size.label + '</h3>' +
-      '<div class="range-fact-grid">' + splitHtml +
-        '<div><span>Пас</span><strong>' + fmt(summary.foldPct, 0) + '%</strong><small>белая часть</small></div>' +
-        '<div><span>Цена колла</span><strong>' + fmt(size.potOddsPct, 1) + '%</strong><small>из страницы 11</small></div>' +
-      '</div>' +
-      '<p class="range-reading-note">Сначала найди конкретную руку в матрице. Затем проверь, не двигают ли границу ICM, покрытие и глубина стека.</p>' +
-      '<p class="source-boundary">Источник: физические страницы 10–11 PDF. Это не расчёт твоего личного EV.</p>';
+    $("#rangeChart").setAttribute("aria-label", "Защита BB против " + position.label + ", опен " + size.label);
+    renderRangeMatrix();
+  }
+
+  function ffRealizationKey() {
+    return state.sizeKey + ":" + state.position + ":" + state.selectedHand;
+  }
+
+  function renderFfBandSummary(record, rawEquityPct) {
+    var labels = { "25_30": "25–30", "30_35": "30–35", "35_40": "35–40" };
+    var items = Object.keys(labels).map(function (key) {
+      var band = record.bands && record.bands[key];
+      if (!band || !band.n || !rawEquityPct) return "";
+      var ratio = band.meanRealizedEquityPct / rawEquityPct * 100;
+      return "<span><b>" + labels[key] + " BB</b> " + fmt(ratio, 1) + "% <small>n=" + fmtCount(band.n) + "</small></span>";
+    }).filter(Boolean);
+    if (!items.length) return "";
+    return '<div class="ff-realization-bands"><small>По стеку</small>' + items.join("") + "</div>";
+  }
+
+  function renderFfRealization(model, position, size) {
+    var config = Content.ffRealizationModel;
+    if (!state.ffRealizationData) {
+      return '<section class="ff-realization-card is-pending"><div><span class="ff-realization-kicker">База рук FF · 25–40 BB</span><strong>' +
+        (state.ffRealizationError ? "Срез недоступен" : "Загружаем фактические коллы…") +
+        '</strong></div><p>Теоретическая математика выше работает независимо от этого среза.</p></section>';
+    }
+
+    var payload = state.ffRealizationData;
+    var record = payload.rows[ffRealizationKey()];
+    var minDisplay = Number(payload.meta.minDisplayN || config.minDisplayN);
+    var minReliable = Number(payload.meta.minReliableN || config.minReliableN);
+    var scope = position.label + " · " + size.label + " · все столы FF 3–9 max";
+
+    if (!record || record.n < minDisplay) {
+      var observed = record ? fmtCount(record.n) : "0";
+      var exactObserved = record && record.exact7 ? fmtCount(record.exact7.n) : "0";
+      return '<section class="ff-realization-card is-low-sample"><div class="ff-realization-head"><div><span class="ff-realization-kicker">База рук FF · 25–40 BB</span><strong>Пока мало данных</strong></div><b>n=' + observed + '</b></div>' +
+        '<p>Для ' + state.selectedHand + " · " + scope + " нужно минимум " + fmtCount(minDisplay) + ' фактических коллов. Процент не показываем, чтобы не выдавать шум за закономерность.</p>' +
+        '<small>Точный 7-max хранится отдельно: n=' + exactObserved + "; в основной срез он не подмешан.</small></section>";
+    }
+
+    var eqrPct = model.rawEquityPct > 0 ? record.meanRealizedEquityPct / model.rawEquityPct * 100 : 0;
+    var foldBaselineBb = -(1 + Number(record.meanHeroAnteBb || 0));
+    var reliable = record.n >= minReliable;
+    var exact7 = record.exact7;
+    var exact7Copy = exact7
+      ? "Точный 7-max отдельно: n=" + fmtCount(exact7.n) + (exact7.n < minDisplay ? " — мало для отдельного вывода." : ".")
+      : "Для точного 7-max в этом споте данных нет.";
+
+    return '<section class="ff-realization-card ' + (reliable ? "is-reliable" : "is-preliminary") + '">' +
+      '<div class="ff-realization-head"><div><span class="ff-realization-kicker">Реально в базе FF · 25–40 BB</span><strong>' +
+        (reliable ? "Достаточный срез" : "Предварительный срез") +
+        '</strong></div><b>' + fmt(eqrPct, 1) + "%</b></div>" +
+      '<p class="ff-realization-lead">Игроки реализовали примерно <strong>' + fmt(eqrPct, 1) + "%</strong> модельного эквити " + state.selectedHand + ". Это соответствует " + fmt(record.meanRealizedEquityPct, 1) + '% эквивалентной доли банка.</p>' +
+      '<div class="ff-realization-meter" aria-label="Реализация эквити в базе FF ' + fmt(eqrPct, 1) + '%"><i style="width:' + String(clampPercent(eqrPct)) + '%"></i></div>' +
+      '<div class="ff-realization-stats"><span><small>К пасу</small><b>' + fmtSigned(record.meanEvVsFoldBb, 2) + ' BB</b></span><span><small>Коллов</small><b>' + fmtCount(record.n) + '</b></span><span><small>Игроков</small><b>' + fmtCount(record.players) + '</b></span></div>' +
+      renderFfBandSummary(record, model.rawEquityPct) +
+      '<details class="ff-realization-method"><summary>Как считаем относительно паса?</summary><p>Полный all-in-adjusted результат колла — ' + fmtSigned(record.meanNetEvBb, 2) + " BB. Пас на BB в том же срезе равен " + fmt(foldBaselineBb, 2) + " BB: уже потеряны блайнд и собственное анте. Поэтому колл дал " + fmtSigned(record.meanEvVsFoldBb, 2) + ' BB относительно паса. Затем этот результат переводится в долю банка и делится на модельное префлоп-эквити.</p><small>' + exact7Copy + " Срез описывает сыгранные коллы, а не доказывает причинный эффект для каждого игрока.</small></details>" +
+      '<p class="ff-realization-scope">' + scope + ' · 01.01–13.07.2026</p></section>';
   }
 
   function renderRealization() {
-    var values = Content.equityRealization;
-    var model = Engine.equityRealization(values.rawEquityPct, values.realizedEquityPct);
-    $("#realizationRatio").textContent = fmt(model.realizationPct, 1) + "%";
-    $("#realizationDetail").innerHTML = '<div class="realization-copy"><h4>Реализуем примерно 72% сырого эквити</h4><p>38,5% на флопе превращаются в 27,8% реализованного эквити. Потеря — 10,7 процентного пункта, или около 28% исходного запаса.</p></div>' +
-      '<div class="realization-bars deep-realization-bars">' +
-        '<div><span>Сырое эквити</span><i><b style="width:' + fmt(model.rawEquityPct, 1).replace(",", ".") + '%"></b></i><strong>' + fmt(model.rawEquityPct, 1) + '%</strong></div>' +
-        '<div><span>Реализованное</span><i><b style="width:' + fmt(model.realizedEquityPct, 1).replace(",", ".") + '%"></b></i><strong>' + fmt(model.realizedEquityPct, 1) + '%</strong></div>' +
-      '</div>';
+    var cell = Content.rangeCellFor(state.sizeKey, state.position, state.selectedHand);
+    var size = Content.sizes[state.sizeKey];
+    var position = Content.positions[state.position];
+    var sourceExample = Engine.equityRealization(Content.equityRealization.rawEquityPct, Content.equityRealization.realizedEquityPct);
+    if (!state.equityData) {
+      $("#realizationRatio").textContent = state.equityError ? "—" : "…";
+      $("#realizationDetail").innerHTML = '<div class="realization-copy"><h4>' + state.selectedHand + ' · ' + actionLabel(cell) + '</h4><p>' +
+        (state.equityError ? "Модель эквити не загрузилась. Действие клетки выше остаётся доступным." : "Загружаем модельное эквити для выбранной руки…") +
+        '</p></div><p class="realization-boundary">Фактической реализации по каждой из 169 рук в исходнике нет; общий пример методички — ' + fmt(sourceExample.realizationPct, 1) + '%.</p>';
+      return;
+    }
+    var equityFor = function (hero, villain) {
+      var heroIndex = state.equityData.handIndex.get(hero);
+      var villainIndex = state.equityData.handIndex.get(villain);
+      return heroIndex == null || villainIndex == null ? 0.5 : state.equityData.equity.equity[heroIndex][villainIndex];
+    };
+    var model = Engine.equityAgainstRange(state.selectedHand, position.openerPct, state.equityData.ranking, equityFor);
+    var minimum = Engine.minimumRealizationPct(size.potOddsPct, model.rawEquityPct);
+    var callContext = cell.callPct
+      ? "Расчёт относится к колл-части этой клетки."
+      : "В чарте здесь " + actionLabel(cell) + "; числа ниже показывают только математику гипотетического колла, а не меняют решение.";
+    $("#realizationRatio").textContent = fmt(minimum, 1) + "%";
+    $("#realizationDetail").innerHTML = '<div class="realization-copy">' +
+        '<div class="realization-handline"><strong>' + state.selectedHand + '</strong><span>Методичка: ' + actionDetail(cell) + '</span></div>' +
+        '<h4>Нужно реализовать минимум ' + fmt(minimum, 1) + '% сырого эквити</h4>' +
+        '<p>Шоудаун-эквити ' + state.selectedHand + ' против модельного top-' + String(position.openerPct) + '% диапазона — ' + fmt(model.rawEquityPct, 1) + '%. Цена ' + fmt(size.potOddsPct, 1) + '% составляет ' + fmt(minimum, 1) + '% этого запаса. ' + callContext + '</p>' +
+        '<p class="realization-boundary">Фактической реализации по отдельным рукам в PDF нет. ' + fmt(sourceExample.realizationPct, 1) + '% — только общий пример диапазона 38,5 → 27,8%, не значение для ' + state.selectedHand + '.</p>' +
+      '</div>' +
+      '<div class="realization-metric-stack"><div class="realization-bars deep-realization-bars">' +
+        '<div><span>Шоудаун-эквити</span><i><b style="width:' + String(clampPercent(model.rawEquityPct)) + '%"></b></i><strong>' + fmt(model.rawEquityPct, 1) + '%</strong></div>' +
+        '<div class="is-price"><span>Цена колла</span><i><b style="width:' + String(clampPercent(size.potOddsPct)) + '%"></b></i><strong>' + fmt(size.potOddsPct, 1) + '%</strong></div>' +
+        '<div class="is-required"><span>Нужно реализовать</span><i><b style="width:' + String(clampPercent(minimum)) + '%"></b></i><strong>' + fmt(minimum, 1) + '%</strong></div>' +
+      '</div>' + renderFfRealization(model, position, size) + '</div>';
   }
 
   function renderDeep() {
     renderOdds();
     renderRange();
     renderRealization();
+    if (state.step === "deep" && !state.equityData && !state.equityLoading) ensureEquityData().catch(function () {});
+    if (state.step === "deep" && !state.ffRealizationData && !state.ffRealizationLoading) ensureFfRealizationData().catch(function () {});
+  }
+
+  var MEMORY_SPLITS = {
+    R: { raise: 100, call: 100 },
+    C: { raise: 0, call: 100 },
+    F: { raise: 0, call: 0 },
+    B: { raise: 50, call: 100 },
+    M: { raise: 0, call: 50 }
+  };
+
+  function memoryScenarioLabel() {
+    return Content.positions[state.memoryPosition].label + " · " + Content.sizes[state.memorySizeKey].label;
+  }
+
+  function memoryExpectedMap() {
+    var expected = {};
+    for (var row = 0; row < 13; row += 1) {
+      for (var column = 0; column < 13; column += 1) {
+        var hand = Content.matrixHandAt(row, column);
+        expected[hand] = Content.rangeCellFor(state.memorySizeKey, state.memoryPosition, hand).code;
+      }
+    }
+    return expected;
+  }
+
+  function memoryCounts() {
+    var counts = { R: 0, C: 0, B: 0, M: 0, F: 169 };
+    Object.keys(state.memoryDraft).forEach(function (hand) {
+      var code = Recall.normalizeState(state.memoryDraft[hand]);
+      if (code === "F") return;
+      counts[code] += 1;
+      counts.F -= 1;
+    });
+    return counts;
+  }
+
+  function memoryErrorTypeLabel(type) {
+    return {
+      missed: "пропущен дефенд",
+      extra: "лишний дефенд",
+      action: "перепутано действие"
+    }[type] || "ошибка";
+  }
+
+  function setMemoryCellCode(cell, code) {
+    var normalized = Recall.normalizeState(code);
+    var split = MEMORY_SPLITS[normalized];
+    cell.dataset.code = normalized;
+    cell.style.setProperty("--raise-end", String(split.raise) + "%");
+    cell.style.setProperty("--call-end", String(split.call) + "%");
+  }
+
+  function resetMemoryState() {
+    stopMemoryTimer();
+    state.memoryPhase = "preview";
+    state.memoryDraft = {};
+    state.memoryGrade = null;
+    state.memorySeconds = 10;
+    state.memoryPainting = false;
+    state.memoryPaintCode = null;
+    state.memoryLastCell = null;
+    state.memoryFocusHand = "AA";
+  }
+
+  function stopMemoryTimer() {
+    if (state.memoryTimer) window.clearInterval(state.memoryTimer);
+    state.memoryTimer = null;
+  }
+
+  function cancelMemoryWatch() {
+    stopMemoryTimer();
+    state.memoryPhase = "preview";
+    state.memoryDraft = {};
+    state.memoryGrade = null;
+    state.memorySeconds = 10;
+  }
+
+  function renderMemoryControls() {
+    var locked = state.memoryPhase === "watching" || state.memoryPhase === "drawing";
+    makeSegmented($("#memorySizeTabs"), sizeItems(), state.memorySizeKey, function (key) {
+      state.memorySizeKey = key;
+      resetMemoryState();
+      renderMemory();
+    }, { disabled: locked });
+    makeSegmented($("#memoryPositionTabs"), positionItems(), state.memoryPosition, function (key) {
+      state.memoryPosition = key;
+      resetMemoryState();
+      renderMemory();
+    }, { disabled: locked });
+  }
+
+  function renderMemoryLegend() {
+    var root = $("#memoryLegend");
+    if (state.memoryPhase === "review") {
+      root.innerHTML = '<span class="is-review-correct"><i></i>Точное совпадение</span>' +
+        '<span class="is-review-missed"><i></i>Пропущен дефенд</span>' +
+        '<span class="is-review-extra"><i></i>Лишний дефенд</span>' +
+        '<span class="is-review-action"><i></i>Перепутано действие</span>' +
+        '<small>После проверки заливка показывает правильное действие из источника.</small>';
+      return;
+    }
+    if (state.memoryPhase === "drawing") {
+      root.innerHTML = '<span><i class="is-shape-pair"></i>Пары</span>' +
+        '<span><i class="is-shape-suited"></i>Suited</span>' +
+        '<span><i class="is-shape-offsuit"></i>Offsuit</span>' +
+        '<small>Нейтральная заливка показывает тип руки; выбранное действие перекрашивает клетку.</small>';
+      return;
+    }
+    root.innerHTML = '<span><i class="is-code-r"></i>3-бет</span>' +
+      '<span><i class="is-code-c"></i>Колл</span>' +
+      '<span><i class="is-code-f"></i>Пас</span>' +
+      '<span><i class="is-code-b"></i>3-бет / колл</span>' +
+      '<span><i class="is-code-m"></i>Колл / пас</span>';
+  }
+
+  function renderMemoryMatrix() {
+    var root = $("#memoryChart");
+    var drawing = state.memoryPhase === "drawing";
+    var review = state.memoryPhase === "review";
+    var expected = memoryExpectedMap();
+    var fragment = document.createDocumentFragment();
+    root.innerHTML = "";
+    root.classList.toggle("is-drawing", drawing);
+    root.classList.toggle("is-review", review);
+    root.setAttribute("aria-label", "Проверка памяти: " + memoryScenarioLabel());
+
+    for (var row = 0; row < 13; row += 1) {
+      for (var column = 0; column < 13; column += 1) {
+        var hand = Content.matrixHandAt(row, column);
+        var expectedCode = expected[hand];
+        var chosenCode = Recall.normalizeState(state.memoryDraft[hand]);
+        var shownCode = drawing ? chosenCode : expectedCode;
+        var cell = document.createElement(drawing ? "button" : "div");
+        var shape = row === column ? "pair" : row < column ? "suited" : "offsuit";
+        cell.className = "bb-range-cell memory-range-cell is-" + shape;
+        cell.dataset.hand = hand;
+        cell.dataset.row = String(row);
+        cell.dataset.column = String(column);
+        cell.setAttribute("role", "gridcell");
+        setMemoryCellCode(cell, shownCode);
+        cell.innerHTML = "<span>" + hand + "</span>";
+
+        if (drawing) {
+          cell.type = "button";
+          cell.tabIndex = hand === state.memoryFocusHand ? 0 : -1;
+          cell.setAttribute("aria-pressed", chosenCode === "F" ? "false" : "true");
+          cell.setAttribute("aria-label", hand + ": отмечено " + Recall.stateLabel(chosenCode));
+          cell.title = hand + " · отмечено: " + Recall.stateLabel(chosenCode);
+        } else if (review) {
+          var result = Recall.reviewState(chosenCode, expectedCode);
+          var errorType = Recall.errorType(chosenCode, expectedCode);
+          cell.classList.add("is-review-" + result);
+          if (errorType) cell.classList.add("is-review-error-" + errorType);
+          var errorPrefix = errorType ? memoryErrorTypeLabel(errorType) + "; " : "";
+          cell.setAttribute("aria-label", hand + ": " + errorPrefix + "твой ответ " + Recall.stateLabel(chosenCode) + "; правильно " + Recall.stateLabel(expectedCode));
+          cell.title = hand + " · " + errorPrefix + "твой ответ: " + Recall.stateLabel(chosenCode) + " · правильно: " + Recall.stateLabel(expectedCode);
+        } else {
+          cell.setAttribute("aria-label", hand + ": " + Recall.stateLabel(expectedCode));
+          cell.title = hand + " · " + Recall.stateLabel(expectedCode);
+        }
+        fragment.appendChild(cell);
+      }
+    }
+    root.appendChild(fragment);
+
+    var phaseLabels = {
+      preview: "Можно запоминать",
+      watching: "Смотри · " + String(state.memorySeconds) + " сек",
+      drawing: "Рисуем по памяти",
+      review: "Результат проверки"
+    };
+    $("#memoryPhaseLabel").textContent = phaseLabels[state.memoryPhase];
+    $("#memoryHint").textContent = state.memoryPhase === "drawing"
+      ? "Выбери кисть. Нажми или проведи по клеткам; повторный клик тем же действием возвращает пас."
+      : state.memoryPhase === "review"
+        ? "Зелёная рамка — совпадение; розовая — пропущен дефенд; жёлтая — лишний дефенд; фиолетовая — перепутано действие. Заливка показывает правильный источник."
+        : "До старта чарт открыт. После таймера выбери кисть и нарисуй его по памяти.";
+  }
+
+  function memoryToolMarkup(code, label) {
+    return '<button type="button" data-memory-tool="' + code + '" aria-pressed="' + String(state.memoryTool === code) + '" class="' + (state.memoryTool === code ? "is-active" : "") + '">' +
+      '<i class="memory-tool-swatch is-code-' + code.toLowerCase() + '"></i><span>' + label + '</span></button>';
+  }
+
+  function memoryCardsForHand(hand) {
+    var firstRank = hand.charAt(0);
+    var secondRank = hand.charAt(1);
+    if (hand.endsWith("s")) return [firstRank + "h", secondRank + "h"];
+    return [firstRank + "h", secondRank + "c"];
+  }
+
+  function renderMemoryErrorCards(hand) {
+    var deckKit = window.PokerDeckKit;
+    if (!deckKit || !deckKit.renderCard) return '<span class="memory-error-hand-fallback">' + hand + '</span>';
+    return memoryCardsForHand(hand).map(function (card) {
+      return deckKit.renderCard(card, { theme: "color-block", mini: true, fourColor: true, className: "memory-error-card" });
+    }).join("");
+  }
+
+  function memoryActionShortLabel(code) {
+    var normalized = Recall.normalizeState(code);
+    return Recall.meta[normalized] ? Recall.meta[normalized].shortLabel : Recall.stateLabel(normalized);
+  }
+
+  function memoryErrorComboCount(error, tone) {
+    if (tone === "missed") return error.missedDefenseCombos;
+    if (tone === "extra") return error.extraDefenseCombos;
+    return error.wrongActionCombos;
+  }
+
+  function renderMemoryErrorItem(error, tone) {
+    var wrongCombos = memoryErrorComboCount(error, tone);
+    var severity = wrongCombos < error.comboCount
+      ? fmtCount(wrongCombos) + " из " + fmtCount(error.comboCount) + " комбо"
+      : fmtCount(wrongCombos) + " комбо";
+    return '<li class="memory-error-item">' +
+      '<span class="memory-error-cards" aria-hidden="true">' + renderMemoryErrorCards(error.hand) + '</span>' +
+      '<span class="memory-error-copy"><span class="memory-error-copy-head"><strong>' + error.hand + '</strong><small>' + severity + '</small></span><span><b>' + memoryActionShortLabel(error.chosen) + '</b><i aria-hidden="true">→</i><em>' + memoryActionShortLabel(error.expected) + '</em></span></span>' +
+    '</li>';
+  }
+
+  function renderMemoryErrorGroup(title, description, errors, tone) {
+    if (!errors.length) return "";
+    var comboCount = errors.reduce(function (total, error) {
+      return total + memoryErrorComboCount(error, tone);
+    }, 0);
+    return '<section class="memory-error-group is-' + tone + '">' +
+      '<header><span><strong>' + title + '</strong><small>' + description + '</small></span><b aria-label="' + fmtCount(comboCount) + ' ошибочных комбинаций"><span>' + fmtCount(comboCount) + '</span><small>комбо</small></b></header>' +
+      '<ul class="memory-error-list">' + errors.map(function (error) { return renderMemoryErrorItem(error, tone); }).join("") + '</ul>' +
+    '</section>';
+  }
+
+  function renderMemoryCoach() {
+    var root = $("#memoryCoachBody");
+    var scenario = memoryScenarioLabel();
+    if (state.memoryPhase === "preview") {
+      root.innerHTML = '<p class="eyebrow">Проверка памяти</p>' +
+        '<h3 id="memoryCoachTitle">Посмотри 10 секунд — нарисуй чарт сам</h3>' +
+        '<p>Выбери диапазон сверху, запомни границы колла, 3-бета и оба микса. Затем восстанови все 169 клеток.</p>' +
+        '<div class="memory-example" aria-hidden="true"><span class="is-fold">Пас</span><span class="is-call">Колл</span><span class="is-raise">3-бет</span></div>' +
+        '<button class="btn primary memory-start" type="button" data-memory-action="start">Запомнить ' + scenario + ' за 10 секунд</button>' +
+        '<small class="memory-source-note">Проверяем точный код каждой клетки, включая микс 3-бет / колл и микс колл / пас.</small>';
+      return;
+    }
+    if (state.memoryPhase === "watching") {
+      root.innerHTML = '<p class="eyebrow">Запоминай границу</p>' +
+        '<h3 id="memoryCoachTitle">Смотри ' + scenario + ': ' + String(state.memorySeconds) + '</h3>' +
+        '<p>Сначала найди розовую область 3-бета, затем зелёный колл и белую границу паса. Обрати внимание на split-клетки.</p>' +
+        '<div class="memory-countdown" role="progressbar" aria-valuemin="0" aria-valuemax="10" aria-valuenow="' + String(state.memorySeconds) + '"><i style="--remaining:' + String(state.memorySeconds * 10) + '%"></i></div>' +
+        '<small class="memory-source-note">После нуля чарт станет пустым автоматически.</small>';
+      return;
+    }
+    if (state.memoryPhase === "drawing") {
+      var counts = memoryCounts();
+      root.innerHTML = '<p class="eyebrow">Рисуем ' + scenario + '</p>' +
+        '<h3 id="memoryCoachTitle">Восстанови все действия</h3>' +
+        '<p>Кисть работает кликом и непрерывным проведением. Пас одновременно служит ластиком.</p>' +
+        '<div class="memory-tools" role="toolbar" aria-label="Кисти для диапазона">' +
+          memoryToolMarkup("C", "Колл") + memoryToolMarkup("R", "3-бет") + memoryToolMarkup("B", "3-бет / колл") + memoryToolMarkup("M", "Колл / пас") + memoryToolMarkup("F", "Стереть / пас") +
+        '</div>' +
+        '<p class="memory-status">3-бет: ' + String(counts.R) + ' · Колл: ' + String(counts.C) + ' · Миксы: ' + String(counts.B + counts.M) + ' · Пас: ' + String(counts.F) + '</p>' +
+        '<div class="memory-actions"><button class="btn primary" type="button" data-memory-action="check">Проверить чарт</button><button class="btn secondary" type="button" data-memory-action="clear">Очистить</button></div>';
+      return;
+    }
+
+    var grade = state.memoryGrade;
+    var clean = grade && grade.wrongCombos === 0;
+    var accuracy = grade.totalCombos ? grade.correctCombos / grade.totalCombos * 100 : 0;
+    var accuracyLabel = fmt(accuracy, 1).replace(",0", "") + "%";
+    var errorGroups = clean ? "" :
+      '<div class="memory-error-groups" aria-label="Ошибки по категориям">' +
+        renderMemoryErrorGroup("Пропущен дефенд", "Выбран пас, но руку нужно защищать", grade.missedDefense, "missed") +
+        renderMemoryErrorGroup("Лишний дефенд", "Рука должна была уйти в пас", grade.extraDefense, "extra") +
+        renderMemoryErrorGroup("Перепутано действие", "Дефенд верный, но действие другое", grade.wrongAction, "action") +
+      '</div>';
+    root.innerHTML = '<p class="eyebrow">Результат · ' + scenario + '</p>' +
+      '<h3 id="memoryCoachTitle" tabindex="-1">' + (clean ? "Чарт восстановлен точно" : "Чарт пока не совпал") + '</h3>' +
+      '<div class="memory-score-card ' + (clean ? "is-clean" : "has-errors") + '">' +
+        '<div class="memory-score-head"><span><small>Точность по комбинациям</small><strong>' + accuracyLabel + '</strong></span><b>' + fmtCount(grade.correctCombos) + ' из ' + fmtCount(grade.totalCombos) + ' комбинаций</b></div>' +
+        '<div class="memory-score-track" role="progressbar" aria-label="Точность ' + accuracyLabel + '" aria-valuemin="0" aria-valuemax="100" aria-valuenow="' + String(Math.round(accuracy * 10) / 10) + '"><i style="width:' + String(clampPercent(accuracy)) + '%"></i></div>' +
+        '<p>' + (clean ? "Все " + fmtCount(grade.totalCombos) + " стартовых комбинаций распределены верно." : "Пары весят 6 комбо, suited — 4, offsuit — 12. Для микса в ошибку попадает только неверная половина.") + '</p>' +
+      '</div>' +
+      errorGroups +
+      '<div class="memory-actions"><button class="btn primary" type="button" data-memory-action="again">Нарисовать ещё раз</button><button class="btn secondary" type="button" data-memory-action="finish">Выбрать другой чарт</button></div>';
+  }
+
+  function renderMemory() {
+    renderMemoryControls();
+    $("#memoryScenarioTitle").textContent = memoryScenarioLabel();
+    renderMemoryLegend();
+    renderMemoryMatrix();
+    renderMemoryCoach();
+  }
+
+  function focusMemoryFirstCell() {
+    requestAnimationFrame(function () {
+      var first = $('#memoryChart .memory-range-cell[data-hand="' + state.memoryFocusHand + '"]');
+      if (first) first.focus({ preventScroll: true });
+    });
+  }
+
+  function startMemoryWatch() {
+    resetMemoryState();
+    state.memoryTool = "C";
+    state.memoryPhase = "watching";
+    state.memorySeconds = 10;
+    renderMemory();
+    state.memoryTimer = window.setInterval(function () {
+      state.memorySeconds -= 1;
+      if (state.memorySeconds <= 0) {
+        stopMemoryTimer();
+        state.memoryPhase = "drawing";
+        state.memorySeconds = 0;
+        state.memoryDraft = {};
+        renderMemory();
+        focusMemoryFirstCell();
+        return;
+      }
+      renderMemoryCoach();
+      $("#memoryPhaseLabel").textContent = "Смотри · " + String(state.memorySeconds) + " сек";
+    }, 1000);
+  }
+
+  function updateMemoryStatus() {
+    var status = $("#memoryCoach .memory-status");
+    if (!status) return;
+    var counts = memoryCounts();
+    status.textContent = "3-бет: " + String(counts.R) + " · Колл: " + String(counts.C) + " · Миксы: " + String(counts.B + counts.M) + " · Пас: " + String(counts.F);
+  }
+
+  function syncMemoryTools() {
+    $$("[data-memory-tool]").forEach(function (button) {
+      var active = button.dataset.memoryTool === state.memoryTool;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+  }
+
+  function syncMemoryCell(cell, code) {
+    var normalized = Recall.normalizeState(code);
+    setMemoryCellCode(cell, normalized);
+    cell.setAttribute("aria-pressed", normalized === "F" ? "false" : "true");
+    cell.setAttribute("aria-label", cell.dataset.hand + ": отмечено " + Recall.stateLabel(normalized));
+    cell.title = cell.dataset.hand + " · отмечено: " + Recall.stateLabel(normalized);
+  }
+
+  function paintMemoryCell(cell, code) {
+    if (state.memoryPhase !== "drawing" || !cell) return;
+    var normalized = Recall.normalizeState(code || state.memoryPaintCode || state.memoryTool);
+    var hand = cell.dataset.hand;
+    if (normalized === "F") delete state.memoryDraft[hand];
+    else state.memoryDraft[hand] = normalized;
+    syncMemoryCell(cell, normalized);
+    updateMemoryStatus();
+  }
+
+  function toggleMemoryCell(cell) {
+    if (state.memoryPhase !== "drawing" || !cell) return;
+    var current = Recall.normalizeState(state.memoryDraft[cell.dataset.hand]);
+    var value = state.memoryTool === "F" || current === state.memoryTool ? "F" : state.memoryTool;
+    paintMemoryCell(cell, value);
+  }
+
+  function paintMemoryToward(cell) {
+    var from = state.memoryLastCell;
+    if (!from) {
+      paintMemoryCell(cell, state.memoryPaintCode);
+      state.memoryLastCell = cell;
+      return;
+    }
+    var row0 = Number(from.dataset.row);
+    var column0 = Number(from.dataset.column);
+    var row1 = Number(cell.dataset.row);
+    var column1 = Number(cell.dataset.column);
+    var deltaRow = Math.abs(row1 - row0);
+    var deltaColumn = Math.abs(column1 - column0);
+    var stepRow = row0 < row1 ? 1 : -1;
+    var stepColumn = column0 < column1 ? 1 : -1;
+    var error = deltaColumn - deltaRow;
+    while (true) {
+      paintMemoryCell($('#memoryChart [data-row="' + String(row0) + '"][data-column="' + String(column0) + '"]'), state.memoryPaintCode);
+      if (row0 === row1 && column0 === column1) break;
+      var doubled = 2 * error;
+      if (doubled > -deltaRow) { error -= deltaRow; column0 += stepColumn; }
+      if (doubled < deltaColumn) { error += deltaColumn; row0 += stepRow; }
+    }
+    state.memoryLastCell = cell;
+  }
+
+  function handleMemoryMatrixKeydown(event) {
+    var cell = event.target.closest(".memory-range-cell");
+    if (!cell || state.memoryPhase !== "drawing") return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleMemoryCell(cell);
+      return;
+    }
+    var row = Number(cell.dataset.row);
+    var column = Number(cell.dataset.column);
+    if (event.key === "ArrowLeft") column -= 1;
+    else if (event.key === "ArrowRight") column += 1;
+    else if (event.key === "ArrowUp") row -= 1;
+    else if (event.key === "ArrowDown") row += 1;
+    else if (event.key === "Home") column = 0;
+    else if (event.key === "End") column = 12;
+    else return;
+    event.preventDefault();
+    row = Math.max(0, Math.min(12, row));
+    column = Math.max(0, Math.min(12, column));
+    state.memoryFocusHand = Content.matrixHandAt(row, column);
+    $$("#memoryChart .memory-range-cell").forEach(function (button) {
+      button.tabIndex = button.dataset.hand === state.memoryFocusHand ? 0 : -1;
+    });
+    focusMemoryFirstCell();
+  }
+
+  function checkMemory() {
+    state.memoryGrade = Recall.gradeDraft(state.memoryDraft, memoryExpectedMap());
+    state.memoryPhase = "review";
+    state.memoryPainting = false;
+    state.memoryPaintCode = null;
+    state.memoryLastCell = null;
+    renderMemory();
+    requestAnimationFrame(function () {
+      var heading = $("#memoryCoachTitle");
+      if (heading) heading.focus({ preventScroll: true });
+    });
+  }
+
+  function clearMemoryDraft() {
+    state.memoryDraft = {};
+    state.memoryFocusHand = "AA";
+    renderMemoryMatrix();
+    updateMemoryStatus();
+    focusMemoryFirstCell();
+  }
+
+  function retryMemory() {
+    state.memoryPhase = "drawing";
+    state.memoryDraft = {};
+    state.memoryTool = "C";
+    state.memoryGrade = null;
+    state.memoryFocusHand = "AA";
+    renderMemory();
+    focusMemoryFirstCell();
+  }
+
+  function finishMemory() {
+    resetMemoryState();
+    renderMemory();
+    requestAnimationFrame(function () {
+      var selected = $("#memoryPositionTabs [aria-selected='true']");
+      if (selected) selected.focus({ preventScroll: true });
+    });
   }
 
   function renderPracticeSetup() {
-    $$('[data-session-hands]').forEach(function (button) {
-      var selected = Number(button.dataset.sessionHands) === state.practiceHands;
-      button.classList.toggle("is-active", selected);
-      button.setAttribute("aria-pressed", selected ? "true" : "false");
-    });
-    $("#startPracticeSession").textContent = "Начать · " + String(state.practiceHands) + " решений";
-  }
-
-  function makePracticeQueue(count) {
-    var spots = Content.practiceSpots.slice();
-    var offset = state.practiceRun % spots.length;
-    var rotated = spots.slice(offset).concat(spots.slice(0, offset));
-    var queue = [];
-    while (queue.length < count) {
-      rotated.forEach(function (spot) {
-        if (queue.length < count) queue.push(spot);
-      });
-      rotated = rotated.slice(3).concat(rotated.slice(0, 3));
-    }
-    return queue;
+    $("#startPracticeSession").textContent = "Попробовать";
   }
 
   function startPractice() {
     state.practiceRun += 1;
-    state.practiceQueue = makePracticeQueue(state.practiceHands);
     state.practiceIndex = 0;
     state.practiceChoice = "";
     state.practiceAnswered = false;
@@ -422,12 +1232,17 @@
   }
 
   function currentPracticeSpot() {
-    return state.practiceQueue[state.practiceIndex] || null;
+    var spots = Content.practiceSpots;
+    if (!spots.length) return null;
+    var cycle = Math.floor(state.practiceIndex / spots.length);
+    var withinCycle = state.practiceIndex % spots.length;
+    var offset = (state.practiceRun + cycle * 3) % spots.length;
+    return spots[(offset + withinCycle) % spots.length] || null;
   }
 
   function renderPracticeHud() {
     var played = state.practiceIndex + (state.practiceAnswered ? 1 : 0);
-    $("#practiceHands").textContent = String(played) + " / " + String(state.practiceHands);
+    $("#practiceHands").textContent = String(played);
     $("#practiceCorrect").textContent = String(state.stats.correct);
     $("#practiceMissedCalls").textContent = String(state.stats.missedCalls);
     $("#practiceWideCalls").textContent = String(state.stats.wideCalls);
@@ -461,11 +1276,6 @@
   }
 
   function advancePractice() {
-    var last = state.practiceIndex >= state.practiceQueue.length - 1;
-    if (last) {
-      renderPracticeComplete();
-      return;
-    }
     state.practiceIndex += 1;
     state.practiceChoice = "";
     state.practiceAnswered = false;
@@ -479,13 +1289,9 @@
   function renderPracticeSpot() {
     var spot = currentPracticeSpot();
     if (!spot) return;
-    $("#practiceKicker").textContent = "Решение " + String(state.practiceIndex + 1) + " из " + String(state.practiceHands);
-    $("#practiceSpotTitle").textContent = Content.positions[spot.openPosition].label + " открыл. Твой ход с " + spot.hand;
-    $("#practiceSpotPrompt").textContent = "Цена колла " + fmt(Content.sizes[spot.sizeKey].potOddsPct, 1) + "%. Сначала прочитай экшен, затем выбери действие.";
-    var last = state.practiceIndex >= state.practiceQueue.length - 1;
-    renderRoomTable($("#practiceTable"), spot, state.practiceChoice, state.practiceAnswered ? {
-      nextLabel: last ? "Показать итог" : "Следующая раздача"
-    } : null);
+    var tableOptions = { hideActionStatus: true };
+    if (state.practiceAnswered) tableOptions.nextLabel = "Следующая раздача";
+    renderRoomTable($("#practiceTable"), spot, state.practiceChoice, tableOptions);
     $("#practiceCoach").closest(".practice-layout").classList.toggle("has-answer", state.practiceAnswered);
     renderPracticeCoach();
     renderPracticeHud();
@@ -508,40 +1314,22 @@
     });
   }
 
-  function renderPracticeComplete() {
-    var score = state.stats.correct;
-    var total = state.practiceHands;
-    $("#practiceSpotTitle").textContent = "Сессия завершена";
-    $("#practiceSpotPrompt").textContent = "Смотри не только на процент верных ответов, но и на тип ошибок.";
-    var nextRow = $("#practiceTable .practice-next-row");
-    if (nextRow) nextRow.remove();
-    $("#practiceCoach").closest(".practice-layout").classList.remove("has-answer");
-    $("#practiceCoach").innerHTML = '<p class="eyebrow">Итог</p>' +
-      '<h3>' + String(score) + ' из ' + String(total) + ' верно</h3>' +
-      (score === total && state.stats.missedCalls === 0 && state.stats.wideCalls === 0 && state.stats.missedThreeBets === 0 ? '<div class="defender-medal"><strong>Защитник большого блайнда</strong><span>Все решения верны, ни одного правильного продолжения не пропущено</span></div>' : '') +
-      '<div class="practice-final-grid"><div><span>Пропущенные коллы</span><strong>' + String(state.stats.missedCalls) + '</strong></div><div><span>Лишние коллы</span><strong>' + String(state.stats.wideCalls) + '</strong></div><div><span>Пропущенные 3-беты</span><strong>' + String(state.stats.missedThreeBets) + '</strong></div></div>' +
-      '<p>Если ошибки сконцентрированы на 2,5x и 3x, вернись к цене колла. Если на EP/MP — к позиции рейзера.</p>' +
-      '<button class="btn primary" type="button" id="restartPractice">Сыграть ещё ' + String(total) + '</button>' +
-      '<button class="btn secondary" type="button" id="finishPractice">К уроку</button>';
-    $("#restartPractice").addEventListener("click", startPractice);
-    $("#finishPractice").addEventListener("click", exitPractice);
-    requestAnimationFrame(function () {
-      var restart = $("#restartPractice");
-      focusProgress(restart);
-    });
-  }
-
-  function exitPractice() {
+  function stopPractice(focusStart) {
     document.body.classList.remove("practice-is-running");
     $("#practiceScreen").classList.remove("is-running");
     $("#practiceRun").hidden = true;
     $("#practiceSetup").hidden = false;
-    state.practiceQueue = [];
     renderPracticeSetup();
-    requestAnimationFrame(function () {
-      var start = $("#startPracticeSession");
-      focusProgress(start);
-    });
+    if (focusStart) {
+      requestAnimationFrame(function () {
+        var start = $("#startPracticeSession");
+        focusProgress(start);
+      });
+    }
+  }
+
+  function exitPractice() {
+    stopPractice(true);
   }
 
   function setupEvents() {
@@ -571,11 +1359,68 @@
       var action = event.target.closest("[data-option-key]");
       if (action) answerFirst(action.dataset.optionKey);
     });
-    $$('[data-session-hands]').forEach(function (button) {
-      button.addEventListener("click", function () {
-        state.practiceHands = Number(button.dataset.sessionHands) || 10;
-        renderPracticeSetup();
+    $("#rangeChart").addEventListener("click", function (event) {
+      var cell = event.target.closest(".bb-range-cell");
+      if (cell) selectRangeHand(cell.dataset.hand, false);
+    });
+    $("#rangeChart").addEventListener("keydown", handleRangeMatrixKeydown);
+    $("#memoryCoach").addEventListener("click", function (event) {
+      var tool = event.target.closest("[data-memory-tool]");
+      if (tool && state.memoryPhase === "drawing") {
+        state.memoryTool = Recall.normalizeState(tool.dataset.memoryTool);
+        syncMemoryTools();
+        return;
+      }
+      var action = event.target.closest("[data-memory-action]");
+      if (!action) return;
+      if (action.dataset.memoryAction === "start") startMemoryWatch();
+      else if (action.dataset.memoryAction === "check" && state.memoryPhase === "drawing") checkMemory();
+      else if (action.dataset.memoryAction === "clear" && state.memoryPhase === "drawing") clearMemoryDraft();
+      else if (action.dataset.memoryAction === "again" && state.memoryPhase === "review") retryMemory();
+      else if (action.dataset.memoryAction === "finish" && state.memoryPhase === "review") finishMemory();
+    });
+    $("#memoryChart").addEventListener("pointerdown", function (event) {
+      var cell = event.target.closest(".memory-range-cell");
+      if (!cell || state.memoryPhase !== "drawing") return;
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      event.preventDefault();
+      state.memoryPainting = true;
+      state.memoryLastCell = cell;
+      state.memoryFocusHand = cell.dataset.hand;
+      $$("#memoryChart .memory-range-cell").forEach(function (button) {
+        button.tabIndex = button === cell ? 0 : -1;
       });
+      var current = Recall.normalizeState(state.memoryDraft[cell.dataset.hand]);
+      state.memoryPaintCode = state.memoryTool === "F" || current === state.memoryTool ? "F" : state.memoryTool;
+      paintMemoryCell(cell, state.memoryPaintCode);
+    });
+    $("#memoryChart").addEventListener("pointermove", function (event) {
+      if (!state.memoryPainting || state.memoryPhase !== "drawing") return;
+      var target = document.elementFromPoint(event.clientX, event.clientY);
+      var cell = target && target.closest(".memory-range-cell");
+      if (cell && $("#memoryChart").contains(cell)) paintMemoryToward(cell);
+    });
+    $("#memoryChart").addEventListener("pointerleave", function (event) {
+      if (!event.buttons) {
+        state.memoryPainting = false;
+        state.memoryPaintCode = null;
+        state.memoryLastCell = null;
+      }
+    });
+    $("#memoryChart").addEventListener("click", function (event) {
+      var cell = event.target.closest(".memory-range-cell");
+      if (cell && event.detail === 0) toggleMemoryCell(cell);
+    });
+    $("#memoryChart").addEventListener("keydown", handleMemoryMatrixKeydown);
+    window.addEventListener("pointerup", function () {
+      state.memoryPainting = false;
+      state.memoryPaintCode = null;
+      state.memoryLastCell = null;
+    });
+    window.addEventListener("pointercancel", function () {
+      state.memoryPainting = false;
+      state.memoryPaintCode = null;
+      state.memoryLastCell = null;
     });
     $("#startPracticeSession").addEventListener("click", startPractice);
     $("#exitPractice").addEventListener("click", exitPractice);
@@ -591,22 +1436,22 @@
   }
 
   function init() {
-    if (!Engine || !Content) return;
+    if (!Engine || !Content || !Recall) return;
     renderIntroTableArt();
     renderFirstTable();
     renderFirstCoach();
     renderDeep();
+    renderMemory();
     renderPracticeSetup();
     setupWisdomCarousel();
+    setupSizeDefensePreviews();
     setupEvents();
     var saved = readProgress();
-    if (saved.unlocked) {
-      state.firstChoice = saved.firstChoice || "call";
+    var restoredUnlock = Boolean(saved.unlocked || saved.firstChoice);
+    if (restoredUnlock) {
+      state.unlocked = true;
       $$(".step-tab").forEach(function (tab) { tab.disabled = false; });
-      $("#firstEncounter").classList.add("has-answer");
-      renderFirstTable();
-      renderFirstCoach();
-      if (["idea", "wisdom", "deep", "practice"].includes(saved.step)) showStep(saved.step);
+      if (["idea", "wisdom", "deep", "practice", "memory"].includes(saved.step)) showStep(saved.step);
     }
   }
 

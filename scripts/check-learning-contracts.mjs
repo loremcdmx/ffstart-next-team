@@ -65,27 +65,44 @@ assert(nitGrid <= activeFishGrid, `nit grid is not wider than active-fish grid (
 assert.deepEqual(rfi.enginePositions, ["UTG", "LJ", "HJ", "CO", "BTN"], "RFI pack uses the 7-max engine vocabulary");
 assert.equal(rfi.targetPosition(2), "LJ", "second RFI hand targets engine LJ");
 assert.equal(rfi.targetLearningPosition(2), "MP", "engine LJ is presented as learning MP");
-assert.equal(rfi.openSizeBb, 2.2, "RFI lesson and simulator use the same 2.2 BB size");
+assert.equal(rfi.openSizeBb, 2, "RFI lesson and simulator use the same 2 BB size");
 
 const rfiCss = readFileSync(resolve(root, "assets/poker-rfi-open-lesson/simulator-pack.css"), "utf8");
 assert(!rfiCss.includes('.client-controls.is-rfi-opening [data-action="call"] { display:none'), "RFI opening keeps the call button visible as a teaching trap");
 assert(rfiCss.includes(".rfi-range-review"), "RFI pack includes the post-hand range target review");
 assert(rfiCss.includes(".rfi-limp-warning"), "RFI pack includes the dedicated limp warning dialog");
+assert(rfiCss.includes('.rfi-review-cell.is-hit:after { content:none; }'), "RFI target ring keeps the played hand label unobstructed");
 const rfiPackSource = readFileSync(resolve(root, "assets/poker-rfi-open-lesson/simulator-pack.js"), "utf8");
 assert(rfiPackSource.includes("manualNextHand: true"), "RFI waits for post-hand review before dealing the next hand");
 assert(rfiPackSource.includes('.client-controls.is-rfi-opening [data-action="call"]'), "RFI intercepts only the unopened limp action");
 assert(rfiPackSource.includes("stopImmediatePropagation"), "RFI limp guard stops the invalid action before the engine receives it");
-assert.equal(rfi.decisionForFrequency(49), "fold", "sub-50 source weights use the simplified fold action");
-assert.equal(rfi.decisionForFrequency(50), "open", "50-percent source weights enter the simplified open action");
+assert(!rfiPackSource.includes("2,2"), "RFI live mode no longer exposes the old 2.2 BB size");
+const rfiBettingSource = readFileSync(resolve(root, "assets/poker-simulator/simulator-betting.js"), "utf8");
+assert(rfiBettingSource.includes("PokerSimulatorPracticePacks?.defaultBetAmount"), "practice packs own their default live bet through the shared registry");
+assert.equal(rfi.decisionForFrequency(75), "fold", "75-percent source weights stay outside the simplified range");
+assert.equal(rfi.decisionForFrequency(76), "open", "source weights above 75 percent enter the simplified range");
+assert.deepEqual(globalThis.PokerRfiData.targets, { EP: 20, MP: 24, HJ: 32, CO: 48, BTN: 66 }, "RFI targets are combo-weighted from the binary chart");
+assert.equal(rfi.gradeEntry({ handNo: 2, hero: { combo: "A9o", seatId: 4 }, handHistory: { actions: [{ street: "preflop", seatId: 4, action: "fold" }] } }).expected, "fold", "MP 50-percent source cell is excluded after normalization");
+assert.equal(rfi.gradeEntry({ handNo: 3, hero: { combo: "K3s", seatId: 4 }, handHistory: { actions: [{ street: "preflop", seatId: 4, action: "raise" }] } }).expected, "open", "HJ 80-percent source cell becomes a full-weight open");
 assert.equal(rfi.heroPreflopAction({ hero: { seatId: 4 }, handHistory: { actions: [{ street: "preflop", seatId: 4, action: "call" }] } }), "limp", "completed hand grading recognizes a limp");
-assert.equal(rfi.heroPreflopAction({ hero: { seatId: 0 }, handHistory: { actions: [{ street: "preflop", seatId: 0, phase: "chips", label: "Hero +2.2 BB" }, { street: "preflop", seatId: 0, phase: "action", label: "Raise to 2.2 BB" }] } }), "open", "RFI grading skips chip movement and finds the first meaningful hero action");
+assert.equal(rfi.heroPreflopAction({ hero: { seatId: 0 }, handHistory: { actions: [{ street: "preflop", seatId: 0, phase: "chips", label: "Hero +2 BB" }, { street: "preflop", seatId: 0, phase: "action", label: "Raise to 2 BB" }] } }), "open", "RFI grading skips chip movement and finds the first meaningful hero action");
 assert.equal(rfi.reviewVerdict({ action: "limp", expected: "open", correct: false }).tone, "wrong", "limp receives an explicit wrong verdict");
 const epReviewChart = rfi.reviewChart({ position: "EP", combo: "A9o", correct: true });
 assert.equal((epReviewChart.match(/class="rfi-review-cell/g) || []).length, 169, "post-hand review renders all 169 range cells");
 assert(epReviewChart.includes("is-hit is-correct"), "post-hand review marks the played combo on the chart");
+assert(!epReviewChart.includes("is-mixed") && !epReviewChart.includes("<small>"), "post-hand review stays binary and does not render source weights");
+for (const chartClass of ["is-pair", "is-suited", "is-offsuit", "is-target-open"]) assert(epReviewChart.includes(chartClass), `post-hand review renders ${chartClass}`);
+for (const paletteSelector of [".rfi-review-cell.is-pair", ".rfi-review-cell.is-suited", ".rfi-review-cell.is-offsuit", ".rfi-review-cell.is-target-open"]) assert(rfiCss.includes(paletteSelector), `simulator review styles ${paletteSelector}`);
+for (const legendClass of ["is-open", "is-pair", "is-suited", "is-offsuit"]) assert(rfiPackSource.includes(`class="${legendClass}"`), `simulator review legend includes ${legendClass}`);
 const actionControls = readFileSync(resolve(root, "assets/poker-simulator/simulator-action-controls.js"), "utf8");
 assert(rfiPackSource.includes('action: "rfi-play-again"'), "RFI pack registers an in-frame restart action");
 assert(actionControls.includes("PokerSimulatorPracticePacks?.sessionCompleteAction"), "terminal controls request restart behavior from the active practice pack");
+
+const trainerShellCss = readFileSync(resolve(root, "assets/poker-trainer-shell/shell.css"), "utf8");
+const trainerSnapshotSource = readFileSync(resolve(root, "assets/poker-trainer-shell/simulator-snapshot.js"), "utf8");
+assert(trainerShellCss.includes('.felt .pot .pot-chip-stack'), "trainer pot chips have an explicit vertical-layout override");
+assert(trainerShellCss.includes('.felt.has-board .pot-total'), "trainer postflop pot readout is restored below the board");
+assert(trainerSnapshotSource.includes('potTotalLabel: "БАНК"'), "trainer postflop readout uses the same BANK label as preflop");
 
 const restealDataSource = readFileSync(resolve(root, "assets/poker-resteal-lesson/data.js"), "utf8");
 const restealLessonSource = readFileSync(resolve(root, "assets/poker-resteal-lesson/lesson.js"), "utf8");
@@ -93,8 +110,9 @@ const restealLessonHtml = readFileSync(resolve(root, "resteal-lesson.html"), "ut
 assert(restealDataSource.includes("comparisonFoldBaselineBb: -1.12"), "resteal comparison defines the canonical BB fold baseline");
 assert(restealLessonSource.includes("const foldBaselineBb = Number(Content?.comparisonFoldBaselineBb"), "resteal comparison reads the canonical BB fold baseline");
 assert(!restealLessonSource.includes("[category]?.fold?.avg_ev_bb"), "mixed SB/BB category folds do not leak into the BB tooltip or bars");
-assert(restealLessonSource.includes("пас с BB: ${signed(baseline, 1)}"), "resteal tooltip shows the BB fold price rounded to one decimal");
-assert(restealLessonHtml.includes("единый BB-бейзлайн −1,12"), "resteal methodology documents the fixed BB rebase");
+assert(restealLessonSource.includes("EV паса (${compactSigned(foldBaselineBb, 2)} BB)"), "resteal tooltip uses the exact BB fold price in its formula");
+assert(restealLessonSource.includes("Показанное число — преимущество над пасом, а не абсолютный EV"), "resteal tooltip names the displayed metric as advantage over folding");
+assert(restealLessonHtml.includes("Плюс по эквити считаем относительно паса: исходный EV действия − EV паса"), "resteal methodology documents the fixed BB rebase");
 
 console.log(`✓ resteal field grids: reg ${goodRegGrid.toFixed(1)}% · nit ${nitGrid.toFixed(1)}% · active fish ${activeFishGrid.toFixed(1)}%`);
 console.log("✓ learning contracts passed");

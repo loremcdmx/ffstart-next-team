@@ -13,11 +13,11 @@
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-table.css?v=db213746612e">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-polish.css?v=d5b525b07ce0">
-  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260714-practice-geometry-5">
+  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260714-practice-geometry">
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
-  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css?v=20260714-practice-geometry">
-  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/lesson.css?v=20260713-2">
+  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css?v=20260714-practice-navigation">
+  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/lesson.css?v=20260714-memory-combo-score">
 </head>
 <body class="bb-call-lesson">
   <main class="app">
@@ -32,6 +32,7 @@
         <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="wisdomScreen" data-step-target="wisdom" tabindex="-1" disabled>2. Главное</button>
         <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="deepScreen" data-step-target="deep" tabindex="-1" disabled>3. Подробнее</button>
         <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="practiceScreen" data-step-target="practice" tabindex="-1" disabled>4. Практика</button>
+        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="memoryScreen" data-step-target="memory" tabindex="-1" disabled>5. Проверка памяти</button>
       </nav>
     </header>
 
@@ -47,12 +48,12 @@
         </div>
         <div class="intro-table-visual" aria-hidden="true">
           <div class="intro-felt">
-            <span class="intro-seat intro-btn"><b>BTN</b><small>Стек 38 BB</small><i class="intro-dealer-host" id="introDealerButton"></i></span>
+            <span class="intro-seat intro-btn"><b>BTN</b><small>Стек 60 BB</small><i class="intro-dealer-host" id="introDealerButton"></i></span>
             <span class="intro-chip-marker intro-btn-bet"><span id="introBtnChips"></span><strong>Рейз 2 BB</strong></span>
             <span class="intro-pot"><span id="introPotChips"></span><strong>Банк 4,5 BB</strong></span>
-            <span class="intro-chip-marker intro-bb-jam intro-bb-call"><span id="introCallChips"></span><strong>Колл +1 BB</strong></span>
+            <span class="intro-chip-marker intro-bb-jam intro-bb-call"><span id="introCallChips"></span><strong>Колл 1 BB</strong></span>
             <span class="intro-hero-cards" id="introHeroCards"></span>
-            <span class="intro-seat intro-bb"><b>BB · Ты</b><small>Стек 38 BB</small></span>
+            <span class="intro-seat intro-bb"><b>BB · Ты</b><small>Стек 60 BB</small></span>
           </div>
         </div>
       </article>
@@ -64,7 +65,7 @@
         </div>
         <div class="encounter-layout">
           <article class="panel room-stage">
-            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7-max</strong><span>BB ante 1 BB</span></div>
+            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7-max</strong></div>
             <div class="lesson-table-host" id="firstTable" aria-live="polite"></div>
           </article>
           <aside class="panel coach-panel" id="firstCoach" aria-live="polite"></aside>
@@ -78,7 +79,6 @@
           <p class="eyebrow">Сначала пойми идею</p>
           <h2 id="wisdomTitle">Колл начинается с цены</h2>
         </div>
-        <div class="draft-wisdom-note coach-source-note"><strong>Голос тренера встроен</strong><span>расшифровка очищена от шума ASR</span></div>
       </div>
 
       <div class="wisdom-carousel" data-wisdom-carousel aria-label="Главные мысли о защите BB коллом">
@@ -90,8 +90,13 @@
                 <h3>BB — самая дешёвая точка входа в раздачу</h3>
                 <p>Один блайнд уже поставлен. После колла никто не сможет поднять цену: сразу увидишь флоп.</p>
               </div>
-              <div class="price-equation" aria-label="Один большой блайнд разделить на итоговый банк 5,5 большого блайнда равно 18,2 процента">
-                <strong>1 BB</strong><span>÷</span><strong>5,5 BB</strong><span>=</span><b>18,2%</b>
+              <div class="price-equation" aria-label="Цена колла: доплата сейчас 1 большой блайнд, банк после колла 5,5 большого блайнда, цена колла по оддсам 18,2 процента">
+                <div class="price-term"><small>Доплата сейчас</small><strong>1 BB</strong></div>
+                <span aria-hidden="true">÷</span>
+                <div class="price-term"><small>Банк после колла</small><strong>5,5 BB</strong></div>
+                <span aria-hidden="true">=</span>
+                <div class="price-term is-result"><small>Цена колла</small><b>18,2%</b></div>
+                <p class="price-equation-note">Чтобы колл окупался по оддсам, нужно не меньше 18,2% эквити — до учёта реализации и рейка.</p>
               </div>
             </article>
 
@@ -99,35 +104,41 @@
               <div class="wisdom-copy-block">
                 <p class="eyebrow">Главный лик из тренерских наблюдений</p>
                 <h3>Потери живут в некрасивых руках</h3>
-                <p>Тузы ты не выбросишь. А K4o, Q6o, J6o, T6o и 96o легко улетают в пас ещё до решения — хотя против BTN 2x это зелёные клетки. Таких пограничных комбинаций приходит намного больше, чем премиумов, поэтому маленький лишний фолд повторяется и складывается в большой лик на дистанции.</p>
-                <small class="coach-estimate">Оценка тренера: пропуск одной такой защиты может стоить десятые доли BB. Это экспертная оценка, не измерение этого урока.</small>
+                <p>Тузы ты не выбросишь. А K4o, Q6o, J6o, T6o и 96o легко улетают в пас ещё до решения — хотя против минрейза с батона эти руки надо защищать. Таких пограничных комбинаций приходит намного больше, чем премиумов, поэтому маленький лишний фолд повторяется и складывается в большой лик на дистанции.</p>
               </div>
               <div class="leak-hand-grid" aria-label="Часто пропускаемые коллы против BTN 2x">
-                <span>K4o<b>колл</b></span><span>Q6o<b>колл</b></span><span>J6o<b>колл</b></span><span>T6o<b>колл</b></span><span>96o<b>колл</b></span>
+                <span class="leak-hand" data-leak-cards="Kh,4d" aria-label="K4o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
+                <span class="leak-hand" data-leak-cards="Qs,6h" aria-label="Q6o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
+                <span class="leak-hand" data-leak-cards="Jd,6c" aria-label="J6o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
+                <span class="leak-hand" data-leak-cards="Tc,6d" aria-label="T6o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
+                <span class="leak-hand" data-leak-cards="9h,6s" aria-label="96o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
               </div>
             </article>
 
             <article class="panel wisdom-slide bb-size-slide" data-wisdom-slide>
-              <div class="wisdom-copy-block">
-                <p class="eyebrow">Сайз важнее ощущения силы руки</p>
-                <h3>Чем дороже колл, тем аккуратнее защита</h3>
-                <p>Цена растёт сама по себе. Вдобавок у любителей есть заметная, но не железная тенденция: крупнее рейз — сильнее рука.</p>
+              <div class="size-copy-stage">
+                <div class="wisdom-copy-block" id="sizeDefenseDefaultCopy">
+                  <p class="eyebrow">Дефенд BB против BTN</p>
+                  <h3>Чем крупнее опен, тем уже дефенд</h3>
+                  <p>Дефенд — это колл плюс 3-бет. По исходным матрицам против BTN он сужается с 90% на минрейз до 27% против 3 BB.</p>
+                </div>
+                <aside class="size-defense-preview" id="sizeDefensePreview" aria-label="Разбор выбранного процента дефенда" aria-live="polite" hidden></aside>
               </div>
-              <div class="size-ladder" aria-label="Цена колла по сайзам">
-                <div><span>Опен 2 BB</span><strong>+1 BB</strong><b>18,2%</b></div>
-                <div><span>Опен 2,5 BB</span><strong>+1,5 BB</strong><b>23,1%</b></div>
-                <div><span>Опен 3 BB</span><strong>+2 BB</strong><b>26,7%</b></div>
+              <div class="size-ladder" aria-label="Дефенд BB против BTN по сайзам: колл плюс 3-бет">
+                <div><span>Опен BTN 2 BB</span><strong>+1 BB</strong><b>90%</b></div>
+                <div><span>Опен BTN 2,5 BB</span><strong>+1,5 BB</strong><button class="size-defense-trigger" type="button" data-size-preview="2_5" aria-controls="sizeDefensePreview" aria-describedby="sizeDefenseHint" aria-expanded="false">55%<small>чарт</small></button></div>
+                <div><span>Опен BTN 3 BB</span><strong>+2 BB</strong><button class="size-defense-trigger" type="button" data-size-preview="3_0" aria-controls="sizeDefensePreview" aria-describedby="sizeDefenseHint" aria-expanded="false">27%<small>чарт</small></button></div>
+                <p class="size-ladder-hint" id="sizeDefenseHint">Наведи на 55% или 27% — увидишь матрицу и объяснение границы.</p>
               </div>
             </article>
 
             <article class="panel wisdom-slide bb-shape-slide" data-wisdom-slide>
               <div class="wisdom-copy-block">
-                <p class="eyebrow">Быстрый ориентир, не замена чарту</p>
                 <h3>Одномастные и связанные защищаются лучше</h3>
                 <p>Сьютовость даёт флеши, близкие ранги — стриты. Первыми уходят в пас две низкие, разномастные и разнесённые карты.</p>
               </div>
               <div class="hand-shape-grid">
-                <div class="is-play"><span>Чаще играем</span><strong>76s · T2s · JTs</strong><small>одна масть или хорошие связи</small></div>
+                <div class="is-play"><span>Очевидная защита</span><strong>76s · T2s · JTs</strong><small>одна масть или хорошие связи</small></div>
                 <div class="is-fold"><span>Первые кандидаты в пас</span><strong>83o · 72o · 94o</strong><small>низкие, offsuit, большая дырка</small></div>
               </div>
             </article>
@@ -135,14 +146,13 @@
             <article class="panel wisdom-slide bb-realization-slide" data-wisdom-slide>
               <div class="wisdom-copy-block">
                 <p class="eyebrow">Оддсы — только первый фильтр</p>
-                <h3>Этот урок доводит тебя до флопа</h3>
-                <p>В примере методички у BB 38,5% сырого эквити, реализуется около 27,8%. Постфлоп — отдельный навык; сейчас задача не пропустить правильный вход.</p>
+                <h3>Пока мы разбираем только префлоп</h3>
+                <p>На постфлопе будет достаточно сложная защита, которую будем разбирать в следующих уроках.</p>
               </div>
               <div class="realization-bars">
                 <div><span>Эквити на флопе</span><i><b style="width: 38.5%"></b></i><strong>38,5%</strong></div>
                 <div><span>Реализуем</span><i><b style="width: 27.8%"></b></i><strong>27,8%</strong></div>
               </div>
-              <p class="slide-takeaway">Упрощённый ориентир новичка: сначала зайди по чарту, затем оцени совпадение с доской. Полная игра после флопа — следующий урок.</p>
             </article>
 
             <article class="panel wisdom-slide bb-autopilot-slide" data-wisdom-slide>
@@ -154,7 +164,7 @@
               <div class="autopilot-sequence">
                 <div><span>1</span><strong>Кто открыл?</strong><small>EP, MP, HJ, CO или BTN</small></div>
                 <div><span>2</span><strong>Какой сайз?</strong><small>2x, 2,5x или 3x</small></div>
-                <div><span>3</span><strong>Где рука?</strong><small>только теперь жми действие</small></div>
+                <div><span>3</span><strong>Рука входит в рейндж защиты?</strong><small>только теперь жми действие</small></div>
               </div>
             </article>
 
@@ -207,7 +217,7 @@
       </div>
 
       <div class="wisdom-actions">
-        <div><strong>Главное:</strong><span>не пасуй заранее: прочитай позицию, сайз и только потом найди клетку.</span></div>
+        <div><strong>Главное:</strong><span>не пасуй заранее: прочитай позицию, сайз и только потом вспомни чарт и прими решение.</span></div>
         <button class="btn primary" type="button" data-step-link="practice">Попробовать за столом</button>
         <button class="btn secondary" type="button" data-step-link="deep">Открыть диапазоны</button>
       </div>
@@ -216,7 +226,6 @@
     <section class="screen deep-screen" id="deepScreen" role="tabpanel" data-step="deep" aria-labelledby="deepTitle">
       <div class="deep-heading">
         <div><p class="eyebrow">Необязательное продолжение</p><h2 id="deepTitle">Цена колла и точные матрицы</h2></div>
-        <p>Все числа ниже взяты с физических страниц 10–11 методички. Это учебная база, а не измеренный bb/100 конкретного игрока.</p>
       </div>
 
       <section class="panel bb-odds-lab" aria-labelledby="oddsTitle">
@@ -239,18 +248,21 @@
         <div class="range-workspace">
           <div class="range-source-card">
             <div class="range-source-head"><strong id="rangeScenarioTitle">BTN · 2 BB</strong><span id="rangeOpenerWidth">Ренж рейзера 52%</span></div>
-            <img id="rangeChart" src="assets/poker-bb-call-defense-lesson/source/range-2_0-vs-btn.png" width="470" height="470" alt="Матрица защиты большого блайнда против BTN 2 BB">
+            <div class="range-matrix-legend" aria-label="Легенда матрицы"><span><i class="is-raise"></i>3-бет</span><span><i class="is-call"></i>Колл</span><span><i class="is-fold"></i>Пас</span></div>
+            <div class="range-matrix-scroll">
+              <div class="bb-range-matrix" id="rangeChart" role="grid" aria-label="Кликабельная матрица защиты большого блайнда" aria-describedby="rangeMatrixHelp"></div>
+            </div>
+            <p class="range-matrix-help" id="rangeMatrixHelp">Нажми на руку — ниже обновятся её эквити и минимальная нужная реализация. Стрелки двигают выбор по чарту.</p>
           </div>
-          <aside class="range-facts" id="rangeFacts" aria-live="polite"></aside>
         </div>
       </section>
 
       <section class="panel realization-lab" aria-labelledby="realizationTitle">
         <div class="lab-heading">
-          <div><p class="eyebrow">Шаг 3 · налог позиции</p><h3 id="realizationTitle">Эквити и реализация</h3></div>
-          <strong class="realization-ratio" id="realizationRatio">72,2%</strong>
+          <div><p class="eyebrow">Шаг 3 · выбранная рука</p><h3 id="realizationTitle">Эквити и нужная реализация</h3></div>
+          <strong class="realization-ratio" id="realizationRatio">—</strong>
         </div>
-        <div class="realization-detail" id="realizationDetail"></div>
+        <div class="realization-detail" id="realizationDetail" aria-live="polite"></div>
       </section>
     </section>
 
@@ -266,35 +278,54 @@
           <div class="practice-legend"><span><i class="legend-call"></i>Колл</span><span><i class="legend-raise"></i>3-бет</span><span><i class="legend-fold"></i>Пас</span></div>
         </article>
         <article class="panel practice-launch">
-          <div><strong>Сколько решений сыграть?</strong><span>Можно пройти короткий круг или полную очередь с повторением в другом порядке.</span></div>
-          <div class="practice-counts" role="group" aria-label="Количество решений">
-            <button type="button" data-session-hands="10">10</button>
-            <button type="button" data-session-hands="25">25</button>
-          </div>
-          <button class="btn primary" type="button" id="startPracticeSession">Начать · 10 решений</button>
+          <div><strong>Практика без лимита</strong><span>Играй сколько хочется; остановиться всегда можно кнопкой «К уроку».</span></div>
+          <button class="btn primary" type="button" id="startPracticeSession">Попробовать</button>
         </article>
       </div>
 
       <div class="practice-run" id="practiceRun" hidden>
         <div class="practice-hud" aria-live="polite">
-          <span><small>Руки</small><b id="practiceHands">0 / 10</b></span>
+          <span><small>Руки</small><b id="practiceHands">0</b></span>
           <span><small>Верно</small><b id="practiceCorrect">0</b></span>
           <span><small>Пропущенные коллы</small><b id="practiceMissedCalls">0</b></span>
           <span><small>Лишние коллы</small><b id="practiceWideCalls">0</b></span>
           <span><small>Пропущенные 3-беты</small><b id="practiceMissedThreeBets">0</b></span>
           <button class="btn secondary" type="button" id="exitPractice">К уроку</button>
         </div>
-        <div class="section-heading encounter-heading practice-spot-heading">
-          <div><p class="eyebrow" id="practiceKicker">Решение 1 из 10</p><h2 id="practiceSpotTitle">BTN открыл. Твой ход</h2></div>
-          <p id="practiceSpotPrompt">Сначала прочитай экшен, затем выбери действие.</p>
-        </div>
         <div class="encounter-layout practice-layout">
           <article class="panel room-stage">
-            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7-max</strong><span>BB ante 1 BB</span></div>
+            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7-max</strong></div>
             <div class="lesson-table-host" id="practiceTable" aria-live="polite"></div>
           </article>
           <aside class="panel coach-panel" id="practiceCoach" aria-live="polite"></aside>
         </div>
+      </div>
+    </section>
+
+    <section class="screen memory-screen" id="memoryScreen" role="tabpanel" data-step="memory" aria-labelledby="memoryTitle">
+      <div class="memory-heading">
+        <div><p class="eyebrow">Пятый шаг · восстанови источник</p><h2 id="memoryTitle">Нарисуй диапазон защиты BB</h2></div>
+        <p>Выбери позицию и сайз, посмотри на точный чарт 10 секунд, затем восстанови все 169 клеток.</p>
+      </div>
+
+      <div class="memory-range-controls panel">
+        <div><span>Сайз рейзера</span><div class="segmented-control" id="memorySizeTabs" role="tablist" aria-label="Сайз для проверки памяти"></div></div>
+        <div><span>Позиция рейзера</span><div class="segmented-control" id="memoryPositionTabs" role="tablist" aria-label="Позиция для проверки памяти"></div></div>
+      </div>
+
+      <div class="memory-layout">
+        <article class="panel memory-range-card" aria-labelledby="memoryScenarioTitle">
+          <div class="memory-range-head"><div><p class="eyebrow">Выбранный чарт</p><h3 id="memoryScenarioTitle">BTN · 2 BB</h3></div><span id="memoryPhaseLabel">Можно запоминать</span></div>
+          <div class="memory-chart-legend" id="memoryLegend" aria-label="Легенда проверки памяти"></div>
+          <div class="range-matrix-scroll memory-matrix-scroll">
+            <div class="bb-range-matrix memory-range-matrix" id="memoryChart" role="grid" aria-label="Диапазон для проверки памяти" aria-describedby="memoryHint"></div>
+          </div>
+          <p class="memory-hint" id="memoryHint">До старта чарт открыт. После таймера выбери кисть и нарисуй его по памяти.</p>
+        </article>
+
+        <aside class="panel memory-coach" id="memoryCoach" aria-labelledby="memoryCoachTitle">
+          <div id="memoryCoachBody" aria-live="polite"></div>
+        </aside>
       </div>
     </section>
     <footer class="lesson-footer"><a href="/">← Все тренажёры</a><a href="/resteal-lesson">Следующий урок: рестил →</a></footer>
@@ -305,12 +336,14 @@
   <script defer src="assets/poker-simulator/simulator-board-render.js?v=cb215df9f7dd"></script>
   <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=20260714-card-pocket-20"></script>
   <script defer src="assets/poker-simulator/simulator-seat-renderer.js?v=fe2184958bf0"></script>
-  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=876dfddebeb9"></script>
-  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260714-opponent-reveal"></script>
+  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260713-pot-label"></script>
+  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260713-pot-layout"></script>
   <script defer src="assets/poker-simulator/embed.js?v=20260714-practice-api"></script>
   <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260714-practice-api"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/engine.js?v=9b670c3cf7e8"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/data.js?v=20260713-2"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/lesson.js?v=20260714-practice-adapter"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/engine.js?v=20260713-1"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/range-data.js?v=20260713-1"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/data.js?v=20260714-call-label"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/recall.js?v=20260714-memory-combo-score"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/lesson.js?v=20260714-memory-combo-score"></script>
 </body>
 </html>

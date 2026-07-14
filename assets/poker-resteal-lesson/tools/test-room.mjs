@@ -52,8 +52,8 @@ assert.match(lessonJs, /openPct: controls\.openPct,[\s\S]*callPct: controls\.cal
 assert.match(lessonJs, /const foldBaselineBb = Number\(Content\?\.comparisonFoldBaselineBb[\s\S]*advantageOverFold = \(rawEvBb\) => Number\(rawEvBb \|\| 0\) - foldBaselineBb/, "comparison lines use the canonical BB fold baseline");
 assert.doesNotMatch(lessonJs, /hero_outcomes\?\.pooled\?\.ALL\?\.\[category\]\?\.fold/, "mixed SB/BB category folds never replace the BB baseline");
 assert.match(lessonJs, /const difference = jamRaw - callRaw/, "jam-call delta stays on the original unrounded observations");
-assert.match(lessonJs, /пас с BB: \$\{signed\(baseline, 1\)\}/, "tooltip labels the rounded BB fold price");
-assert.match(lessonHtml, /−0,28 у низких связок становится примерно \+0,84 BB относительно паса/, "comparison methodology explains the fixed BB rebase");
+assert.match(lessonJs, /comparisonVsFoldTooltip[\s\S]*EV паса \(\$\{compactSigned\(foldBaselineBb, 2\)\} BB\)[\s\S]*преимущество над пасом, а не абсолютный EV/, "tooltip explains the displayed EV as action minus fold");
+assert.match(lessonHtml, /Плюс по эквити считаем относительно паса: исходный EV действия − EV паса/, "comparison methodology explains the fixed BB rebase");
 
 const introPot = context.PokerChipKit.renderAmount(4.5, { maxVisual: 3, detail: true });
 assert.match(introPot, /poker-chip--one/);

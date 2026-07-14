@@ -12,10 +12,10 @@
   const catalog = Object.freeze({
     "rfi-open": Object.freeze({
       aliases: Object.freeze(["rfi-open-position"]),
-      styles: Object.freeze(["assets/poker-rfi-open-lesson/simulator-pack.css?v=20260714-practice-api"]),
+      styles: Object.freeze(["assets/poker-rfi-open-lesson/simulator-pack.css?v=20260714-prod-refresh-1"]),
       scripts: Object.freeze([
         "assets/poker-rfi-open-lesson/data.js?v=20260713-7",
-        "assets/poker-rfi-open-lesson/simulator-pack.js?v=20260714-practice-api"
+        "assets/poker-rfi-open-lesson/simulator-pack.js?v=20260714-endless-practice"
       ])
     }),
     resteal: Object.freeze({

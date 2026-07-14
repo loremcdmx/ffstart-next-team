@@ -6,8 +6,8 @@
   const requestedPractice = params.get("practice") || params.get("lesson") || params.get("drill");
   const active = requestedPractice === "rfi-open" || requestedPractice === "rfi-open-position";
   const PACK_KEY = "rfi-open-position-demo";
-  const OPEN_SIZE_BB = 2.2;
-  const OPEN_SIZE_LABEL = "2,2";
+  const OPEN_SIZE_BB = 2;
+  const OPEN_SIZE_LABEL = "2";
   const enginePositions = ["UTG", "LJ", "HJ", "CO", "BTN"];
   const learningPosition = Object.freeze({ UTG: "EP", LJ: "MP", HJ: "HJ", CO: "CO", BTN: "BTN" });
   const processedEntries = new Set();
@@ -15,9 +15,14 @@
   let learningUiHandlersInstalled = false;
   let limpReturnFocus = null;
 
-  function sessionHands() {
-    const count = Number(params.get("hands"));
-    return [10, 25, 50, 100].includes(count) ? count : 10;
+  function sessionHands(value = params.get("hands")) {
+    const count = Number(value);
+    return [10, 25, 50, 100].includes(count) ? count : 0;
+  }
+
+  function sessionLimitReached(handNo) {
+    const limit = sessionHands();
+    return limit > 0 && Number(handNo) >= limit;
   }
 
   function targetPosition(handNo) {
@@ -157,7 +162,8 @@
   }
 
   function decisionForFrequency(frequency) {
-    return Number(frequency || 0) >= 50 ? "open" : "fold";
+    const threshold = Number(root.PokerRfiData?.rangeThreshold ?? 75);
+    return Number(frequency || 0) > threshold ? "open" : "fold";
   }
 
   function gradeEntry(entry = {}) {
@@ -179,7 +185,7 @@
 
   function actionLabel(action) {
     if (action === "open") return `рейз ${OPEN_SIZE_LABEL} BB`;
-    if (action === "limp") return "колл / лимп";
+    if (action === "limp") return "колл";
     return "пас";
   }
 
@@ -210,19 +216,15 @@
       const hand = handAt(row, column);
       const frequency = Number(frequencies[hand] || 0);
       const expected = decisionForFrequency(frequency);
-      const mixed = frequency > 0 && frequency < 100;
       const hit = hand === grade.combo;
       const classes = [
         "rfi-review-cell",
         row === column ? "is-pair" : row < column ? "is-suited" : "is-offsuit",
         expected === "open" ? "is-target-open" : "is-target-fold",
-        mixed ? "is-mixed" : "",
-        mixed && expected === "fold" ? "is-low-mix" : "",
         hit ? "is-hit" : "",
         hit ? (grade.correct ? "is-correct" : "is-wrong") : ""
       ].filter(Boolean).join(" ");
-      const weight = mixed ? `<small>${frequency}%</small>` : "";
-      return `<span class="${classes}" style="--frequency:${frequency}%" title="${hand}: ${frequency ? `рейз ${frequency}%` : "пас"}"><b>${hand}</b>${weight}</span>`;
+      return `<span class="${classes}" title="${hand}: ${expected === "open" ? "рейз" : "пас"}"><b>${hand}</b></span>`;
     }).join("")).join("");
   }
 
@@ -245,8 +247,7 @@
     const feedback = ensureFeedback();
     if (!feedback || !grade.combo || !grade.action) return;
     const verdict = reviewVerdict(grade);
-    const mixed = grade.frequency > 0 && grade.frequency < 100 ? ` · исходный вес ${grade.frequency}%` : "";
-    const lastHand = grade.handNo >= sessionHands();
+    const lastHand = sessionLimitReached(grade.handNo);
     feedback.innerHTML = `
       <div class="rfi-review-backdrop" aria-hidden="true"></div>
       <section class="rfi-review-board ${verdict.tone === "correct" ? "is-correct" : "is-wrong"}">
@@ -254,10 +255,10 @@
           <div><span>Разбор завершённой раздачи ${grade.handNo}</span><strong>${grade.position} · ${grade.combo}</strong></div>
           <p>Твоя мишень — чарт позиции. Кольцо показывает сыгранную руку.</p>
         </header>
-        <div class="rfi-review-legend"><span class="is-open">Рейз</span><span class="is-fold">Пас</span><span class="is-weighted">Смешанная частота</span><small>Учебное решение: 50% и выше → рейз, ниже 50% → пас</small></div>
+        <div class="rfi-review-legend"><span class="is-open">Диапазон</span><span class="is-pair">Пары</span><span class="is-suited">Suited</span><span class="is-offsuit">Offsuit</span><small>Жёлтая клетка — рейз · исходный вес выше 75%</small></div>
         <div class="rfi-review-chart" aria-label="Чарт ${grade.position}; сыгранная рука ${grade.combo}">${reviewChart(grade)}</div>
         <footer class="rfi-review-footer">
-          <div><strong id="rfi-review-title">${verdict.title}</strong><p>${verdict.text}</p><small>Ты выбрал: ${actionLabel(grade.action)} · База: ${actionLabel(grade.expected)}${mixed}</small></div>
+          <div><strong id="rfi-review-title">${verdict.title}</strong><p>${verdict.text}</p><small>Ты выбрал: ${actionLabel(grade.action)} · База: ${actionLabel(grade.expected)}</small></div>
           <button class="rfi-review-next" type="button" data-rfi-review-next data-final="${lastHand ? "true" : "false"}">${lastHand ? "Посмотреть итог" : "Следующая раздача"}</button>
         </footer>
       </section>`;
@@ -429,7 +430,9 @@
       const hud = root.document.createElement("section");
       hud.className = "rfi-drill-hud";
       hud.setAttribute("aria-live", "polite");
-      hud.innerHTML = `<strong>RFI по позициям</strong><span>EP 20 · MP 26 · HJ 32 · CO 47 · BTN 75</span><small>Все до Hero выбросили · рейз ${OPEN_SIZE_LABEL} BB или пас · колл покажет подсказку</small><b data-rfi-score>0 / ${sessionHands()} верно</b>`;
+      const targets = root.PokerRfiData?.targets || { EP: 20, MP: 24, HJ: 32, CO: 48, BTN: 66 };
+      const sessionLimit = sessionHands();
+      hud.innerHTML = `<strong>RFI по позициям</strong><span>EP ${targets.EP} · MP ${targets.MP} · HJ ${targets.HJ} · CO ${targets.CO} · BTN ${targets.BTN}</span><small>Все до Hero выбросили · рейз ${OPEN_SIZE_LABEL} BB или пас · колл покажет подсказку</small><b data-rfi-score>${sessionLimit > 0 ? `0 / ${sessionLimit} верно` : "0 верно · 0 сыграно"}</b>`;
       topbar.prepend(hud);
       let signature = "";
       const update = () => {
@@ -437,7 +440,9 @@
         const entries = completedEntries(payload);
         const grades = entries.map(gradeEntry).filter((grade) => grade.action);
         const correct = grades.filter((grade) => grade.correct).length;
-        hud.querySelector("[data-rfi-score]").textContent = `${correct} / ${grades.length || sessionHands()} верно`;
+        hud.querySelector("[data-rfi-score]").textContent = sessionLimit > 0
+          ? `${correct} / ${grades.length || sessionLimit} верно`
+          : `${correct} верно · ${grades.length} сыграно`;
         const latest = grades.at(-1);
         const nextSignature = latest ? `${latest.handNo}:${latest.combo}:${latest.action}` : "";
         if (latest && nextSignature !== signature && !processedEntries.has(nextSignature)) {
@@ -445,7 +450,7 @@
           processedEntries.add(nextSignature);
           showGrade(latest);
         }
-        hud.classList.toggle("is-complete", entries.length >= sessionHands());
+        hud.classList.toggle("is-complete", sessionLimit > 0 && entries.length >= sessionLimit);
       };
       update();
       const timer = root.setInterval(update, 300);
@@ -501,6 +506,7 @@
     enginePositions,
     learningPosition,
     sessionHands,
+    sessionLimitReached,
     targetPosition,
     targetLearningPosition,
     applyBootSettings,

@@ -27,8 +27,7 @@ for (const token of [
   "--hero-card-width: clamp(51px, 6.3cqw, 61.5px)",
   "--sim-1t-seat-w: clamp(108px, 14cqw, 126px)",
   "--sim-1t-seat-h: 46px",
-  "--hero-card-pocket-y: -20px",
-  "--hero-card-pocket-y: clamp(-21.5px, calc(-23.6px + 0.565vw), -20px)",
+  "--hero-card-pocket-y: -18px",
   "--hero-card-width: clamp(36px, 9.75cqw, 43.5px)",
   "--sim-1t-seat-w: 94px",
   "--sim-1t-seat-h: 40px"

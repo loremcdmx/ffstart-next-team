@@ -31,7 +31,9 @@
     fieldBounty: 0,
     renderFrame: 0,
     firstChoice: "",
+    unlocked: false,
     wisdomStory: 0,
+    wisdomHand: "QJo",
     practiceHands: 10,
     practiceStarted: false,
     practiceRun: 0,
@@ -47,6 +49,7 @@
     ["aggro_fish", "Активный любитель"],
     ["passive_fish", "Широко коллирует"]
   ];
+  const wisdomHands = ["QJo", "22", "K4o", "87s"];
   const categoryLabels = {
     pair_22_66: "Пары 22–66",
     pair_77_99: "Пары 77–99",
@@ -83,14 +86,16 @@
     try { return JSON.parse(localStorage.getItem(PROGRESS_KEY) || "null") || {}; } catch (error) { return {}; }
   };
   const saveProgress = () => {
-    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: Boolean(state.firstChoice), firstChoice: state.firstChoice })); } catch (error) {}
+    try { localStorage.setItem(PROGRESS_KEY, JSON.stringify({ step: state.step, unlocked: state.unlocked })); } catch (error) {}
   };
   const sampleSize = (value) => Math.round(Number(value) || 0).toLocaleString("ru-RU");
   const foldBaselineBb = Number(Content?.comparisonFoldBaselineBb ?? -1.12);
   const advantageOverFold = (rawEvBb) => Number(rawEvBb || 0) - foldBaselineBb;
+  const comparisonVsFoldTooltip = (actionLabel, rawEvBb, advantageBb) =>
+    `Плюс по эквити считаем относительно паса: исходный EV ${actionLabel} ${compactSigned(rawEvBb, 2)} BB − EV паса (${compactSigned(foldBaselineBb, 2)} BB) = ${compactSigned(advantageBb, 2)} BB. Показанное число — преимущество над пасом, а не абсолютный EV.`;
 
   function showStep(next, options = {}) {
-    if (!state.firstChoice && next !== "idea") return;
+    if (!state.unlocked && next !== "idea") return;
     closeInfo();
     state.step = next;
     saveProgress();
@@ -211,10 +216,10 @@
     requestAnimationFrame(() => $("#firstEncounter .table-action")?.focus({ preventScroll: true }));
   }
 
-  function firstModelResult() {
+  function theoreticalResultFor(hand) {
     if (!state.loaded) return null;
     return Engine.theoreticalHand({
-      hand: Content.firstSpot.hand,
+      hand,
       openPct: Content.firstSpot.profile.openPct,
       callPct: 10,
       stack: 30,
@@ -224,6 +229,10 @@
       ranking: state.ranking,
       equityFor
     });
+  }
+
+  function firstModelResult() {
+    return theoreticalResultFor(Content.firstSpot.hand);
   }
 
   function renderFirstTable() {
@@ -260,6 +269,7 @@
   function answerFirst(key) {
     if (state.firstChoice || !optionFor(Content.firstSpot, key)) return;
     state.firstChoice = key;
+    state.unlocked = true;
     saveProgress();
     $$(".step-tab").forEach((tab) => { tab.disabled = false; });
     $("#firstEncounter").classList.add("has-answer");
@@ -580,7 +590,6 @@
       const callRow = all[key].call;
       const jamRaw = Number(jamRow?.avg_ev_bb) || 0;
       const callRaw = Number(callRow?.avg_ev_bb) || 0;
-      const baseline = foldBaselineBb;
       const jam = advantageOverFold(jamRaw);
       const call = advantageOverFold(callRaw);
       const difference = jamRaw - callRaw;
@@ -589,8 +598,8 @@
       return `<div class="compare-row ${thinSample ? "is-thin-sample" : ""}">
         <div class="compare-category"><strong>${categoryLabels[key] || key}</strong><small>${categoryDetails[key] || ""}</small>${thinSample ? `<span>меньше 5 000 ${smallerAction}</span>` : ""}</div>
         <div class="compare-lines">
-          <div class="compare-line ${jam < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(jamRaw, 2)} BB · пас с BB: ${signed(baseline, 1)}"><span class="compare-action"><b>Олл-ин</b><small>${sampleSize(jamRow?.n)} раздач</small></span><i><b style="width:${Math.abs(jam) / max * 100}%"></b></i><strong>${compactSigned(jam, 2)} BB</strong></div>
-          <div class="compare-line is-call ${call < 0 ? "is-negative" : ""}" title="Сырой chips_ev: ${compactSigned(callRaw, 2)} BB · пас с BB: ${signed(baseline, 1)}"><span class="compare-action"><b>Колл</b><small>${sampleSize(callRow?.n)} раздач</small></span><i><b style="width:${Math.abs(call) / max * 100}%"></b></i><strong>${compactSigned(call, 2)} BB</strong></div>
+          <div class="compare-line ${jam < 0 ? "is-negative" : ""}" title="${comparisonVsFoldTooltip("олл-ина", jamRaw, jam)}"><span class="compare-action"><b>Олл-ин</b><small>${sampleSize(jamRow?.n)} раздач</small></span><i><b style="width:${Math.abs(jam) / max * 100}%"></b></i><strong>${compactSigned(jam, 2)} BB</strong></div>
+          <div class="compare-line is-call ${call < 0 ? "is-negative" : ""}" title="${comparisonVsFoldTooltip("колла", callRaw, call)}"><span class="compare-action"><b>Колл</b><small>${sampleSize(callRow?.n)} раздач</small></span><i><b style="width:${Math.abs(call) / max * 100}%"></b></i><strong>${compactSigned(call, 2)} BB</strong></div>
         </div>
         <div class="compare-delta ${difference < 0 ? "is-negative" : Math.abs(difference) < 0.2 ? "is-close" : ""}"><span>Олл-ин − колл</span><strong>${compactSigned(difference, 2)} BB</strong></div>
       </div>`;
@@ -604,30 +613,43 @@
   }
 
   function renderWisdomEvidence() {
-    // Keep every outcome in this card tied to the same QJo model from the
-    // first hand; field-wide bustouts and showdown wins are not comparable.
-    const example = firstModelResult();
-    if (!example) return;
+    const firstExample = firstModelResult();
+    const example = theoreticalResultFor(state.wisdomHand);
+    if (!firstExample || !example) return;
+    const firstPassShare = Math.round(firstExample.foldEquity * 100);
     const passShare = Math.round(example.foldEquity * 100);
     const callShare = 100 - passShare;
     const doubleShare = Math.round((1 - example.foldEquity) * example.equity * 100);
     const bustShare = callShare - doubleShare;
-    if ($("#wisdomFoldRate")) $("#wisdomFoldRate").textContent = `≈ ${passShare} из 100`;
-    $("#wisdomEquity").textContent = `${pct(example.equity, 0)} эквити`;
-    $("#wisdomPassRate").textContent = String(passShare);
-    $("#wisdomCallRate").textContent = String(callShare);
-    $("#wisdomBustRate").textContent = String(bustShare);
-    $("#wisdomDoubleRate").textContent = String(doubleShare);
-    $("#wisdomJamEv").textContent = signed(example.ev, 1);
+    const hand = state.wisdomHand;
+    const intro = hand === Content.firstSpot.hand ? `${hand} из первой раздачи` : `${hand} в том же споте`;
+    if ($("#wisdomFoldRate")) $("#wisdomFoldRate").textContent = `≈ ${firstPassShare} из 100`;
+    $("#wisdomHandSummary").innerHTML = `Возьмём <strong>${intro}</strong>. BTN открывает около 50% рук, но коллирует рестил только с лучшими 10%. Против этих рук у ${hand} около <strong id="wisdomEquity">${pct(example.equity, 0)} эквити</strong>. Из 100 таких пушей примерно в <strong id="wisdomPassRate">${passShare}</strong> случаях BTN выбросит сразу. Ещё примерно <strong id="wisdomCallRate">${callShare}</strong> раз он заколлирует: в <strong id="wisdomBustRate">${bustShare}</strong> случаях ${hand} проиграет выставление, а в <strong id="wisdomDoubleRate">${doubleShare}</strong> — выиграет и удвоится. Средний результат этой модели: <strong id="wisdomJamEv">${signed(example.ev, 1)}</strong>.`;
     $("#wisdomRiskDots").innerHTML = `
       <span class="risk-share is-fold"><b>${passShare}</b><small>BTN пасует — забираешь банк сразу</small></span>
       <span class="risk-called">
         <span class="risk-called-head"><b>${callShare}</b><small>BTN коллирует</small></span>
         <span class="risk-called-outcomes">
-          <span class="risk-share is-bust"><b>${bustShare}</b><small>QJo проигрывает</small></span>
-          <span class="risk-share is-double"><b>${doubleShare}</b><small>QJo выигрывает</small></span>
+          <span class="risk-share is-bust"><b>${bustShare}</b><small>${hand} проигрывает</small></span>
+          <span class="risk-share is-double"><b>${doubleShare}</b><small>${hand} выигрывает</small></span>
         </span>
       </span>`;
+    renderWisdomHandPicker();
+  }
+
+  function renderWisdomHandPicker() {
+    $$('[data-wisdom-hand]').forEach((button) => {
+      const active = button.dataset.wisdomHand === state.wisdomHand;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+  }
+
+  function selectWisdomHand(hand) {
+    if (!wisdomHands.includes(hand)) return;
+    state.wisdomHand = hand;
+    renderWisdomHandPicker();
+    ensureData().then(renderWisdomEvidence).catch(() => {});
   }
 
   function renderBountySegments() {
@@ -815,6 +837,7 @@
       const action = event.target.closest("[data-option-key]");
       if (action) answerFirst(action.dataset.optionKey);
     });
+    $$('[data-wisdom-hand]').forEach((button) => button.addEventListener("click", () => selectWisdomHand(button.dataset.wisdomHand)));
     $$('[data-session-hands]').forEach((button) => button.addEventListener("click", () => {
       state.practiceHands = Number(button.dataset.sessionHands);
       renderPracticeSetup();
@@ -851,16 +874,15 @@
     renderControlButtons();
     renderOpponentTabs();
     renderBountySegments();
+    renderWisdomHandPicker();
     setupWisdomCarousel();
     setupEvents();
     syncOutputs();
     const saved = readProgress();
-    if (saved.unlocked) {
-      state.firstChoice = saved.firstChoice || "jam";
+    const restoredUnlock = Boolean(saved.unlocked || saved.firstChoice);
+    if (restoredUnlock) {
+      state.unlocked = true;
       $$(".step-tab").forEach((tab) => { tab.disabled = false; });
-      $("#firstEncounter").classList.add("has-answer");
-      renderFirstTable();
-      renderFirstCoach();
       if (["idea", "wisdom", "deep", "practice"].includes(saved.step)) showStep(saved.step);
     }
     setTimeout(() => ensureData().catch(() => {}), 180);

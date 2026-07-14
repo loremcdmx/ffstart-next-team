@@ -35,6 +35,27 @@ for (const pair of ["22", "33", "44", "55", "66", "77", "88", "99", "TT", "JJ", 
   assert.ok(worst.byHand.get(pair).ev >= 0, `${pair} remains non-negative in worst case`);
 }
 
+const wisdomExpected = {
+  QJo: { equity: 34, pass: 80, call: 20, bust: 13, win: 7, ev: 2.0 },
+  "22": { equity: 38, pass: 79, call: 21, bust: 13, win: 8, ev: 2.4 },
+  K4o: { equity: 29, pass: 79, call: 21, bust: 15, win: 6, ev: 1.3 },
+  "87s": { equity: 34, pass: 80, call: 20, bust: 13, win: 7, ev: 2.0 }
+};
+for (const [hand, expected] of Object.entries(wisdomExpected)) {
+  const result = engine.theoreticalHand({ hand, openPct: 50, callPct: 10, stack: 30, openSize: 2, ante: 1, bounty: 0, ranking, equityFor });
+  const pass = Math.round(result.foldEquity * 100);
+  const call = 100 - pass;
+  const win = Math.round((1 - result.foldEquity) * result.equity * 100);
+  assert.deepEqual({
+    equity: Math.round(result.equity * 100),
+    pass,
+    call,
+    bust: call - win,
+    win,
+    ev: Number(result.ev.toFixed(1))
+  }, expected, `${hand} wisdom model remains stable`);
+}
+
 const vsJam = JSON.parse(readFileSync(new URL("data/field_vs_jam.json", toolRoot), "utf8"));
 assert.equal(vsJam.pooled.good_reg.fold_pct, 0.7997);
 assert.equal(vsJam.pooled.weak_reg.fold_pct, 0.753);
