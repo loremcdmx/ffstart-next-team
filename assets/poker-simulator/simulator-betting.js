@@ -120,24 +120,12 @@
       // this exact decision (same street + toCall), seed from it instead of the
       // engine default so a mid-turn re-render doesn't reset the slider.
       const draft = table.heroBetDraft;
-      if (
-        !draft
-        && root.PokerRestealSimulatorPack?.active
-        && table.street === "preflop"
-        && Number(table.toCall || 0) > 0
-      ) {
-        value = max;
-      }
-      if (
-        !draft
-        && root.PokerRfiOpenSimulatorPack?.active
-        && table.rfiOpenDrill
-        && table.street === "preflop"
-        && table.preflopOpenerSeatId == null
-        && Number(table.currentBet || 0) <= 1
-      ) {
-        value = Math.min(max, Math.max(min, 2.2));
-      }
+      value = root.PokerSimulatorPracticePacks?.defaultBetAmount?.({
+        table,
+        bounds: legalBounds,
+        value,
+        draft
+      }) ?? value;
       if (
         draft
         && draft.kind === "amount"

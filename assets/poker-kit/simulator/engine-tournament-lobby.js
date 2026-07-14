@@ -223,12 +223,13 @@
     return roundBbValue(startingStack / Math.max(0.1, Number(blindMultiplier || 1)));
   }
 
-  // testHeroPosition: TEST-ONLY override (e.g. "SB"/"BB") that deterministically seats the
-  // hero in a given position for layout/geometry tests. Applied ONLY for non-carryover
+  // scenarioHeroPosition: public practice-pack override (e.g. "SB"/"BB").
+  // testHeroPosition remains the equivalent TEST-ONLY hook for geometry tests.
+  // Both are applied ONLY for non-carryover
   // (cash) deals and only when it names a real position in this hand; otherwise ignored, so
   // heroPosition / seatPositions[0] / posted blind (seatBets[0]) never desync. Never set
   // from normal UX (see the gated __dealHeroAt hook).
-  function createTable({ id, settings, handNo, previousTable = null, tournamentHandNo = handNo, testHeroPosition = "" }) {
+  function createTable({ id, settings, handNo, previousTable = null, tournamentHandNo = handNo, scenarioHeroPosition = "", practiceScenario = null, testHeroPosition = "" }) {
     const pack = PACKS[settings.pack] || PACKS["basic-vpip"];
     const configuredPlayerCount = playerCount(settings);
     const configuredPositions = positionsForCount(configuredPlayerCount);
@@ -284,10 +285,11 @@
         nextActiveDealerSeatId(previousTable, blindRingSeatIds, configuredPlayerCount)
       )
       : null;
-    const effectiveTestHeroPosition = (!carryoverSeats && testHeroPosition && positions.includes(testHeroPosition))
-      ? testHeroPosition
+    const requestedHeroPosition = scenarioHeroPosition || testHeroPosition;
+    const effectiveScenarioHeroPosition = (!carryoverSeats && requestedHeroPosition && positions.includes(requestedHeroPosition))
+      ? requestedHeroPosition
       : "";
-    const heroPosition = effectiveTestHeroPosition || seatPositions?.[0] || chooseSpot(pack, positions).heroPosition;
+    const heroPosition = effectiveScenarioHeroPosition || seatPositions?.[0] || chooseSpot(pack, positions).heroPosition;
     // Both branches resolved the spot identically (the carry-over branch never
     // diverged), so the ternary was dead complexity — collapsed to one call. (ENG-14)
     const spot = chooseSpotForHero(pack, positions, heroPosition);
@@ -393,7 +395,8 @@
       actionTimeline: [],
       seatActions: {},
       seats: [],
-      winningCards: []
+      winningCards: [],
+      practiceScenario: practiceScenario && typeof practiceScenario === "object" ? practiceScenario : null
     };
 
     table.seats = createSeats(table, deck, positions, stackDepth, settings, carryoverSeats, seatHoleCards, randomStacks);

@@ -26,7 +26,9 @@
    * @property {Object<string,number>} RANK_VALUES  Map card rank → numeric
    *   value (A=14, K=13, ..., 2=2).
    *
-   * @property {function({id:number, settings:object, handNo:number, previousTable?:object, tournamentHandNo?:number, testHeroPosition?:string}):object} createTable
+   * @property {function({id:number, settings:object, handNo:number, previousTable?:object, tournamentHandNo?:number, scenarioHeroPosition?:string, practiceScenario?:object, testHeroPosition?:string}):object} createTable
+   *   scenarioHeroPosition is the public practice-pack override for a fresh cash
+   *   scenario. It deterministically seats Hero at a valid table position.
    *   testHeroPosition is a TEST-ONLY override (cash deals, valid position only) for
    *   deterministically seating the hero; ignored for carryover/tournament or unknown positions.
    *   Spawn a hand for one table. If `previousTable` is provided with the

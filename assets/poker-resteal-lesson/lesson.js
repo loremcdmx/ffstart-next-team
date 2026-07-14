@@ -174,11 +174,11 @@
   }
 
   function renderRoomTable(host, spot, selectedKey = "") {
-    if (!window.FFTrainerSimulatorSnapshot?.renderTable) {
+    if (!window.FFTrainerSimulator?.renderDecision) {
       host.innerHTML = '<p class="table-load-error">Стол не загрузился: проверь simulator snapshot.</p>';
       return;
     }
-    host.innerHTML = window.FFTrainerSimulatorSnapshot.renderTable(spot, {
+    window.FFTrainerSimulator.renderDecision(host, spot, {
       answered: Boolean(selectedKey),
       selectedKey,
       finished: false
@@ -277,15 +277,15 @@
     $("#startPracticeSession").textContent = `${state.practiceStarted ? "Начать заново" : "Начать"} · ${state.practiceHands} раздач`;
   }
 
-  function practiceSimulatorUrl() {
-    const local = /^(?:localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
-    const url = new URL(local ? "poker-simulator.html" : "poker-simulator", document.baseURI);
-    url.searchParams.set("embedded", "1");
-    url.searchParams.set("lesson", "resteal");
-    url.searchParams.set("hands", String(state.practiceHands));
-    url.searchParams.set("tempo", "fast");
-    url.searchParams.set("run", `${Date.now().toString(36)}-${state.practiceRun}`);
-    return url.href;
+  function practiceSimulatorOptions() {
+    return {
+      practice: "resteal",
+      hands: state.practiceHands,
+      tables: 1,
+      tempo: "fast",
+      run: `${Date.now().toString(36)}-${state.practiceRun}`,
+      title: "Практика рестила с большого блайнда"
+    };
   }
 
   function setPracticeSimulatorLoading(loading) {
@@ -303,7 +303,7 @@
     $("#practiceScreen").classList.add("is-running");
     $("#practiceSimulatorShell").hidden = false;
     setPracticeSimulatorLoading(true);
-    $("#restealSimulator").src = practiceSimulatorUrl();
+    window.FFTrainerSimulator.mountPractice("#restealSimulator", practiceSimulatorOptions());
     renderPracticeSetup();
   }
 

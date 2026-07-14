@@ -48,12 +48,18 @@
   function buildSimulatorUrl(options = {}) {
     const url = new URL(options.url || defaultSimulatorUrl, document.baseURI);
     url.searchParams.set("embedded", "1");
+    const practice = options.practice || options.lesson || options.drill;
+    if (practice) url.searchParams.set("practice", String(practice));
+    if (options.hands || options.handCount) {
+      url.searchParams.set("hands", String(options.hands || options.handCount));
+    }
     if (options.tableCount || options.tables) {
       url.searchParams.set("tables", String(options.tableCount || options.tables));
     }
     if (options.handTempo || options.tempo) {
       url.searchParams.set("tempo", String(options.handTempo || options.tempo));
     }
+    if (options.run || options.runKey) url.searchParams.set("run", String(options.run || options.runKey));
     if (options.cacheKey) url.searchParams.set("embed", String(options.cacheKey));
     return url;
   }
@@ -194,6 +200,9 @@
       if (this.controller) return;
       this.controller = mount(this, {
         tableCount: this.getAttribute("tables") || this.getAttribute("table-count") || "",
+        practice: this.getAttribute("practice") || "",
+        hands: this.getAttribute("hands") || "",
+        tempo: this.getAttribute("tempo") || "",
         title: this.getAttribute("title") || "Poker Simulator"
       });
       this.controller.ready.catch((err) => {
@@ -211,5 +220,9 @@
     root.customElements.define("poker-simulator-embed", PokerSimulatorEmbedElement);
   }
 
-  root.PokerSimulatorEmbed = { mount };
+  root.PokerSimulatorEmbed = {
+    mount,
+    buildSimulatorUrl,
+    url: (options = {}) => buildSimulatorUrl(options).toString()
+  };
 })();

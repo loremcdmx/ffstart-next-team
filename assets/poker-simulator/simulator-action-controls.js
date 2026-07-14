@@ -84,11 +84,14 @@
           const sessionLimit = Math.max(0, Number(current.settings?.sessionHandLimit || 0));
           const completedHands = Array.isArray(current.history) ? current.history.length : 0;
           if (sessionLimit > 0 && completedHands >= sessionLimit) {
-            const playAgainAction = current.settings?.pack === "resteal-bb-demo"
-              ? "resteal-play-again"
-              : current.settings?.pack === "rfi-open-position-demo" ? "rfi-play-again" : "";
-            const playAgain = playAgainAction
-              ? `<button class="table-action is-main" type="button" data-action="${playAgainAction}">Сыграть ещё</button>`
+            const playAgainConfig = root.PokerSimulatorPracticePacks?.sessionCompleteAction?.({
+              table,
+              settings: current.settings,
+              completedHands,
+              sessionLimit
+            });
+            const playAgain = playAgainConfig?.action
+              ? `<button class="table-action is-main" type="button" data-action="${escapeHtml(playAgainConfig.action)}">${escapeHtml(playAgainConfig.label || "Сыграть ещё")}</button>`
               : "";
             return `<div class="client-controls is-idle is-session-complete"><div class="client-row">
               <strong>Сессия завершена · ${completedHands} из ${sessionLimit}</strong>
@@ -132,13 +135,8 @@
         const bounds = betBounds(table);
         const compactActions = Number(getState().settings.tableCount || 1) >= 2 || (typeof window !== "undefined" && (window.innerWidth || UNKNOWN_VIEWPORT_WIDTH_PX) <= COMPACT_LAYOUT_MAX_WIDTH_PX);
         const facingRaiseDecision = Number(table.toCall || 0) > 0;
-        const rfiOpeningDecision = Boolean(
-          table.rfiOpenDrill
-          && table.street === "preflop"
-          && table.preflopOpenerSeatId == null
-          && Number(table.currentBet || 0) <= 1
-        );
-        const rfiOpeningClass = rfiOpeningDecision ? " is-rfi-opening" : "";
+        const practiceDecisionClass = root.PokerSimulatorPracticePacks?.decisionClass?.({ table, settings: getState().settings }) || "";
+        const practiceDecisionClassName = practiceDecisionClass ? ` ${practiceDecisionClass}` : "";
         const aggressiveVerb = table.toCall > 0 ? "Рейз" : (table.street === "preflop" ? "Рейз" : "Бет");
         // Action buttons show the verb only — the live size is already on the
         // slider/stepper, and a bare label avoids the "Рейз ..." truncation seen
@@ -182,7 +180,7 @@
         if (facingRaiseDecision) {
           if ((finalAllInDecision || callOnlyRaiseDecision) && !shortAllInDecision) {
             return `
-              <div class="client-controls is-facing-raise is-final-all-in${rfiOpeningClass}" data-commit-action="call">
+              <div class="client-controls is-facing-raise is-final-all-in${practiceDecisionClassName}" data-commit-action="call">
                 ${timebankHtml}
                 <div class="client-row">
                   ${actionButton("fold", foldLabel, "is-fold")}
@@ -193,7 +191,7 @@
           }
           if (isAllInOnly || shortAllInDecision) {
             return `
-              <div class="client-controls is-shove is-facing-raise${rfiOpeningClass}" data-commit-action="raise-custom">
+              <div class="client-controls is-shove is-facing-raise${practiceDecisionClassName}" data-commit-action="raise-custom">
                 ${timebankHtml}
                 <div class="client-row">
                   ${actionButton("fold", foldLabel, "is-fold")}
@@ -204,7 +202,7 @@
             `;
           }
           return `
-            <div class="client-controls is-facing-raise${rfiOpeningClass}" data-commit-action="raise-custom">
+            <div class="client-controls is-facing-raise${practiceDecisionClassName}" data-commit-action="raise-custom">
               ${timebankHtml}
               ${renderBetWidget(table, "raise-custom")}
               <div class="client-row">

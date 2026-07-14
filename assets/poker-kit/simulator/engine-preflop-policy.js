@@ -160,6 +160,53 @@
     return postedTotal;
   }
 
+  // Declarative practice scenarios may prescribe the action before Hero. This
+  // is intentionally action-only: the regular engine still posts blinds/antes,
+  // deals one legal deck and owns every chip/state transition. A pack never
+  // receives coordinates or mutates the rendered table.
+  function resolvePracticePreflopAction(table, seat, action = {}, settings = {}) {
+    if (!seat || seat.isHero || seat.folded) return { kind: "skip" };
+    const kind = String(action.action || action.kind || "").toLowerCase();
+    const reason = `practice scenario ${kind || "action"}`;
+
+    if (kind === "fold") {
+      foldSeat(table, seat, "preflop");
+      recordSeatAction(table, seat.id, "Fold", "fold", true, { botReason: reason, labSpot: "open", labSpots: ["open"] });
+      addLog(table, `${seat.position} fold · ${reason}`);
+      return { kind: "fold" };
+    }
+
+    if (kind === "call" || kind === "limp" || kind === "complete") {
+      const target = Math.max(0, Number(action.toBb ?? table.currentBet ?? 0));
+      const added = Math.max(0, Math.min(target, maxContributionForSeat(table, seat.id)) - contributionOf(table, seat.id));
+      const paidAmount = addSeatContribution(table, seat.id, added, true);
+      markPreflopOpenCaller(table, seat.id);
+      table.activeVillain = seat.id;
+      const label = kind === "limp" || kind === "complete" ? "Limp" : `Call ${formatBb(contributionOf(table, seat.id))}`;
+      recordSeatAction(table, seat.id, label, "passive", true, { botReason: reason, labSpot: "open", labSpots: ["open"] });
+      addLog(table, `${seat.position} ${kind} ${formatBb(paidAmount)} · ${reason}`);
+      return { kind: "call", paidAmount };
+    }
+
+    if (kind === "raise" || kind === "open") {
+      const target = Math.max(Number(table.currentBet || 0), Number(action.toBb ?? action.targetBb ?? 2));
+      const decision = {
+        action: Number(table.currentBet || 0) > 1 ? "raise" : "open",
+        target,
+        added: Math.max(0, target - contributionOf(table, seat.id)),
+        label: reason,
+        allIn: target >= maxContributionForSeat(table, seat.id) - EPSILON_BB
+      };
+      const commit = commitCappedPreflopRaise(table, seat, decision);
+      const resolved = { ...decision, target: commit.target, added: commit.added, allIn: commit.allIn || decision.allIn };
+      recordSeatAction(table, seat.id, preflopAggressiveActionLabel(resolved), "aggressive", true, { botReason: reason, labSpot: "open", labSpots: ["open"] });
+      addLog(table, `${seat.position} ${preflopAggressiveLogLabel(resolved)} · ${reason}`);
+      return { kind: "raise", commit };
+    }
+
+    return resolvePreflopBotTurn(table, seat, settings);
+  }
+
   function initializePreflop(table, settings) {
     const { smallBlind, bigBlind } = blindPositions(table.positions);
     const smallBlindSeat = seatByPosition(table, smallBlind);
@@ -198,9 +245,18 @@
     table.currentBet = Math.max(sbPaid, bbPaid, bbFloor, 0);
     table.lastRaiseSize = 1;
 
+    const practiceActions = Array.isArray(table.practiceScenario?.beforeHero)
+      ? table.practiceScenario.beforeHero
+      : [];
+    const practiceActionByPosition = new Map(practiceActions
+      .map((action) => [String(action?.position || "").toUpperCase(), action])
+      .filter(([position]) => position));
+    const defaultPracticeAction = table.practiceScenario?.defaultBeforeHero || null;
     for (const position of table.positions.slice(0, Math.max(0, heroActionIndex))) {
       const seat = seatByPosition(table, position);
-      resolvePreflopBotTurn(table, seat, settings);
+      const practiceAction = practiceActionByPosition.get(String(position).toUpperCase()) || defaultPracticeAction;
+      if (practiceAction) resolvePracticePreflopAction(table, seat, practiceAction, settings);
+      else resolvePreflopBotTurn(table, seat, settings);
     }
 
     if (!table.seats.some((seat) => !seat.isHero && !seat.folded)) {

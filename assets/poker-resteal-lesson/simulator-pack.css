@@ -116,12 +116,8 @@ html[data-resteal-drill="true"] .table-grid[data-count="1"] .action-status {
   display: none;
 }
 
-/* The practice iframe keeps the simulator's native 1920x1080 scene and scales
-   it down as a whole. The generic 10px action badge therefore landed near 6px
-   on a laptop, while hidden opponent cards were tucked so deeply under the
-   nameplate that only their top edge survived. Counter that only for this
-   single-table drill: keep the stage and seat boxes stable, but restore the
-   readable badge/card proportions around each opponent nameplate. */
+/* Practice-only readability tokens. Seat/card/bet geometry deliberately stays
+   in the shared simulator; this pack styles only drill feedback and controls. */
 html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model:not(.is-hero) .seat-action-badge:not(.is-lobby-state) {
   min-height: 28px;
   max-width: calc(var(--seat-w) + 36px);
@@ -129,36 +125,6 @@ html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-mode
   padding: 4px 11px;
   font-size: clamp(15px, calc(11px * var(--sim-stage-inverse-scale, 1)), 20px);
   line-height: 1.12;
-}
-
-html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model:not(.is-hero) .seat-cards.is-hidden:not(.is-empty) {
-  gap: 3px;
-}
-
-html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model:not(.is-hero) .seat-cards.is-hidden:not(.is-empty) .sim-card-back {
-  width: calc(var(--mini-card-width) * 1.2);
-  border-radius: 7px;
-}
-
-html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model.seat-zone-top:not(.is-hero) .seat-cards.is-hidden:not(.is-empty) {
-  --seat-cards-ty: 3.4cqh !important;
-  --seat-cards-box-tuck-y: clamp(1px, .8cqh, 3px);
-}
-
-html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model:is(.seat-zone-left, .seat-zone-right):not(.is-hero) .seat-cards.is-hidden:not(.is-empty) {
-  --seat-cards-box-tuck-y: clamp(3px, 1.4cqh, 6px);
-}
-
-html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model.seat-zone-bottom:not(.is-hero) .seat-cards.is-hidden:not(.is-empty) {
-  --seat-cards-ty: -3.4cqh !important;
-  --seat-cards-box-tuck-y: clamp(2px, 1cqh, 4px);
-}
-
-/* The lesson keeps the simulator's large readable controls, but the hero bet
-   needs its own clear lane above the enlarged hole cards. The slot model still
-   owns the X/Y target; this only adds a small inward visual gutter. */
-html[data-resteal-drill="true"] .table-grid[data-count="1"] .seat.seat-slot-model.is-hero .hero-felt-bet {
-  top: calc(50% + var(--hero-marker-ty, -8px) - var(--hero-card-pocket-y, 0px) - 2.5cqh) !important;
 }
 
 @media (min-width: 621px) {

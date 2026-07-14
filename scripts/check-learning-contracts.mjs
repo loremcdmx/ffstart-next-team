@@ -84,7 +84,8 @@ const epReviewChart = rfi.reviewChart({ position: "EP", combo: "A9o", correct: t
 assert.equal((epReviewChart.match(/class="rfi-review-cell/g) || []).length, 169, "post-hand review renders all 169 range cells");
 assert(epReviewChart.includes("is-hit is-correct"), "post-hand review marks the played combo on the chart");
 const actionControls = readFileSync(resolve(root, "assets/poker-simulator/simulator-action-controls.js"), "utf8");
-assert(actionControls.includes("rfi-play-again"), "RFI terminal state offers an in-frame restart");
+assert(rfiPackSource.includes('action: "rfi-play-again"'), "RFI pack registers an in-frame restart action");
+assert(actionControls.includes("PokerSimulatorPracticePacks?.sessionCompleteAction"), "terminal controls request restart behavior from the active practice pack");
 
 const restealDataSource = readFileSync(resolve(root, "assets/poker-resteal-lesson/data.js"), "utf8");
 const restealLessonSource = readFileSync(resolve(root, "assets/poker-resteal-lesson/lesson.js"), "utf8");

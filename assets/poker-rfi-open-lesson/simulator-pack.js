@@ -3,11 +3,11 @@
 
   const root = typeof window !== "undefined" ? window : globalThis;
   const params = new URLSearchParams(root.location?.search || "");
-  const active = params.get("lesson") === "rfi-open";
+  const requestedPractice = params.get("practice") || params.get("lesson") || params.get("drill");
+  const active = requestedPractice === "rfi-open" || requestedPractice === "rfi-open-position";
   const PACK_KEY = "rfi-open-position-demo";
   const OPEN_SIZE_BB = 2.2;
   const OPEN_SIZE_LABEL = "2,2";
-  const MAX_ATTEMPTS = 240;
   const enginePositions = ["UTG", "LJ", "HJ", "CO", "BTN"];
   const learningPosition = Object.freeze({ UTG: "EP", LJ: "MP", HJ: "HJ", CO: "CO", BTN: "BTN" });
   const processedEntries = new Set();
@@ -70,8 +70,8 @@
     );
   }
 
-  function installPack(engine) {
-    if (!active || !engine?.registerPack || typeof engine.createTable !== "function") return false;
+  function installEngine(engine) {
+    if (!engine?.registerPack) return false;
     engine.registerPack(PACK_KEY, {
       name: "RFI по позициям · урок",
       stackDepths: [40],
@@ -85,49 +85,50 @@
       }))
     });
 
-    const create = engine.createTable.bind(engine);
-    engine.createTable = function createRfiTable(options = {}) {
-      const handNo = Math.max(1, Number(options.handNo || 1));
-      const position = targetPosition(handNo);
-      const settings = {
-        ...(options.settings || {}),
-        pack: PACK_KEY,
-        playerCount: 7,
-        simulationMode: "random",
-        randomStackMinBb: 40,
-        randomStackMaxBb: 40,
-        anteBb: 0,
-        bigBlindAnteBb: 1,
-        lobbyEvents: false
-      };
-      let selected = null;
-      let attempts = 0;
-      while (attempts < MAX_ATTEMPTS) {
-        attempts += 1;
-        const candidate = create({ ...options, settings, testHeroPosition: position });
-        if (unopenedHeroTurn(candidate, position)) {
-          selected = candidate;
-          break;
-        }
-      }
-      if (!selected) {
-        throw new Error(`RFI drill failed to generate unopened ${position} spot after ${MAX_ATTEMPTS} attempts`);
-      }
-      selected.rfiOpenDrill = {
-        schema: "poker-rfi-open-drill-hand-v2",
-        index: handNo,
-        position,
-        learningPosition: learningPosition[position],
-        attempts
-      };
-      selected.spot = {
-        ...selected.spot,
-        prompt: `Все до тебя выбросили. Выбери пас или откройся рейзом ${OPEN_SIZE_LABEL} BB.`,
-        tags: [...new Set([...(selected.spot?.tags || []), "rfi-open-demo"])]
-      };
-      return selected;
-    };
     return true;
+  }
+
+  function scenarioSettings() {
+    return {
+      pack: PACK_KEY,
+      playerCount: 7,
+      simulationMode: "random",
+      randomStackMinBb: 40,
+      randomStackMaxBb: 40,
+      anteBb: 0,
+      bigBlindAnteBb: 1,
+      lobbyEvents: false
+    };
+  }
+
+  function practiceScenario() {
+    return { defaultBeforeHero: { action: "fold" } };
+  }
+
+  function decorateScenario(table, { handNo, attempts }) {
+    const position = targetPosition(handNo);
+    table.rfiOpenDrill = {
+      schema: "poker-rfi-open-drill-hand-v3",
+      index: handNo,
+      position,
+      learningPosition: learningPosition[position],
+      attempts
+    };
+    table.spot = {
+      ...table.spot,
+      prompt: `Все до тебя выбросили. Выбери пас или откройся рейзом ${OPEN_SIZE_LABEL} BB.`,
+      tags: [...new Set([...(table.spot?.tags || []), "rfi-open-demo"])]
+    };
+    return table;
+  }
+
+  function installPack(engine) {
+    let registry = root.PokerSimulatorPracticePacks;
+    if (!registry && typeof require === "function") {
+      try { registry = require("../poker-simulator/simulator-practice-packs.js"); } catch (_) {}
+    }
+    if (registry?.installForEngine) return registry.installForEngine(practiceDescriptor, engine, { force: true });
+    return installEngine(engine);
   }
 
   function completedEntries(payload = {}) {
@@ -459,6 +460,39 @@
     }, 50);
   }
 
+  const practiceDescriptor = {
+    id: "rfi-open",
+    aliases: ["rfi-open-position"],
+    packKey: PACK_KEY,
+    storageSuffix: "rfi-open-demo",
+    applyBootSettings,
+    installEngine,
+    scenario: {
+      freshDeal: true,
+      maxAttempts: 1,
+      onFailure: "error",
+      failureMessage: ({ handNo }) => `RFI practice scenario ${targetPosition(handNo)} was not generated`,
+      heroPosition: ({ handNo }) => targetPosition(handNo),
+      settings: scenarioSettings,
+      practiceScenario,
+      accept: (table, { handNo }) => unopenedHeroTurn(table, targetPosition(handNo)),
+      decorate: decorateScenario
+    },
+    defaultBetAmount({ table, bounds, value, draft }) {
+      if (draft || !table?.rfiOpenDrill || table.street !== "preflop" || table.preflopOpenerSeatId != null || Number(table.currentBet || 0) > 1) return value;
+      return Math.min(bounds.max, Math.max(bounds.min, OPEN_SIZE_BB));
+    },
+    decisionClass({ table }) {
+      return table?.rfiOpenDrill
+        && table.street === "preflop"
+        && table.preflopOpenerSeatId == null
+        && Number(table.currentBet || 0) <= 1
+        ? "is-rfi-opening"
+        : "";
+    },
+    sessionCompleteAction: { action: "rfi-play-again", label: "Сыграть ещё" }
+  };
+
   const api = {
     active,
     packKey: PACK_KEY,
@@ -471,6 +505,8 @@
     targetLearningPosition,
     applyBootSettings,
     unopenedHeroTurn,
+    practiceDescriptor,
+    installEngine,
     installPack,
     completedEntries,
     comboForEntry,
@@ -485,12 +521,13 @@
   };
   root.PokerRfiOpenSimulatorPack = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.PokerSimulatorPracticePacks?.register?.(practiceDescriptor);
   if (!active) return;
   if (root.document?.documentElement?.dataset) {
     root.document.documentElement.dataset.rfiOpenDrill = "true";
     delete root.document.documentElement.dataset.simulatorStageProfile;
   }
-  installPack(root.PokerSimulatorEngine);
+  if (!root.PokerSimulatorPracticePacks) installPack(root.PokerSimulatorEngine);
   installRestartHandler();
   installLearningUiHandlers();
   if (root.document?.readyState === "loading") root.document.addEventListener("DOMContentLoaded", installHud, { once: true });

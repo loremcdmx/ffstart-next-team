@@ -42,7 +42,7 @@ function loadPackHarness() {
     clearInterval,
     document: documentRef,
     window: {
-      location: { search: "?embedded=1&lesson=resteal&hands=25" },
+      location: { search: "?embedded=1&practice=resteal&hands=25" },
       document: documentRef,
       setInterval,
       clearInterval,
@@ -55,6 +55,8 @@ function loadPackHarness() {
   runSimulatorEngineScripts({ root, context, Script });
   const adviceSource = readFileSync(join(root, "assets/poker-resteal-lesson/advice.js"), "utf8");
   new Script(adviceSource).runInContext(context);
+  const registrySource = readFileSync(join(root, "assets/poker-simulator/simulator-practice-packs.js"), "utf8");
+  new Script(registrySource).runInContext(context);
   const packSource = readFileSync(join(root, "assets/poker-resteal-lesson/simulator-pack.js"), "utf8");
   new Script(packSource).runInContext(context);
   return {
@@ -89,8 +91,8 @@ const settings = pack.applyBootSettings({
 });
 
 assert(/seat-action-badge:not\(\.is-lobby-state\)[^{]*\{[^}]*min-height:\s*28px[^}]*font-size:\s*clamp\(15px,\s*calc\(11px \* var\(--sim-stage-inverse-scale,\s*1\)\),\s*20px\)/.test(packCss), "practice opponent action badges compensate for iframe scaling");
-assert(/seat-cards\.is-hidden:not\(\.is-empty\) \.sim-card-back[^{]*\{[^}]*width:\s*calc\(var\(--mini-card-width\) \* 1\.2\)/.test(packCss), "practice opponent card backs use the enlarged drill footprint");
-assert(/seat-zone-top:not\(\.is-hero\) \.seat-cards\.is-hidden:not\(\.is-empty\)[^{]*\{[^}]*--seat-cards-ty:\s*3\.4cqh\s*!important/.test(packCss), "top opponent cards stay docked visibly to their seat box");
+assert(!/seat-cards\.is-hidden:not\(\.is-empty\) \.sim-card-back[^{]*\{[^}]*(?:width|height)\s*:/.test(packCss), "practice opponent card backs inherit shared simulator sizing");
+assert(!/seat-zone-(?:top|bottom|left|right)[^{]*\{[^}]*--seat-cards-(?:t|d)[xy]/.test(packCss), "practice pack leaves card coordinates to the shared seat-slot model");
 assert(!packCss.includes("seat-cards:is(.is-revealed"), "practice preserves the simulator's phase-specific revealed-card sizes");
 assert(/client-controls:has\(\.bet-widget\) > \.bet-widget[^{]*\{[^}]*width:\s*100%[^}]*min-width:\s*0/.test(packCss), "practice bet widget fills the widened action dock on every street");
 assert(/bet-widget\.is-preflop-amount \.bet-preset,[\s\S]*?bet-widget\.is-postflop-percent \.bet-preset[^{]*\{[^}]*min-height:\s*68px[^}]*font-size:\s*clamp\(21px,\s*calc\(15px \* var\(--sim-stage-inverse-scale,\s*1\)\),\s*30px\)/.test(packCss), "practice bet presets restore height and compensate typography for stage downscaling");
@@ -565,7 +567,12 @@ assert(
   JSON.stringify(bbAnteSettlement.seats)
 );
 
-const actionControlsKit = loadBrowserKit("assets/poker-simulator/simulator-action-controls.js", "PokerSimulatorActionControls");
+const actionControlsKit = loadBrowserKit("assets/poker-simulator/simulator-action-controls.js", "PokerSimulatorActionControls", {
+  PokerSimulatorPracticePacks: {
+    sessionCompleteAction: () => ({ action: "resteal-play-again", label: "Сыграть ещё" }),
+    decisionClass: () => ""
+  }
+});
 const completedState = { settings: { manualNextHand: false, continueAfterBust: true, sessionHandLimit: 2, pack: "resteal-bb-demo" }, history: [{}, {}] };
 const completedActions = actionControlsKit.model({ getState: () => completedState }).renderActions({ status: "won" });
 assert(/Сессия завершена · 2 из 2/.test(completedActions), "terminal controls stop exactly at the selected session length");

@@ -332,16 +332,6 @@ p { margin-bottom: 12px; color: var(--muted); line-height: 1.45; }
 .lesson-table-host .ff-shell-simulator-snapshot {
   --trainer-table-plane-height: min(430px, calc(100cqw * 9 / 16), calc(100svh - 338px));
 }
-.lesson-table-host .table-shell {
-  --hero-card-width: clamp(51px, 6.3cqw, 61.5px) !important;
-  --hero-card-cap: clamp(51px, 6.3cqw, 61.5px) !important;
-  --sim-1t-hero-card: clamp(51px, 6.3cqw, 61.5px) !important;
-  --sim-1t-seat-w: clamp(108px, 14cqw, 126px) !important;
-  --sim-1t-seat-h: 46px !important;
-  --seat-w: var(--sim-1t-seat-w) !important;
-  --seat-h: var(--sim-1t-seat-h) !important;
-  margin: 0 auto;
-}
 .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-folded .seat-panel { opacity: .38; filter: saturate(.72); }
 .lesson-table-host .action-bar { top: calc(100% + 6px) !important; gap: 5px !important; }
 .lesson-table-host .action-status {
@@ -367,67 +357,6 @@ p { margin-bottom: 12px; color: var(--muted); line-height: 1.45; }
 .lesson-table-host .client-controls > .client-row .table-action { min-height: 42px !important; padding: 0 9px !important; font-size: 13px !important; cursor: pointer; }
 .lesson-table-host .table-action-amount { font-size: .9em; }
 .lesson-table-host .table-action-amount::before { display: none; content: none; }
-.lesson-table-host .seat-panel {
-  height: var(--seat-h) !important;
-  min-height: var(--seat-h) !important;
-  max-height: var(--seat-h) !important;
-  padding-block: 3px 4px !important;
-  overflow: hidden !important;
-}
-.lesson-table-host .seat.is-dealer .seat-panel { overflow: visible !important; }
-.lesson-table-host .seat.is-dealer .dealer-dot {
-  --dealer-dot-size: 25px;
-  font-size: 11px;
-  z-index: 32;
-}
-.lesson-table-host .seat-panel::before, .lesson-table-host .seat-panel::after { content: none !important; display: none !important; }
-.lesson-table-host .seat-main-row, .lesson-table-host .seat-name, .lesson-table-host .seat-stack {
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.lesson-table-host .seat-name { font-size: clamp(11px, 1.45cqw, 14px) !important; }
-.lesson-table-host .seat-stack { min-height: 0 !important; font-size: clamp(12px, 1.55cqw, 15px) !important; line-height: 1 !important; }
-.lesson-table-host .seat.is-hero .seat-name { font-size: 0 !important; }
-.lesson-table-host .seat.is-hero .seat-name::after { content: "Ты"; font-size: clamp(12px, 1.45cqw, 14px); }
-.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-position {
-  left: calc(50% - (var(--seat-w) / 2) + 4px) !important;
-  top: 50% !important;
-  z-index: 28;
-  display: inline-grid !important;
-  place-items: center;
-  width: auto !important;
-  min-width: 34px !important;
-  max-width: 44px !important;
-  height: 22px !important;
-  padding: 0 6px !important;
-  overflow: hidden;
-  border-radius: 5px !important;
-  font-size: 12px !important;
-  transform: translateY(-50%) !important;
-}
-.lesson-table-host .seat.is-hero .seat-position-label {
-  display: block;
-  max-width: 100%;
-  overflow: hidden;
-  font-size: 12px !important;
-  line-height: 1 !important;
-  text-overflow: clip;
-  white-space: nowrap;
-}
-.lesson-table-host .ff-shell-simulator-snapshot.table-grid:not(.is-concept-spot)[data-count="1"] .seat.is-hero .seat-panel {
-  padding-left: 50px !important;
-  padding-right: 7px !important;
-}
-@media (min-width: 621px) {
-  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero {
-    --hero-card-pocket-y: -18px;
-  }
-}
 .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .pot-text {
   gap: 7px;
   white-space: nowrap;
@@ -863,7 +792,6 @@ p { margin-bottom: 12px; color: var(--muted); line-height: 1.45; }
   .lesson-table-host { --shell-action-gutter: 112px; min-height: 470px; padding: 0 0 116px; }
   .lesson-table-host .ff-shell-simulator-snapshot { --trainer-table-plane-height: min(340px, calc(100cqw * 9 / 16)); }
   .lesson-table-host .ff-shell-simulator-snapshot.table-grid { min-height: 340px; }
-  .lesson-table-host .table-shell { --hero-card-width: clamp(36px, 9.75cqw, 43.5px) !important; --hero-card-cap: clamp(36px, 9.75cqw, 43.5px) !important; --sim-1t-hero-card: clamp(36px, 9.75cqw, 43.5px) !important; --sim-1t-seat-w: 94px !important; --sim-1t-seat-h: 40px !important; }
   .lesson-table-host .action-status em { display: none !important; }
   .lesson-table-host .client-controls > .client-row .table-action { font-size: 11px !important; }
   .range-summary { width: 100%; }

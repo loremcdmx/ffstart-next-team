@@ -88,32 +88,20 @@
 
   function renderRoomTable(host, spot, selectedKey, options) {
     var config = options || {};
-    if (!window.FFTrainerSimulatorSnapshot || !window.FFTrainerSimulatorSnapshot.renderTable) {
+    if (!window.FFTrainerSimulator || !window.FFTrainerSimulator.renderDecision) {
       host.innerHTML = '<p class="table-load-error">Стол не загрузился: проверь simulator snapshot.</p>';
       return;
     }
-    var tableMarkup = window.FFTrainerSimulatorSnapshot.renderTable(spot, {
+    window.FFTrainerSimulator.renderDecision(host, spot, {
       answered: Boolean(selectedKey),
       selectedKey: selectedKey || "",
       finished: false
+    }, {
+      positionLabels: { UTG: "EP" },
+      decimalComma: true,
+      hideActionStatus: Boolean(config.hideActionStatus),
+      nextLabel: config.nextLabel || ""
     });
-    // The shared snapshot renderer uses UTG as its geometry key; the supplied
-    // methodology names the same early-position bucket EP. Translate only the
-    // rendered markup so the learner sees one label while seat geometry and
-    // action highlighting keep using the established renderer contract.
-    host.innerHTML = tableMarkup
-      .replace(/\bUTG\b/g, "EP")
-      .replace(/(\d)\.(\d)(?=\s*BB)/g, "$1,$2");
-    if (config.nextLabel) {
-      var controls = host.querySelector(".client-controls");
-      if (controls) {
-        var nextRow = document.createElement("div");
-        nextRow.className = "practice-next-row";
-        nextRow.innerHTML = '<button class="practice-next-button" type="button" data-practice-next>' +
-          '<span>' + config.nextLabel + '</span></button>';
-        controls.appendChild(nextRow);
-      }
-    }
   }
 
   function renderPracticeRangeProof(spot) {

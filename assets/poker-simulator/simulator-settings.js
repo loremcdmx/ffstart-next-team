@@ -12,13 +12,10 @@
     const embeddedMode = bootParams.has("embedded");
     const bootTableCount = bootParams.get("tables") || bootParams.get("tableCount");
     const storageBackend = embeddedMode ? windowRef.sessionStorage : windowRef.localStorage;
-    const lessonPack = windowRef.PokerRfiOpenSimulatorPack?.active
-      ? windowRef.PokerRfiOpenSimulatorPack
-      : windowRef.PokerRestealSimulatorPack?.active
-      ? windowRef.PokerRestealSimulatorPack
-      : null;
-    const settingsStorageKey = lessonPack?.storageSuffix
-      ? `${storageKey}.${lessonPack.storageSuffix}`
+    const practicePacks = windowRef.PokerSimulatorPracticePacks;
+    const practicePack = practicePacks?.active?.();
+    const settingsStorageKey = practicePack?.storageSuffix
+      ? `${storageKey}.${practicePack.storageSuffix}`
       : storageKey;
     const uiScaleValues = new Set(["auto", "compact", "standard", "large", "xl"]);
     const deckValues = new Set(["online-four-color", "online", "color-block", "image"]);
@@ -146,8 +143,8 @@
         settings.handTempo = sanitizeHandTempo(bootTempo);
         settings.turboMode = settings.handTempo === "fast";
       }
-      if (settings && embeddedMode && typeof lessonPack?.applyBootSettings === "function") {
-        lessonPack.applyBootSettings(settings);
+      if (settings && embeddedMode && practicePacks?.applyBootSettings) {
+        practicePacks.applyBootSettings(settings);
       }
       return settings;
     }

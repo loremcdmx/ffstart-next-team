@@ -3,9 +3,9 @@
 
   const root = typeof window !== "undefined" ? window : globalThis;
   const params = new URLSearchParams(root.location?.search || "");
-  const active = params.get("lesson") === "resteal" || params.get("drill") === "bb-resteal";
+  const requestedPractice = params.get("practice") || params.get("lesson") || params.get("drill");
+  const active = requestedPractice === "resteal" || requestedPractice === "bb-resteal";
   const PACK_KEY = "resteal-bb-demo";
-  const MAX_ATTEMPTS = 320;
   const trickKinds = ["early-open", "open-call", "limp"];
   let lastCombo = "";
   const seenCombos = new Set();
@@ -181,8 +181,8 @@
     };
   }
 
-  function installPack(engine) {
-    if (!active || !engine?.registerPack || typeof engine.createTable !== "function") return false;
+  function installEngine(engine) {
+    if (!engine?.registerPack) return false;
     engine.registerPack(PACK_KEY, {
       name: "Рестил с BB · демо",
       stackDepths: [25, 30, 35, 40],
@@ -206,67 +206,72 @@
       Object.defineProperty(engine, "__restealAdviceSnapshotWrapped", { value: true, configurable: true });
     }
 
-    const createTable = engine.createTable.bind(engine);
-    engine.createTable = function createRestealTable(options = {}) {
-      const handNo = Math.max(1, Number(options.handNo || 1));
-      const plan = planForHand(handNo);
-      const settings = {
-        ...(options.settings || {}),
-        pack: PACK_KEY,
-        playerCount: 6,
-        simulationMode: "random",
-        randomStackMinBb: 25,
-        randomStackMaxBb: 40,
-        anteBb: 0,
-        bigBlindAnteBb: 1,
-        lobbyEvents: false
-      };
-      let selected = null;
-      let attempts = 0;
-
-      while (attempts < MAX_ATTEMPTS) {
-        attempts += 1;
-        const candidate = createTable({ ...options, settings });
-        if (!matchesPlan(candidate, plan)) continue;
-        if ((lastCombo === candidate.combo || seenCombos.has(candidate.combo)) && attempts < MAX_ATTEMPTS / 2) continue;
-        selected = candidate;
-        break;
-      }
-
-      if (!selected) {
-        // Extremely defensive fallback: return a legal engine-created hand even
-        // if a pathological RNG/model combination never produced the target.
-        selected = createTable({ ...options, settings });
-      }
-
-      const actual = classify(selected);
-      const selectedOpener = openerSeat(selected);
-      const hero = (selected.seats || []).find((seat) => seat?.isHero) || null;
-      const heroStart = seatStartingStack(selected, hero) || Number(selected.stackDepth || 0);
-      const openerStart = seatStartingStack(selected, selectedOpener) || heroStart;
-      const effectiveStack = [heroStart, openerStart].filter((value) => Number.isFinite(value) && value > 0);
-      selected.restealDrill = {
-        schema: "poker-resteal-drill-hand-v1",
-        index: handNo,
-        target: { ...plan },
-        actual,
-        openerSeatId: Number.isFinite(Number(selectedOpener?.id)) ? Number(selectedOpener.id) : null,
-        openSizeBb: Number(actual.openTo || 0),
-        bankBeforeHeroBb: Number(selected.pot || 0),
-        effectiveStackBb: effectiveStack.length ? Math.min(...effectiveStack) : Number(selected.stackDepth || 0),
-        unequalStacks: Math.abs(heroStart - openerStart) >= 0.5,
-        attempts
-      };
-      selected.spot = {
-        ...selected.spot,
-        prompt: "Сначала прочитай экшен. Затем выбери обычное действие симулятора.",
-        tags: [...new Set([...(selected.spot?.tags || []), "resteal-demo", plan.trick ? "attention-check" : "core-resteal"])]
-      };
-      lastCombo = selected.combo || "";
-      if (lastCombo) seenCombos.add(lastCombo);
-      return selected;
-    };
     return true;
+  }
+
+  function scenarioSettings() {
+    return {
+      pack: PACK_KEY,
+      playerCount: 6,
+      simulationMode: "random",
+      randomStackMinBb: 25,
+      randomStackMaxBb: 40,
+      anteBb: 0,
+      bigBlindAnteBb: 1,
+      lobbyEvents: false
+    };
+  }
+
+  function practiceScenario({ handNo }) {
+    const plan = planForHand(handNo);
+    const beforeHero = [];
+    if (plan.kind === "single-open") beforeHero.push({ position: plan.opener, action: "open", toBb: 2 });
+    if (plan.kind === "early-open") beforeHero.push({ position: "UTG", action: "open", toBb: 2 });
+    if (plan.kind === "open-call") beforeHero.push(
+      { position: "CO", action: "open", toBb: 2 },
+      { position: "BTN", action: "call" }
+    );
+    if (plan.kind === "limp") beforeHero.push({ position: "SB", action: "limp", toBb: 1 });
+    return { beforeHero, defaultBeforeHero: { action: "fold" } };
+  }
+
+  function decorateScenario(table, { handNo, attempts }) {
+    const plan = planForHand(handNo);
+    const actual = classify(table);
+    const selectedOpener = openerSeat(table);
+    const hero = (table.seats || []).find((seat) => seat?.isHero) || null;
+    const heroStart = seatStartingStack(table, hero) || Number(table.stackDepth || 0);
+    const openerStart = seatStartingStack(table, selectedOpener) || heroStart;
+    const effectiveStack = [heroStart, openerStart].filter((value) => Number.isFinite(value) && value > 0);
+    table.restealDrill = {
+      schema: "poker-resteal-drill-hand-v2",
+      index: handNo,
+      target: { ...plan },
+      actual,
+      openerSeatId: Number.isFinite(Number(selectedOpener?.id)) ? Number(selectedOpener.id) : null,
+      openSizeBb: Number(actual.openTo || 0),
+      bankBeforeHeroBb: Number(table.pot || 0),
+      effectiveStackBb: effectiveStack.length ? Math.min(...effectiveStack) : Number(table.stackDepth || 0),
+      unequalStacks: Math.abs(heroStart - openerStart) >= 0.5,
+      attempts
+    };
+    table.spot = {
+      ...table.spot,
+      prompt: "Сначала прочитай экшен. Затем выбери обычное действие симулятора.",
+      tags: [...new Set([...(table.spot?.tags || []), "resteal-demo", plan.trick ? "attention-check" : "core-resteal"])]
+    };
+    lastCombo = table.combo || "";
+    if (lastCombo) seenCombos.add(lastCombo);
+    return table;
+  }
+
+  function installPack(engine) {
+    let registry = root.PokerSimulatorPracticePacks;
+    if (!registry && typeof require === "function") {
+      try { registry = require("../poker-simulator/simulator-practice-packs.js"); } catch (_) {}
+    }
+    if (registry?.installForEngine) return registry.installForEngine(practiceDescriptor, engine, { force: true });
+    return installEngine(engine);
   }
 
   function completedEntries(payload) {
@@ -814,6 +819,34 @@
     }, true);
   }
 
+  const practiceDescriptor = {
+    id: "resteal",
+    aliases: ["bb-resteal"],
+    packKey: PACK_KEY,
+    storageSuffix: "resteal-bb-demo",
+    applyBootSettings,
+    installEngine,
+    scenario: {
+      freshDeal: true,
+      // Scenario shape is deterministic in one deal. Additional deals are used
+      // only to preserve the lesson's no-repeat Hero-combo promise.
+      maxAttempts: 320,
+      onFailure: "error",
+      failureMessage: ({ handNo }) => `Resteal practice scenario ${planForHand(handNo).kind} was not generated`,
+      heroPosition: "BB",
+      settings: scenarioSettings,
+      practiceScenario,
+      accept: (table, { handNo, attempts }) => matchesPlan(table, planForHand(handNo))
+        && !((lastCombo === table.combo || seenCombos.has(table.combo)) && attempts < 160),
+      decorate: decorateScenario
+    },
+    defaultBetAmount({ table, bounds, value, draft }) {
+      if (draft || table?.street !== "preflop" || Number(table?.toCall || 0) <= 0) return value;
+      return bounds.max;
+    },
+    sessionCompleteAction: { action: "resteal-play-again", label: "Сыграть ещё" }
+  };
+
   const api = {
     active,
     packKey: PACK_KEY,
@@ -824,6 +857,8 @@
     classify,
     matchesPlan,
     applyBootSettings,
+    practiceDescriptor,
+    installEngine,
     installPack,
     completedEntries,
     decisionsForEntry,
@@ -853,6 +888,7 @@
 
   root.PokerRestealSimulatorPack = api;
   if (typeof module !== "undefined" && module.exports) module.exports = api;
+  root.PokerSimulatorPracticePacks?.register?.(practiceDescriptor);
   if (!active) return;
 
   if (root.document?.documentElement?.dataset) {
@@ -862,7 +898,7 @@
     // pixel cards/controls collide with their felt lanes.
     delete root.document.documentElement.dataset.simulatorStageProfile;
   }
-  installPack(root.PokerSimulatorEngine);
+  if (!root.PokerSimulatorPracticePacks) installPack(root.PokerSimulatorEngine);
   if (root.document?.readyState === "loading") {
     root.document.addEventListener("DOMContentLoaded", () => {
       installHud();

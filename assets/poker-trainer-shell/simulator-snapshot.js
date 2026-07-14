@@ -280,6 +280,9 @@
   }
 
   function slotPhase(table) {
+    const revealsOpponentCards = Boolean(table?.__answered)
+      && asArray(table?.seats).some((seat) => seat?.revealCardsAfterAnswer && asArray(seat.cards).length === 2);
+    if (revealsOpponentCards) return "finished-reveal";
     return table?.street === "preflop" ? "preflop-blinds" : "postflop-bets";
   }
 
@@ -326,6 +329,17 @@
     };
   }
 
+  function revealPlacement(table, seatId, fallback) {
+    const placements = slotLayout(table)?.revealCardSeparation?.placements;
+    if (!Array.isArray(placements)) return fallback;
+    const row = placements.find((placement) => Number(placement?.seatId) === Number(seatId));
+    if (!row) return fallback;
+    return {
+      tx: Number.isFinite(Number(row.tx)) ? Number(row.tx) : Number(fallback?.tx || 0),
+      ty: Number.isFinite(Number(row.ty)) ? Number(row.ty) : Number(fallback?.ty || 0)
+    };
+  }
+
   function slotSeatContext(table, seatId) {
     const box = slotPoint(table, seatId, "box");
     if (!box) return null;
@@ -335,6 +349,7 @@
     const cardsDelta = pointDelta(box, cards);
     const dealerDelta = pointDelta(box, dealer || box);
     const heroMarkerDelta = pointDelta(cards, marker || cards);
+    const revealCardPlacement = revealPlacement(table, seatId, { tx: cardsDelta.x, ty: cardsDelta.y });
     const styleVars = [
       `--seat-anchor-x:${box.x}`,
       `--seat-anchor-y:${box.y}`,
@@ -342,6 +357,8 @@
       `--seat-cards-dy:${cardsDelta.y}`,
       `--seat-cards-tx:${cardsDelta.x}cqw`,
       `--seat-cards-ty:${cardsDelta.y}cqh`,
+      `--reveal-card-tx:${revealCardPlacement.tx}cqw`,
+      `--reveal-card-ty:${revealCardPlacement.ty}cqh`,
       "--reveal-nudge-ty:0cqh",
       `--dealer-dx:${dealerDelta.x}`,
       `--dealer-dy:${dealerDelta.y}`,
@@ -488,6 +505,10 @@
       const latestFold = /пас|fold/i.test(latest?.label || "");
       seatIdByKey.set(key, id);
       pointsBySeatId.set(id, point);
+      const revealCardsAfterAnswer = Boolean(row.sourceSeat?.revealCardsAfterAnswer);
+      const opponentCards = revealCardsAfterAnswer
+        ? asArray(row.sourceSeat?.cards).map(normalizeCardCode).filter(Boolean)
+        : [];
       return {
         id,
         name: row.isHero ? "Hero" : row.label,
@@ -501,7 +522,8 @@
         folded: row.isHero ? false : (latest ? latestFold : /fold|пас|folded/i.test(row.state)),
         dealer: key === "BTN" || normalizeSeatKey(sourceTable.dealerPosition) === key,
         blind,
-        cards: row.isHero ? asArray(sourceTable.heroCards).map(normalizeCardCode).filter(Boolean) : [],
+        cards: row.isHero ? asArray(sourceTable.heroCards).map(normalizeCardCode).filter(Boolean) : opponentCards,
+        revealCardsAfterAnswer,
         committedStreet: committed,
         botProfile: row.isHero ? null : { difficulty: "standard", label: "trainer" }
       };
@@ -535,6 +557,9 @@
   function renderSeatCards(_table, seat, cardState) {
     if (seat.isHero) {
       return asArray(cardState.cards).map((card) => renderCard(card, { hero: true })).join("");
+    }
+    if (cardState.reveal) {
+      return asArray(cardState.cards || seat.cards).map((card) => renderCard(card, { mini: true })).join("");
     }
     if (cardState.folded) return "";
     return `${renderBackCard()}${renderBackCard()}`;
@@ -627,9 +652,11 @@
       seatVisuallyFolded: (_table, seat) => Boolean(seat.folded),
       visibleSeatStack: (_table, seat) => Number(seat.stack || 0),
       visibleSeatAction: (table, seat) => table.__latestActionBySeat.get(normalizeSeatKey(seat.position)) || null,
-      seatCardState: (_table, seat) => seat.isHero
-        ? { className: "hero-cards", cards: seat.cards, hidden: false, folded: false }
-        : { className: "hidden-cards", cards: [], hidden: true, folded: Boolean(seat.folded) },
+      seatCardState: (table, seat) => seat.isHero
+        ? { className: "hero-cards", cards: seat.cards, reveal: true, hidden: false, folded: false }
+        : table.__answered && seat.revealCardsAfterAnswer && asArray(seat.cards).length === 2
+          ? { className: "is-revealed is-revealed-live", cards: seat.cards, reveal: true, hidden: false, folded: false }
+          : { className: "hidden-cards", cards: [], reveal: false, hidden: true, folded: Boolean(seat.folded) },
       renderSeatCards,
       renderHeroFeltBet,
       seatSlotContext: slotSeatContext,

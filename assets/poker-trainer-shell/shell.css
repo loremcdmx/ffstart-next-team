@@ -845,12 +845,14 @@ button {
   min-height: min-content;
 }
 
-/* Opponent seats never reveal hole cards in the trainer, yet the shared seat
-   renderer paints two card-backs at the slot `cards` rect — they overlap the
-   SB/BB plates and clip on the felt top edge. Suppress at every width (the old
-   rule only fired ≤920px, so desktop/tablet still showed them). */
-.ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat:not(.is-hero) .seat-cards {
+/* Compact decisions hide only unrevealed opponent backs. Revealed cards are a
+   first-class snapshot state and must not need a lesson-owned display override. */
+.ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat:not(.is-hero) .seat-cards.hidden-cards {
   display: none !important;
+}
+
+.ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat:not(.is-hero) .seat-cards:is(.is-revealed, .is-revealed-live) {
+  display: flex !important;
 }
 
 /* De-duplicate the position. In the trainer an opponent's "name" IS its
@@ -3017,5 +3019,126 @@ button {
     bottom: 10px;
     z-index: 4;
     box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
+  }
+}
+
+/* Shared compact lesson profile. Seat boxes, Hero cards and their pocket are
+   simulator-owned geometry: lesson styles may size the surrounding host, but
+   must not duplicate or tune these values per pack. */
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .table-shell {
+  --hero-card-width: clamp(51px, 6.3cqw, 61.5px) !important;
+  --hero-card-cap: clamp(51px, 6.3cqw, 61.5px) !important;
+  --sim-1t-hero-card: clamp(51px, 6.3cqw, 61.5px) !important;
+  --sim-1t-seat-w: clamp(108px, 14cqw, 126px) !important;
+  --sim-1t-seat-h: 46px !important;
+  --seat-w: var(--sim-1t-seat-w) !important;
+  --seat-h: var(--sim-1t-seat-h) !important;
+  margin: 0 auto;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-panel {
+  height: var(--seat-h) !important;
+  min-height: var(--seat-h) !important;
+  max-height: var(--seat-h) !important;
+  padding-block: 3px 4px !important;
+  overflow: hidden !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-dealer .seat-panel {
+  overflow: visible !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-dealer .dealer-dot {
+  --dealer-dot-size: 25px;
+  z-index: 32;
+  font-size: 11px;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-panel::before,
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-panel::after {
+  display: none !important;
+  content: none !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-main-row,
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-name,
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-stack {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-name {
+  font-size: clamp(11px, 1.45cqw, 14px) !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat-stack {
+  min-height: 0 !important;
+  font-size: clamp(12px, 1.55cqw, 15px) !important;
+  line-height: 1 !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-name {
+  font-size: 0 !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-name::after {
+  content: "Ты";
+  font-size: clamp(12px, 1.45cqw, 14px);
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-position {
+  left: calc(50% - (var(--seat-w) / 2) + 4px) !important;
+  top: 50% !important;
+  z-index: 28;
+  display: inline-grid !important;
+  place-items: center;
+  width: auto !important;
+  min-width: 34px !important;
+  max-width: 44px !important;
+  height: 22px !important;
+  padding: 0 6px !important;
+  overflow: hidden;
+  border-radius: 5px !important;
+  font-size: 12px !important;
+  transform: translateY(-50%) !important;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-position-label {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 12px !important;
+  line-height: 1 !important;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.lesson-table-host .ff-shell-simulator-snapshot.table-grid:not(.is-concept-spot)[data-count="1"] .seat.is-hero .seat-panel {
+  padding-right: 7px !important;
+  padding-left: 50px !important;
+}
+
+@media (min-width: 621px) {
+  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-cards.hero-cards {
+    --hero-card-pocket-y: -20px;
+  }
+}
+
+@media (max-width: 620px) {
+  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .table-shell {
+    --hero-card-width: clamp(36px, 9.75cqw, 43.5px) !important;
+    --hero-card-cap: clamp(36px, 9.75cqw, 43.5px) !important;
+    --sim-1t-hero-card: clamp(36px, 9.75cqw, 43.5px) !important;
+    --sim-1t-seat-w: 94px !important;
+    --sim-1t-seat-h: 40px !important;
+  }
+
+  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .seat.is-hero .seat-cards.hero-cards {
+    --hero-card-pocket-y: clamp(-21.5px, calc(-23.6px + 0.565vw), -20px);
   }
 }

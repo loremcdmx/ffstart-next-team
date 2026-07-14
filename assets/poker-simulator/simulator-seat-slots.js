@@ -100,7 +100,7 @@
       // is a conservative floor for the crowded case the gate targets.
       renderedRevealCard: { w: 11.0, h: 14.7 },
       // Face-up cards remain one visual component with their owner plate. The
-      // card edge tucks under the plate by this fraction of its inward half-
+      // card edge tucks under the plate by this fraction of its full inward
       // projection; the panel paints above the cards, so names/stacks stay clear.
       revealCardTuckFraction: 0.2,
       // Minimum visible gutter between two reveal-card PAIRS while their
@@ -220,10 +220,13 @@
       // table and forced detached global lanes). This is the measured footprint
       // scaled from the former 1.8x render truth: 12.9x21.4 -> 9.2x15.2.
       renderedRevealCard: { w: 9.2, h: 15.2 },
-      revealCardTuckFraction: 0.12,
+      // Approved card pocket: 20% of the revealed hand remains under its
+      // owner's panel. Top seats still open inward (down the felt), and the
+      // top-centre safety floor below handles the edge with no vertical room.
+      revealCardTuckFraction: 0.2,
       // The top-centre owner shares a narrow lane with the live pot readout.
-      // Tuck this one hand a little further under its panel so the card feet do
-      // not touch the pot amount in the real FHD four-table render.
+      // Preserve a minimum tuck for unusually small render footprints so the
+      // card feet do not touch the pot amount in the real FHD four-table render.
       revealTopCenterExtraTuck: 1.1,
       // Ownership now comes from docking each hand to its player, not from
       // spreading hands across the felt. A small real gutter is sufficient.
@@ -1497,7 +1500,8 @@
       const tangent = unit({ x: -inward.y, y: inward.x });
       const renderedOwnerSize = dimensions?.renderedRevealSeatBox || box.size;
       const tuckFraction = clamp(Number(dimensions?.revealCardTuckFraction ?? 0.2), 0, 0.3);
-      const tuck = clamp(projectionHalf(size, inward) * tuckFraction, 0.75, 2.2);
+      const projectedCardDepth = projectionHalf(size, inward) * 2;
+      const tuck = projectedCardDepth * tuckFraction;
       // Axis-aligned DOM rectangles first touch at the smaller of the x/y edge
       // distances along this ray. Summed radial projections are larger at a
       // corner and produced a visible 2–4% felt gap despite "overlapping" in the
@@ -1508,10 +1512,14 @@
       const contactY = Math.abs(inward.y) > 0.001
         ? (Number(renderedOwnerSize.h) + size.h) / 2 / Math.abs(inward.y)
         : Number.POSITIVE_INFINITY;
-      const topCenterExtraTuck = zone === "top" && Math.abs(Number(box.center.x) - 50) < 6
+      const topCenterTuckFloor = zone === "top" && Math.abs(Number(box.center.x) - 50) < 6
         ? Math.max(0, Number(dimensions?.revealTopCenterExtraTuck || 0))
         : 0;
-      const distance = Math.max(0, Math.min(contactX, contactY) - tuck - topCenterExtraTuck);
+      // `revealTopCenterExtraTuck` predates the explicit pocket fraction. Keep
+      // it as a safety floor for unusually small cards rather than adding it on
+      // top of the requested fraction (which would make the top seat exceed the
+      // promised 20% pocket).
+      const distance = Math.max(0, Math.min(contactX, contactY) - Math.max(tuck, topCenterTuckFloor));
       const rawCenter = add(box.center, scale(inward, distance));
       // The owner may straddle the rail; the visible cards never do.
       const center = {

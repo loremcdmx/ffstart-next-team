@@ -26,6 +26,7 @@
   let onlinePromise = null;
   let onlineLoaded = false;
   let serverPromise = null;
+  let practicePromise = null;
   let replayingOnlineIntent = false;
 
   function ready(fn) {
@@ -62,35 +63,52 @@
     return [...doc.scripts].some((script) => sameAsset(script.getAttribute("src"), src));
   }
 
-  function loadStyle(href) {
+  function loadStyle(href, feature = "online-lobby") {
     if (existingStyle(href)) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const link = doc.createElement("link");
       link.rel = "stylesheet";
       link.href = href;
-      link.dataset.simulatorFeature = "online-lobby";
+      link.dataset.simulatorFeature = feature;
       link.onload = () => resolve();
       link.onerror = () => reject(new Error(`Failed to load ${refWithoutQuery(href)}`));
       doc.head.appendChild(link);
     });
   }
 
-  function loadScript(src) {
+  function loadScript(src, feature = "deferred-runtime") {
     if (existingScript(src)) return Promise.resolve();
     return new Promise((resolve, reject) => {
       const script = doc.createElement("script");
       script.async = false;
       script.defer = false;
       script.src = src;
-      script.dataset.simulatorFeature = "deferred-runtime";
+      script.dataset.simulatorFeature = feature;
       script.onload = () => resolve();
       script.onerror = () => reject(new Error(`Failed to load ${refWithoutQuery(src)}`));
       doc.head.appendChild(script);
     });
   }
 
-  function loadScripts(scripts) {
-    return scripts.reduce((chain, src) => chain.then(() => loadScript(src)), Promise.resolve());
+  function loadScripts(scripts, feature) {
+    return scripts.reduce((chain, src) => chain.then(() => loadScript(src, feature)), Promise.resolve());
+  }
+
+  function loadPracticePack() {
+    const registry = root.PokerSimulatorPracticePacks;
+    const entry = registry?.catalogEntry?.();
+    if (!entry) return Promise.resolve(null);
+    if (!practicePromise) {
+      practicePromise = Promise.all((entry.styles || []).map((href) => loadStyle(href, `practice:${entry.id}`)))
+        .then(() => loadScripts(entry.scripts || [], `practice:${entry.id}`))
+        .then(() => {
+          const descriptor = registry.active?.();
+          if (!descriptor) throw new Error(`Practice pack did not register itself: ${entry.id}`);
+          registry.installForEngine?.(descriptor, root.PokerSimulatorEngine);
+          return descriptor;
+        });
+    }
+    return practicePromise;
   }
 
   function suppressServerStartShell() {
@@ -161,7 +179,10 @@
   }
 
   function readyForBoot() {
-    return isServerMode() ? loadServerMode() : Promise.resolve();
+    return Promise.all([
+      isServerMode() ? loadServerMode() : Promise.resolve(),
+      loadPracticePack()
+    ]);
   }
 
   if (isServerMode()) suppressServerStartShell();
@@ -174,6 +195,7 @@
     assets,
     isServerMode,
     readyForBoot,
+    loadPracticePack,
     loadOnlineLobby,
     loadServerMode
   };
