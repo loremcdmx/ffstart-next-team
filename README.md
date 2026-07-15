@@ -2,9 +2,11 @@
 
 Самостоятельный статический продукт с пошаговой программой **FF Start** и общим покерным симулятором.
 
-**Production:** https://ff-poker-learning-hub.vercel.app
+**Защищённый handoff-preview:** https://ff-poker-learning-onrdtum04-loremcdmxs-projects.vercel.app/ffstart-handoff
 
-**Программа:** https://ff-poker-learning-hub.vercel.app/ffstart
+**Приватный репозиторий для новой команды:** https://github.com/loremcdmx/ffstart-next-team
+
+Публичный `https://ff-poker-learning-hub.vercel.app` остаётся прежним production baseline и не содержит эту handoff-сборку. Preview открывается после входа в Vercel и намеренно не promoted в production до подтверждения media rights.
 
 ## Что входит в FF Start
 

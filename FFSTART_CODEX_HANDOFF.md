@@ -14,6 +14,8 @@ cd ffstart-next-team
 npm run dev
 ```
 
+Готовый защищённый preview: `https://ff-poker-learning-onrdtum04-loremcdmxs-projects.vercel.app/ffstart-handoff`. Для открытия нужен вход в Vercel; публичный production намеренно не обновлялся до подтверждения прав на media.
+
 Открыть:
 
 - `http://127.0.0.1:4173/ffstart` — текущий собранный курс;
