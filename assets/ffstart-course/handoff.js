@@ -56,11 +56,13 @@
 
   function renderModules(plan, index) {
     moduleRoot.innerHTML = plan.targetModules.map((module) => {
-      const lessons = module.lessons.map((id, lessonIndex) => {
+      const lessons = [];
+      module.lessons.forEach((id, lessonIndex) => {
+        if (module.playBefore && module.playBeforeLesson === id) lessons.push(renderPlay(module.playBefore, index));
         const lesson = lessonDetails(module, id, index);
-        return `<div class="handoff-module__lesson"><span>${String(lessonIndex + 1).padStart(2, "0")}</span><strong>${escapeHtml(lesson.title)}</strong><small>${escapeHtml(lesson.meta)}</small></div>`;
+        lessons.push(`<div class="handoff-module__lesson"><span>${String(lessonIndex + 1).padStart(2, "0")}</span><strong>${escapeHtml(lesson.title)}</strong><small>${escapeHtml(lesson.meta)}</small></div>`);
       });
-      if (module.playBefore) lessons.unshift(renderPlay(module.playBefore, index));
+      if (module.playBefore && !module.playBeforeLesson) lessons.unshift(renderPlay(module.playBefore, index));
       if (module.playAfter) lessons.push(renderPlay(module.playAfter, index));
       const learningCount = module.lessons.length;
       const playCount = Number(Boolean(module.playBefore || module.playAfter));

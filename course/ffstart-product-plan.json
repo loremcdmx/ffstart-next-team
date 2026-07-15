@@ -124,6 +124,7 @@
       "sourceModules": ["profession", "finish"],
       "lessons": ["resources", "final-exam", "course-feedback"],
       "playBefore": "dress-rehearsal",
+      "playBeforeLesson": "final-exam",
       "change": "Библиотеку сделать необязательной, после экзамена строить персональный маршрут повторения."
     }
   ],

@@ -37,6 +37,9 @@ assert.equal(plan.recommendation.lessons, 29, "target has 29 lesson slots");
 assert.equal(plan.targetModules.reduce((sum, module) => sum + module.lessons.length, 0), 29, "module lesson counts reconcile");
 assert.equal(plan.recommendation.playSessions, 5, "all five simulator breaks stay in the route");
 assert.equal(plan.targetModules.filter((module) => module.playBefore || module.playAfter).length, 5, "each play break has a target module");
+const consolidation = plan.targetModules.find((module) => module.id === "consolidation");
+assert.equal(consolidation.playBefore, "dress-rehearsal", "dress rehearsal stays in consolidation");
+assert.equal(consolidation.playBeforeLesson, "final-exam", "dress rehearsal is placed directly before the exam");
 assert.equal(plan.recommendation.activePractice.structuredTotal, 1147, "structured practice total is explicit");
 assert.equal(plan.recommendation.activePractice.freePlayHands, 37, "free-play hand total is explicit");
 const playItems = reviewData.modules.flatMap((module) => module.items || []).filter((item) => item.type === "play");
@@ -64,6 +67,7 @@ assert.match(html, /\/assets\/ffstart-course\/handoff\.js/, "handoff page loads 
 assert.match(runtime, /\/course\/ffstart-product-plan\.json/, "runtime reads the plan source of truth");
 assert.match(runtime, /\/course\/ffstart-review-data\.json/, "runtime resolves real lesson metadata");
 assert.match(runtime, /renderModules\(plan, index\)/, "runtime renders target modules");
+assert.match(runtime, /module\.playBeforeLesson === id/, "runtime places a game break at its exact lesson boundary");
 assert.match(runtime, /renderArchive\(plan\)/, "runtime renders the preserved archive");
 assert.match(css, /@media \(max-width: 680px\)/, "handoff page has a compact mobile layout");
 assert.match(css, /min-height: 44px/, "interactive controls keep touch-sized targets");
