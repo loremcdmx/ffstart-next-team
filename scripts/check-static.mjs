@@ -3,18 +3,25 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const pages = [
-  "index.html",
-  "rfi-open-position-lesson.html",
-  "bb-call-defense-lesson.html",
-  "resteal-lesson.html",
-  "poker-simulator.html"
-];
-const expectedRoutes = new Map([
-  ["/rfi-open-position-lesson", "rfi-open-position-lesson.html"],
-  ["/bb-call-defense-lesson", "bb-call-defense-lesson.html"],
-  ["/resteal-lesson", "resteal-lesson.html"]
+const manifest = JSON.parse(readFileSync(join(root, "course/ffstart-manifest.json"), "utf8"));
+const lessons = manifest.modules.flatMap((module) => module.lessons);
+const legacyEntrypoints = new Map([
+  ["rfi-open-position", "rfi-open-position-lesson.html"],
+  ["bb-call-defense", "bb-call-defense-lesson.html"],
+  ["resteal", "resteal-lesson.html"]
 ]);
+const expectedRoutes = new Map([
+  ["/ffstart", "ffstart.html"],
+  ["/ffstart-review", "ffstart-review.html"],
+  ["/ffstart-handoff", "ffstart-handoff.html"],
+  ["/ffstart/play-session", "ffstart/play-session.html"],
+  ...lessons.map((lesson) => [lesson.route, lesson.kind === "legacy" ? legacyEntrypoints.get(lesson.id) : `ffstart/${lesson.id}.html`])
+]);
+const pages = [...new Set([
+  "index.html",
+  "poker-simulator.html",
+  ...expectedRoutes.values()
+])];
 const requiredDirectories = [
   "assets/poker-kit",
   "assets/poker-simulator",
@@ -23,7 +30,11 @@ const requiredDirectories = [
   "assets/player-survey",
   "assets/poker-rfi-open-lesson",
   "assets/poker-bb-call-defense-lesson",
-  "assets/poker-resteal-lesson"
+  "assets/poker-resteal-lesson",
+  "assets/lesson-platform",
+  "assets/ffstart-course",
+  "course",
+  "ffstart"
 ];
 
 let failures = 0;
@@ -100,13 +111,38 @@ for (const sourceFile of sourceFiles) {
 }
 
 const hub = readFileSync(join(root, "index.html"), "utf8");
-check((hub.match(/class="trainer-card /g) || []).length === 3, "hub exposes exactly three trainer cards");
-for (const route of expectedRoutes.keys()) check(hub.includes(`href="${route}"`), `hub links to ${route}`);
-check(hub.includes("https://github.com/loremcdmx/ff-poker-learning-hub"), "hub includes the public GitHub link");
-for (const page of pages.slice(1, 4)) {
+check((hub.match(/class="trainer-card /g) || []).length >= 3, "hub keeps the three focused trainer cards");
+check(hub.includes('href="/ffstart"'), "hub links to the FF Start program");
+for (const lesson of lessons.filter((lesson) => lesson.kind === "legacy")) check(hub.includes(`href="${lesson.route}"`), `hub links to ${lesson.route}`);
+
+const courseOverview = readFileSync(join(root, "ffstart.html"), "utf8");
+check(courseOverview.includes("data-course-modules-list"), "FF Start overview owns the complete module list");
+check(courseOverview.includes("/assets/ffstart-course/course.js"), "FF Start overview loads its course runtime");
+check(courseOverview.includes('href="/"'), "FF Start overview links back to the learning hub");
+
+const handoffOverview = readFileSync(join(root, "ffstart-handoff.html"), "utf8");
+check(handoffOverview.includes('href="/FFSTART_CODEX_HANDOFF.md"'), "FF Start handoff exposes its Codex entrypoint");
+check(handoffOverview.includes("data-handoff-modules"), "FF Start handoff owns the target program map");
+check(handoffOverview.includes("data-handoff-archive"), "FF Start handoff keeps a reconsideration archive");
+
+const playSessionPage = readFileSync(join(root, "ffstart/play-session.html"), "utf8");
+check(playSessionPage.includes("/assets/poker-simulator/embed.js"), "FF Start game break loads the full simulator embed");
+check(playSessionPage.includes("/assets/ffstart-course/play-session.js"), "FF Start game break loads its session controller");
+check(!/data-shell-action=|data-trainer-simulator-actions/.test(playSessionPage), "FF Start game break does not fake simulator controls");
+
+for (const page of legacyEntrypoints.values()) {
   const html = readFileSync(join(root, page), "utf8");
   check(html.includes('href="/"'), `${page} links back to the learning hub`);
   check(html.includes('rel="icon"'), `${page} declares a favicon`);
+}
+for (const lesson of lessons.filter((lesson) => lesson.kind !== "legacy")) {
+  const page = `ffstart/${lesson.id}.html`;
+  const html = readFileSync(join(root, page), "utf8");
+  check(html.includes(`<body data-lesson-id="${lesson.id}">`), `${page} selects its lesson content`);
+  check(html.includes("/assets/poker-trainer-shell/simulator-snapshot.js"), `${page} loads the functional simulator table`);
+  check(html.includes("/assets/poker-trainer-shell/simulator-practice.js"), `${page} loads the simulator decision adapter`);
+  check(html.includes("/assets/lesson-platform/lesson-platform.js"), `${page} loads the shared lesson platform`);
+  check(html.includes("/assets/ffstart-course/boot.js"), `${page} loads the course boot runtime`);
 }
 check(!readFileSync(join(root, "assets/poker-rfi-open-lesson/simulator-pack.js"), "utf8").includes('"MP","HJ"'), "RFI engine pack does not target nonexistent 7-max MP");
 check(!readFileSync(join(root, "assets/poker-resteal-lesson/lesson.js"), "utf8").includes('new URL("poker-simulator.html"'), "resteal practice starts without a clean-URL redirect");

@@ -12,18 +12,25 @@
   const catalog = Object.freeze({
     "rfi-open": Object.freeze({
       aliases: Object.freeze(["rfi-open-position"]),
-      styles: Object.freeze(["assets/poker-rfi-open-lesson/simulator-pack.css?v=20260714-prod-refresh-1"]),
+      styles: Object.freeze(["assets/poker-rfi-open-lesson/simulator-pack.css?v=20260715-ffstart-handoff-v16"]),
       scripts: Object.freeze([
-        "assets/poker-rfi-open-lesson/data.js?v=20260714-prod-refresh-1",
-        "assets/poker-rfi-open-lesson/simulator-pack.js?v=20260714-endless-practice"
+        "assets/poker-rfi-open-lesson/data.js?v=20260715-ffstart-handoff-v16",
+        "assets/poker-rfi-open-lesson/simulator-pack.js?v=20260715-ffstart-handoff-v16"
       ])
     }),
     resteal: Object.freeze({
       aliases: Object.freeze(["bb-resteal"]),
-      styles: Object.freeze(["assets/poker-resteal-lesson/simulator-pack.css?v=20260714-practice-geometry"]),
+      styles: Object.freeze(["assets/poker-resteal-lesson/simulator-pack.css?v=20260715-ffstart-handoff-v16"]),
       scripts: Object.freeze([
-        "assets/poker-resteal-lesson/advice.js?v=20260713-2",
-        "assets/poker-resteal-lesson/simulator-pack.js?v=20260714-practice-api"
+        "assets/poker-resteal-lesson/advice.js?v=20260715-ffstart-handoff-v16",
+        "assets/poker-resteal-lesson/simulator-pack.js?v=20260715-ffstart-handoff-v16"
+      ])
+    }),
+    "ffstart-freeplay": Object.freeze({
+      aliases: Object.freeze(["ffstart-play"]),
+      styles: Object.freeze([]),
+      scripts: Object.freeze([
+        "assets/ffstart-course/simulator-freeplay-pack.js?v=20260715-freeplay-v1"
       ])
     })
   });

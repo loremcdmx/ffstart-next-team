@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0910">
+  <meta name="description" content="Игровая сессия FF Start за полным покерным столом.">
+  <title>Игровая пауза · FF Start</title>
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/assets/poker-kit/tokens.css">
+  <link rel="stylesheet" href="/assets/ffstart-course/play-session.css?v=20260715-freeplay-handoff-v4">
+</head>
+<body>
+  <div class="play-glow is-violet" aria-hidden="true"></div>
+  <div class="play-glow is-yellow" aria-hidden="true"></div>
+
+  <main class="play-session" data-play-session aria-busy="true">
+    <header class="play-topline">
+      <a href="/ffstart">← В программу</a>
+      <p>FF Start · игровая практика</p>
+    </header>
+
+    <section class="play-intro" data-play-intro>
+      <div class="play-intro__copy">
+        <p class="play-eyebrow" data-play-kicker>Игровая пауза</p>
+        <h1 data-play-title>Готовим стол…</h1>
+        <p class="play-intro__body" data-play-body>Собираем параметры короткой игровой сессии.</p>
+        <div class="play-note">
+          <strong>Здесь нет оценки.</strong>
+          <span>Цель — спокойно сыграть серию и потренировать решения в игровом темпе.</span>
+        </div>
+        <div class="play-device-gate" data-play-device-gate hidden role="status">
+          <strong>Полный стол открывается с планшета или компьютера.</strong>
+          <span>На телефоне продолжай уроки — игровую серию можно сыграть позже, и прогресс программы не потеряется.</span>
+        </div>
+        <div class="play-actions" data-play-actions>
+          <button class="play-button is-primary" type="button" data-play-start disabled>Сесть за стол</button>
+          <a class="play-skip" data-play-skip href="/ffstart">Продолжить уроки без игры →</a>
+        </div>
+      </div>
+
+      <aside class="play-brief" aria-label="Параметры игровой сессии">
+        <p class="play-eyebrow">Цель сессии</p>
+        <dl>
+          <div><dt>Раздачи</dt><dd data-play-hands>—</dd></div>
+          <div><dt>Режим</dt><dd data-play-mode>—</dd></div>
+          <div><dt>Стек</dt><dd data-play-stack>—</dd></div>
+          <div><dt>Время</dt><dd data-play-duration>—</dd></div>
+        </dl>
+        <p>В каждой раздаче принимай решение по порядку: позиция, действие до тебя, стек, затем выбор.</p>
+      </aside>
+    </section>
+
+    <section class="play-table-section" data-play-table-section hidden aria-labelledby="play-table-title">
+      <header class="play-progress-card">
+        <div>
+          <p class="play-eyebrow">Серия идёт</p>
+          <h2 id="play-table-title" tabindex="-1">Полный игровой стол</h2>
+        </div>
+        <div class="play-progress" aria-live="polite" aria-atomic="true">
+          <span><b data-play-progress-hands>0</b> из <b data-play-progress-target>0</b> раздач</span>
+          <div role="progressbar" aria-label="Прогресс игровой сессии" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" data-play-progressbar><i></i></div>
+          <small data-play-status>Стол загружается…</small>
+        </div>
+        <div class="play-recovery" data-play-recovery hidden role="alert">
+          <div>
+            <strong>Счёт раздач временно не обновляется.</strong>
+            <span>Сам стол может продолжать работать. Проверь связь ещё раз или вернись к урокам — игровая пауза не оценивается.</span>
+          </div>
+          <div class="play-recovery__actions">
+            <button class="play-button" type="button" data-play-retry>Проверить ещё раз</button>
+            <a class="play-button" data-play-recovery-continue href="/ffstart">Продолжить уроки</a>
+          </div>
+        </div>
+      </header>
+
+      <div class="play-table-shell">
+        <div class="play-table-embed" data-play-embed aria-label="Полный покерный симулятор"></div>
+        <aside class="play-complete" data-play-complete hidden tabindex="-1" aria-labelledby="play-complete-title">
+          <p class="play-eyebrow">Серия сыграна</p>
+          <h2 id="play-complete-title">Серия завершена</h2>
+          <p>Результат здесь не оценивается. Важно, что решения были приняты за настоящим столом и в нужном темпе.</p>
+          <a class="play-button is-primary" data-play-continue href="/ffstart">Продолжить программу</a>
+        </aside>
+      </div>
+    </section>
+
+    <section class="play-load-error" data-play-error hidden role="alert">
+      <p class="play-eyebrow">Игровая пауза недоступна</p>
+      <h1>Не получилось открыть эту сессию</h1>
+      <p data-play-error-message>Вернись в программу и открой игровую паузу ещё раз.</p>
+      <a class="play-button is-primary" href="/ffstart">К программе</a>
+    </section>
+
+    <footer class="play-footer">
+      <a href="/ffstart">← Все модули</a>
+      <span>Короткая серия · один стол · без оценки</span>
+    </footer>
+  </main>
+
+  <script src="/assets/poker-progress/progress.js?v=20260715-freeplay-handoff-v4"></script>
+  <script src="/assets/poker-simulator/embed.js?v=20260715-freeplay-handoff-v4"></script>
+  <script src="/assets/ffstart-course/play-session.js?v=20260715-freeplay-handoff-v4"></script>
+</body>
+</html>

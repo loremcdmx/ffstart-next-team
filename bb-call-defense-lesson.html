@@ -13,13 +13,14 @@
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-table.css?v=db213746612e">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-polish.css?v=d5b525b07ce0">
-  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260714-practice-geometry">
+  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260715-ffstart-handoff-v16">
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
-  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css?v=20260714-practice-navigation">
-  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/lesson.css?v=20260714-memory-combo-score">
+  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/base.css?v=20260716-practice-scroll-v18">
+  <link rel="stylesheet" href="assets/poker-bb-call-defense-lesson/lesson.css?v=20260716-memory-review-v23">
+  <link rel="stylesheet" href="assets/ffstart-course/media-player.css?v=20260715-ffstart-v20">
 </head>
-<body class="bb-call-lesson">
+<body class="bb-call-lesson" data-lesson-id="bb-call-defense">
   <main class="app">
     <header class="topline">
       <div class="lesson-brand">
@@ -30,9 +31,11 @@
       <nav class="step-tabs" role="tablist" aria-label="Шаги урока">
         <button class="step-tab" role="tab" type="button" aria-selected="true" aria-controls="ideaScreen" data-step-target="idea" tabindex="0">1. Раздача</button>
         <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="wisdomScreen" data-step-target="wisdom" tabindex="-1" disabled>2. Главное</button>
-        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="deepScreen" data-step-target="deep" tabindex="-1" disabled>3. Подробнее</button>
-        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="practiceScreen" data-step-target="practice" tabindex="-1" disabled>4. Практика</button>
-        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="memoryScreen" data-step-target="memory" tabindex="-1" disabled>5. Проверка памяти</button>
+        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="dataScreen" data-step-target="data" tabindex="-1" disabled>3. Данные</button>
+        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="deepScreen" data-step-target="deep" tabindex="-1" disabled>4. Подробнее</button>
+        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="videoScreen" data-step-target="video" tabindex="-1" disabled>5. Видео</button>
+        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="practiceScreen" data-step-target="practice" tabindex="-1" disabled>6. Практика</button>
+        <button class="step-tab" role="tab" type="button" aria-selected="false" aria-controls="memoryScreen" data-step-target="memory" tabindex="-1" disabled>7. Проверка памяти</button>
       </nav>
     </header>
 
@@ -44,7 +47,7 @@
           <p class="intro-subtitle">Сначала посчитай цену — потом решай</p>
           <p class="intro-lead">Ты уже поставил большой блайнд. BTN открывается до 2 BB, SB пасует — для колла тебе нужно добавить всего 1 BB, после чего экшен закрыт и сразу откроется флоп.</p>
           <p class="intro-support">Итоговая цена — 18,2%. Главный лик здесь не сложный постфлоп, а ранний пас на «некрасивую» руку. Начнём с K4o — именно такие защиты чаще всего пропускают на автопилоте.</p>
-          <button class="btn primary intro-cta" type="button" id="startLesson">Понятно, сыграть раздачу</button>
+          <button class="btn primary intro-cta" type="button" id="startLesson">Сыграть раздачу</button>
         </div>
         <div class="intro-table-visual" aria-hidden="true">
           <div class="intro-felt">
@@ -65,7 +68,7 @@
         </div>
         <div class="encounter-layout">
           <article class="panel room-stage">
-            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7-max</strong></div>
+            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7 игроков</strong></div>
             <div class="lesson-table-host" id="firstTable" aria-live="polite"></div>
           </article>
           <aside class="panel coach-panel" id="firstCoach" aria-live="polite"></aside>
@@ -106,7 +109,7 @@
                 <h3>Потери живут в некрасивых руках</h3>
                 <p>Тузы ты не выбросишь. А K4o, Q6o, J6o, T6o и 96o легко улетают в пас ещё до решения — хотя против минрейза с батона эти руки надо защищать. Таких пограничных комбинаций приходит намного больше, чем премиумов, поэтому маленький лишний фолд повторяется и складывается в большой лик на дистанции.</p>
               </div>
-              <div class="leak-hand-grid" aria-label="Часто пропускаемые коллы против BTN 2x">
+              <div class="leak-hand-grid" aria-label="Часто пропускаемые коллы против рейза BTN до 2 BB">
                 <span class="leak-hand" data-leak-cards="Kh,4d" aria-label="K4o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
                 <span class="leak-hand" data-leak-cards="Qs,6h" aria-label="Q6o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
                 <span class="leak-hand" data-leak-cards="Jd,6c" aria-label="J6o — колл"><span class="leak-hand-cards" aria-hidden="true"></span><b>колл</b></span>
@@ -118,13 +121,13 @@
             <article class="panel wisdom-slide bb-size-slide" data-wisdom-slide>
               <div class="size-copy-stage">
                 <div class="wisdom-copy-block" id="sizeDefenseDefaultCopy">
-                  <p class="eyebrow">Дефенд BB против BTN</p>
-                  <h3>Чем крупнее опен, тем уже дефенд</h3>
-                  <p>Дефенд — это колл плюс 3-бет. По исходным матрицам против BTN он сужается с 90% на минрейз до 27% против 3 BB.</p>
+                  <p class="eyebrow">Защита BB против BTN</p>
+                  <h3>Чем крупнее опен, тем уже защита</h3>
+                  <p>Защита — это колл плюс 3-бет. Против BTN она сужается с 90% на минрейз до 27% против 3 BB.</p>
                 </div>
-                <aside class="size-defense-preview" id="sizeDefensePreview" aria-label="Разбор выбранного процента дефенда" aria-live="polite" hidden></aside>
+                <aside class="size-defense-preview" id="sizeDefensePreview" aria-label="Разбор выбранного процента защиты" aria-live="polite" hidden></aside>
               </div>
-              <div class="size-ladder" aria-label="Дефенд BB против BTN по сайзам: колл плюс 3-бет">
+              <div class="size-ladder" aria-label="Защита BB против BTN по размерам рейза: колл плюс 3-бет">
                 <div><span>Опен BTN 2 BB</span><strong>+1 BB</strong><b>90%</b></div>
                 <div><span>Опен BTN 2,5 BB</span><strong>+1,5 BB</strong><button class="size-defense-trigger" type="button" data-size-preview="2_5" aria-controls="sizeDefensePreview" aria-describedby="sizeDefenseHint" aria-expanded="false">55%<small>чарт</small></button></div>
                 <div><span>Опен BTN 3 BB</span><strong>+2 BB</strong><button class="size-defense-trigger" type="button" data-size-preview="3_0" aria-controls="sizeDefensePreview" aria-describedby="sizeDefenseHint" aria-expanded="false">27%<small>чарт</small></button></div>
@@ -139,7 +142,7 @@
               </div>
               <div class="hand-shape-grid">
                 <div class="is-play"><span>Очевидная защита</span><strong>76s · T2s · JTs</strong><small>одна масть или хорошие связи</small></div>
-                <div class="is-fold"><span>Первые кандидаты в пас</span><strong>83o · 72o · 94o</strong><small>низкие, offsuit, большая дырка</small></div>
+                <div class="is-fold"><span>Первые кандидаты в пас</span><strong>83o · 72o · 94o</strong><small>низкие, разномастные, большая дырка</small></div>
               </div>
             </article>
 
@@ -163,8 +166,8 @@
               </div>
               <div class="autopilot-sequence">
                 <div><span>1</span><strong>Кто открыл?</strong><small>EP, MP, HJ, CO или BTN</small></div>
-                <div><span>2</span><strong>Какой сайз?</strong><small>2x, 2,5x или 3x</small></div>
-                <div><span>3</span><strong>Рука входит в рейндж защиты?</strong><small>только теперь жми действие</small></div>
+                <div><span>2</span><strong>Какой сайз?</strong><small>2, 2,5 или 3 BB</small></div>
+                <div><span>3</span><strong>Рука входит в диапазон защиты?</strong><small>только теперь жми действие</small></div>
               </div>
             </article>
 
@@ -172,9 +175,9 @@
               <div class="wisdom-copy-block">
                 <p class="eyebrow">Защита — не синоним колла</p>
                 <h3>Доведи три цвета до автоматизма</h3>
-                <p>Для BTN 2x ориентир методички: 9% рук идут в 3-бет, 81% — в колдколл, 10% — в пас. Цель тренажёра — узнавать клетку без паузы.</p>
+                <p>Для рейза BTN до 2 BB базовый ориентир: 9% рук идут в 3-бет, 81% — в колл, 10% — в пас. Цель тренажёра — узнавать клетку без паузы.</p>
               </div>
-              <div class="action-split" aria-label="Распределение защиты против BTN 2x">
+              <div class="action-split" aria-label="Распределение защиты против рейза BTN до 2 BB">
                 <div class="is-raise"><span>3-бет</span><strong>9%</strong></div>
                 <div class="is-call"><span>Колл</span><strong>81%</strong></div>
                 <div class="is-fold"><span>Пас</span><strong>10%</strong></div>
@@ -183,13 +186,13 @@
 
             <article class="panel wisdom-slide bb-position-slide" data-wisdom-slide>
               <div class="wisdom-copy-block">
-                <p class="eyebrow">Позиция меняет силу ренджа</p>
-                <h3>Минрейз BTN и 3x EP — разные задачи</h3>
+                <p class="eyebrow">Позиция меняет силу диапазона</p>
+                <h3>Минрейз BTN и рейз EP до 3 BB — разные задачи</h3>
                 <p>Против позднего широкого опена защищайся шире. Против раннего диапазона и увеличенного сайза нижняя часть защиты быстро уходит в пас.</p>
               </div>
               <div class="position-contrast">
-                <div><span>BTN · 2x</span><strong>90% продолжений</strong><small>колл + 3-бет</small></div>
-                <div><span>EP · 3x</span><strong>13% продолжений</strong><small>колл + 3-бет</small></div>
+                <div><span>BTN · 2 BB</span><strong>90% продолжений</strong><small>колл + 3-бет</small></div>
+                <div><span>EP · 3 BB</span><strong>13% продолжений</strong><small>колл + 3-бет</small></div>
               </div>
             </article>
 
@@ -200,7 +203,7 @@
                 <p>Один игрок открыл, остальные выбросили, ты на BB закрываешь экшен. Если SB или кто-то ещё вошёл в банк, это уже мультивей: лучше шансы банка, но больше доминации и обратных имплайдов.</p>
               </div>
               <div class="scope-contrast">
-                <div class="is-in"><span>Этот урок</span><strong>Рейз → все пас → BB</strong><small>heads-up, экшен закрывается</small></div>
+                <div class="is-in"><span>Этот урок</span><strong>Рейз → все пас → BB</strong><small>один на один, экшен закрывается</small></div>
                 <div class="is-out"><span>Другой спот</span><strong>Рейз → колл → BB</strong><small>не переноси эту матрицу автоматически</small></div>
               </div>
             </article>
@@ -223,6 +226,30 @@
       </div>
     </section>
 
+    <section class="screen league-data-screen" id="dataScreen" role="tabpanel" data-step="data" aria-labelledby="leagueDefenseTitle">
+      <article class="panel league-data-panel bb-league-data-slide" id="leagueDefenseSlide" aria-labelledby="leagueDefenseTitle">
+        <div class="league-defense-head">
+          <div>
+            <p class="eyebrow">Данные FunFarm · связь по когортам</p>
+            <h2 id="leagueDefenseTitle">Навык защиты BB растёт вместе с ABI</h2>
+          </div>
+        </div>
+
+        <div class="league-defense-controls" aria-label="Фильтры сравнительных чартов">
+          <div class="league-filter-group is-position"><span>Позиция</span><div class="segmented-control" id="leaguePositionTabs" role="tablist" aria-label="Позиция рейзера для сравнения"></div></div>
+          <div class="league-filter-group is-size"><span>Сайз</span><div class="segmented-control" id="leagueSizeTabs" role="tablist" aria-label="Сайз опена для сравнения"></div></div>
+          <div class="league-filter-group is-league"><span>Лига</span><div class="segmented-control" id="leagueTabs" role="tablist" aria-label="Лига для сравнения"></div></div>
+        </div>
+
+        <div class="league-defense-comparison" id="leagueDefenseComparison">
+          <article class="league-range-card is-novice" id="noviceDefenseChart" aria-label="Чарт совсем новых игроков"></article>
+          <article class="league-range-card is-league" id="selectedLeagueDefenseChart" aria-label="Чарт выбранной лиги"></article>
+        </div>
+
+        <p class="league-defense-source" id="leagueDefenseSource">Ранг берётся на момент раздачи. Слева — ранги 15–18; ранг 15 также остаётся внутри 3 лиги справа.</p>
+      </article>
+    </section>
+
     <section class="screen deep-screen" id="deepScreen" role="tabpanel" data-step="deep" aria-labelledby="deepTitle">
       <div class="deep-heading">
         <div><p class="eyebrow">Необязательное продолжение</p><h2 id="deepTitle">Цена колла и точные матрицы</h2></div>
@@ -239,7 +266,6 @@
       <section class="panel bb-range-lab" aria-labelledby="rangeTitle">
         <div class="lab-heading range-heading">
           <div><p class="eyebrow">Шаг 2 · выбери ситуацию</p><h3 id="rangeTitle">Диапазон BB</h3></div>
-          <p>Розовый — 3-бет · зелёный — колдколл · белый — пас. Серые и жёлтые полупрозрачные фрагменты на исходных PNG — авторские микс-пометки; решение читается по основной заливке клетки.</p>
         </div>
         <div class="range-controls">
           <div><span>Сайз рейзера</span><div class="segmented-control" id="rangeSizeTabs" role="tablist" aria-label="Сайз для матрицы"></div></div>
@@ -247,7 +273,7 @@
         </div>
         <div class="range-workspace">
           <div class="range-source-card">
-            <div class="range-source-head"><strong id="rangeScenarioTitle">BTN · 2 BB</strong><span id="rangeOpenerWidth">Ренж рейзера 52%</span></div>
+            <div class="range-source-head"><strong id="rangeScenarioTitle">BTN · 2 BB</strong><span id="rangeOpenerWidth">Диапазон рейзера 52%</span></div>
             <div class="range-matrix-legend" aria-label="Легенда матрицы"><span><i class="is-raise"></i>3-бет</span><span><i class="is-call"></i>Колл</span><span><i class="is-fold"></i>Пас</span></div>
             <div class="range-matrix-scroll">
               <div class="bb-range-matrix" id="rangeChart" role="grid" aria-label="Кликабельная матрица защиты большого блайнда" aria-describedby="rangeMatrixHelp"></div>
@@ -266,15 +292,19 @@
       </section>
     </section>
 
+    <section class="screen video-screen" id="videoScreen" role="tabpanel" data-step="video" aria-label="Видео-разбор">
+      <div data-ffstart-legacy-media data-ffstart-media-header-copy="none" hidden></div>
+    </section>
+
     <section class="screen practice-screen" id="practiceScreen" role="tabpanel" data-step="practice" aria-labelledby="practiceTitle">
       <div class="practice-heading">
         <div><p class="eyebrow">Учебная очередь</p><h2 id="practiceTitle">Отработай границу колла</h2></div>
-        <p>Сначала позиция, затем сайз, затем рука. После ответа увидишь исходную клетку и причину.</p>
+        <p>Сначала позиция, затем сайз, затем рука. После ответа увидишь нужную клетку чарта и причину.</p>
       </div>
 
       <div class="practice-setup" id="practiceSetup">
         <article class="panel practice-integrity">
-          <div><p class="eyebrow">Честная граница данных</p><h3>Тренируем решение, а не доезд</h3><p>Мы проверяем совпадение с исходной матрицей. Флоп и результат банка не награждают и не наказывают префлоп-решение.</p></div>
+          <div><p class="eyebrow">Что именно тренируем</p><h3>Решение, а не доезд</h3><p>Мы проверяем совпадение с базовой линией. Флоп и результат банка не награждают и не наказывают префлоп-решение.</p></div>
           <div class="practice-legend"><span><i class="legend-call"></i>Колл</span><span><i class="legend-raise"></i>3-бет</span><span><i class="legend-fold"></i>Пас</span></div>
         </article>
         <article class="panel practice-launch">
@@ -294,7 +324,7 @@
         </div>
         <div class="encounter-layout practice-layout">
           <article class="panel room-stage">
-            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7-max</strong></div>
+            <div class="room-stage-head"><span class="live-dot" aria-hidden="true"></span><strong>Учебный стол · 7 игроков</strong></div>
             <div class="lesson-table-host" id="practiceTable" aria-live="polite"></div>
           </article>
           <aside class="panel coach-panel" id="practiceCoach" aria-live="polite"></aside>
@@ -304,7 +334,7 @@
 
     <section class="screen memory-screen" id="memoryScreen" role="tabpanel" data-step="memory" aria-labelledby="memoryTitle">
       <div class="memory-heading">
-        <div><p class="eyebrow">Пятый шаг · восстанови источник</p><h2 id="memoryTitle">Нарисуй диапазон защиты BB</h2></div>
+        <div><p class="eyebrow">Седьмой шаг · восстанови чарт</p><h2 id="memoryTitle">Нарисуй диапазон защиты BB</h2></div>
         <p>Выбери позицию и сайз, посмотри на точный чарт 10 секунд, затем восстанови все 169 клеток.</p>
       </div>
 
@@ -334,16 +364,19 @@
   <script defer src="assets/poker-kit/decks/deck-library.js?v=b03058b680c1"></script>
   <script defer src="assets/poker-kit/chips/chip-library.js?v=eab58b025e92"></script>
   <script defer src="assets/poker-simulator/simulator-board-render.js?v=cb215df9f7dd"></script>
-  <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=20260714-card-pocket-20"></script>
+  <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=20260715-ffstart-handoff-v16"></script>
   <script defer src="assets/poker-simulator/simulator-seat-renderer.js?v=fe2184958bf0"></script>
-  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260713-pot-label"></script>
-  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260713-pot-layout"></script>
-  <script defer src="assets/poker-simulator/embed.js?v=20260714-practice-api"></script>
-  <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260714-practice-api"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/engine.js?v=20260713-1"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/range-data.js?v=20260713-1"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/data.js?v=20260714-call-label"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/recall.js?v=20260714-memory-combo-score"></script>
-  <script defer src="assets/poker-bb-call-defense-lesson/lesson.js?v=20260714-memory-combo-score"></script>
+  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-simulator/embed.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/engine.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/range-data.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/data.js?v=20260715-ffstart-handoff-v18"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/recall.js?v=20260716-memory-review-v20"></script>
+  <script defer src="assets/poker-progress/progress.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-bb-call-defense-lesson/lesson.js?v=20260716-memory-review-v20"></script>
+  <script defer src="assets/ffstart-course/media-player.js?v=20260715-ffstart-v21"></script>
+  <script defer src="assets/ffstart-course/legacy-media.js?v=20260715-ffstart-v20"></script>
 </body>
 </html>

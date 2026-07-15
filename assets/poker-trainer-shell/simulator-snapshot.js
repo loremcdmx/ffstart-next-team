@@ -163,7 +163,7 @@
     if (!text) return [];
     return text
       .replace(/\s+and\s+/gi, ", ")
-      .split(/[,;]\s*/i)
+      .split(/;\s*|(?<!\d),(?!\d)\s*/i)
       .map(cleanLine)
       .filter(Boolean);
   }
@@ -740,7 +740,7 @@
       return `
         <div class="action-status is-hero is-concept">
           <strong>Ситуация</strong>
-          <span>${escapeHtml(cleanLine(table.__spot?.question) || "Выберите лучший вывод для этой турнирной ситуации.")}</span>
+          <span>${escapeHtml(cleanLine(table.__spot?.question) || "Выбери лучший вывод для этой турнирной ситуации.")}</span>
         </div>
       `;
     }
@@ -759,7 +759,7 @@
       ? `К коллу ${amountDisplay(table.toCall)}`
       : table.currentBet
         ? `Ставка ${amountDisplay(table.currentBet)}`
-        : "Выберите действие";
+        : "Выбери действие";
     const actionSummary = actions.map((action) => {
       const parts = [action.seat, action.label, action.amount]
         .map((part) => cleanLine(part))

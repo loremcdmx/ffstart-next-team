@@ -28,11 +28,20 @@ function seededMath(seed = 0x51eed) {
 }
 
 function loadPackHarness() {
+  const postedMessages = [];
   const documentRef = {
     documentElement: { dataset: {} },
     readyState: "loading",
     addEventListener() {},
     querySelector() { return null; }
+  };
+  const windowRef = {
+    location: { search: "?embedded=1&practice=resteal&hands=25&run=course-test", origin: "https://ff.test" },
+    parent: { postMessage(payload, targetOrigin) { postedMessages.push({ payload, targetOrigin }); } },
+    document: documentRef,
+    setInterval,
+    clearInterval,
+    addEventListener() {}
   };
   const context = createContext({
     console,
@@ -41,13 +50,7 @@ function loadPackHarness() {
     setInterval,
     clearInterval,
     document: documentRef,
-    window: {
-      location: { search: "?embedded=1&practice=resteal&hands=25" },
-      document: documentRef,
-      setInterval,
-      clearInterval,
-      addEventListener() {}
-    },
+    window: windowRef,
     globalThis: {}
   });
   const profile = readFileSync(join(root, "assets/poker-kit/simulator/bot-strategy-profile.js"), "utf8");
@@ -64,7 +67,8 @@ function loadPackHarness() {
     pack: context.window.PokerRestealSimulatorPack,
     advice: context.window.PokerRestealAdvice,
     parts: context.window.PokerSimulatorEngineParts,
-    document: documentRef
+    document: documentRef,
+    postedMessages
   };
 }
 
@@ -81,7 +85,12 @@ function loadBrowserKit(relativePath, globalName, windowExtras = {}) {
   return context.window[globalName] || context.module.exports;
 }
 
-const { engine, pack, advice, parts, document: packDocument } = loadPackHarness();
+const { engine, pack, advice, parts, document: packDocument, postedMessages } = loadPackHarness();
+assert(pack.postCourseCompletion(24) === false && postedMessages.length === 0, "course completion is not posted before 25 played hands");
+assert(pack.postCourseCompletion(25) === true && postedMessages.length === 1, "course completion is posted once at 25 played hands");
+assert(pack.postCourseCompletion(30) === false && postedMessages.length === 1, "course completion bridge is one-shot per simulator run");
+assert(postedMessages[0].targetOrigin === "https://ff.test", "course completion uses the exact same-origin postMessage target");
+assert(postedMessages[0].payload.schema === "ffstart-legacy-bridge-v1" && postedMessages[0].payload.type === "ffstart:resteal-complete" && postedMessages[0].payload.completedHands === 25, "course completion payload has the verified bridge contract");
 const settings = pack.applyBootSettings({
   difficulty: "standard",
   botLineup: "mixed",

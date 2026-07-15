@@ -112,7 +112,7 @@ assert(restealLessonSource.includes("const foldBaselineBb = Number(Content?.comp
 assert(!restealLessonSource.includes("[category]?.fold?.avg_ev_bb"), "mixed SB/BB category folds do not leak into the BB tooltip or bars");
 assert(restealLessonSource.includes("EV паса (${compactSigned(foldBaselineBb, 2)} BB)"), "resteal tooltip uses the exact BB fold price in its formula");
 assert(restealLessonSource.includes("Показанное число — преимущество над пасом, а не абсолютный EV"), "resteal tooltip names the displayed metric as advantage over folding");
-assert(restealLessonHtml.includes("Плюс по эквити считаем относительно паса: исходный EV действия − EV паса"), "resteal methodology documents the fixed BB rebase");
+assert(restealLessonHtml.includes("Сравнение считаем относительно паса: исходный EV действия − EV паса"), "resteal methodology documents the fixed BB rebase");
 
 console.log(`✓ resteal field grids: reg ${goodRegGrid.toFixed(1)}% · nit ${nitGrid.toFixed(1)}% · active fish ${activeFishGrid.toFixed(1)}%`);
 console.log("✓ learning contracts passed");

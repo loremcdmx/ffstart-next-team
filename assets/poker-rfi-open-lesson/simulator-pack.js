@@ -78,12 +78,12 @@
   function installEngine(engine) {
     if (!engine?.registerPack) return false;
     engine.registerPack(PACK_KEY, {
-      name: "RFI по позициям · урок",
+      name: "Опен-рейз по позициям · урок",
       stackDepths: [40],
       playableWeight: 0.5,
       spots: enginePositions.map((position) => ({
         key: `rfi-${position.toLowerCase()}`,
-        title: `${learningPosition[position]} first in`,
+        title: `${learningPosition[position]} · до тебя никто не вошёл в банк`,
         heroPosition: position,
         villainPosition: "BB",
         prompt: `Все до тебя выбросили. Открыть ${OPEN_SIZE_LABEL} BB или пас?`
@@ -193,7 +193,7 @@
     if (grade.action === "limp") {
       return {
         title: "Колл здесь — это лимп",
-        text: `В unopened-RFI выбираем только рейз ${OPEN_SIZE_LABEL} BB или пас.`,
+        text: `Когда до тебя никто не вошёл в банк, выбираем только рейз ${OPEN_SIZE_LABEL} BB или пас.`,
         tone: "wrong"
       };
     }
@@ -255,7 +255,7 @@
           <div><span>Разбор завершённой раздачи ${grade.handNo}</span><strong>${grade.position} · ${grade.combo}</strong></div>
           <p>Твоя мишень — чарт позиции. Кольцо показывает сыгранную руку.</p>
         </header>
-        <div class="rfi-review-legend"><span class="is-open">Диапазон</span><span class="is-pair">Пары</span><span class="is-suited">Suited</span><span class="is-offsuit">Offsuit</span><small>Жёлтая клетка — рейз · исходный вес выше 75%</small></div>
+        <div class="rfi-review-legend"><span class="is-open">Диапазон</span><span class="is-pair">Пары</span><span class="is-suited">Suited</span><span class="is-offsuit">Offsuit</span><small>Учебный чарт: жёлтая клетка — рейз, если частота в исходнике выше 75%</small></div>
         <div class="rfi-review-chart" aria-label="Чарт ${grade.position}; сыгранная рука ${grade.combo}">${reviewChart(grade)}</div>
         <footer class="rfi-review-footer">
           <div><strong id="rfi-review-title">${verdict.title}</strong><p>${verdict.text}</p><small>Ты выбрал: ${actionLabel(grade.action)} · База: ${actionLabel(grade.expected)}</small></div>
@@ -432,7 +432,7 @@
       hud.setAttribute("aria-live", "polite");
       const targets = root.PokerRfiData?.targets || { EP: 20, MP: 24, HJ: 32, CO: 48, BTN: 66 };
       const sessionLimit = sessionHands();
-      hud.innerHTML = `<strong>RFI по позициям</strong><span>EP ${targets.EP} · MP ${targets.MP} · HJ ${targets.HJ} · CO ${targets.CO} · BTN ${targets.BTN}</span><small>Все до Hero выбросили · рейз ${OPEN_SIZE_LABEL} BB или пас · колл покажет подсказку</small><b data-rfi-score>${sessionLimit > 0 ? `0 / ${sessionLimit} верно` : "0 верно · 0 сыграно"}</b>`;
+      hud.innerHTML = `<strong>Опен-рейз по позициям</strong><span>EP ${targets.EP}% · MP ${targets.MP}% · HJ ${targets.HJ}% · CO ${targets.CO}% · BTN ${targets.BTN}%</span><small>Все до героя выбросили · рейз ${OPEN_SIZE_LABEL} BB или пас · колл покажет подсказку</small><b data-rfi-score>${sessionLimit > 0 ? `0 / ${sessionLimit} верно` : "0 верно · 0 сыграно"}</b>`;
       topbar.prepend(hud);
       let signature = "";
       const update = () => {

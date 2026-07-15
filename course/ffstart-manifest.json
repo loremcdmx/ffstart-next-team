@@ -1,0 +1,210 @@
+{
+  "schema": "ffstart-course-v1",
+  "version": "2026-07-15.1",
+  "title": "FF Start",
+  "subtitle": "От первой раздачи до самостоятельных решений",
+  "progressKey": "ffstart_course_v1",
+  "playSessions": [
+    {
+      "id": "first-orbits",
+      "afterLessonId": "hand-actions",
+      "title": "Первые круги за столом",
+      "kicker": "Просто сыграй",
+      "body": "Пять живых раздач без оценки. Осмотрись за столом, попробуй кнопки и замечай, как позиция меняется вместе с баттоном.",
+      "hands": 5,
+      "mode": "random",
+      "modeLabel": "Кэш 6-max",
+      "stack": { "minBb": 40, "maxBb": 80, "label": "40–80 BB" },
+      "tempo": "calm",
+      "duration": "около 7 минут",
+      "nextRoute": "/ffstart/pairs-kicker",
+      "nextLabel": "К парам и кикеру"
+    },
+    {
+      "id": "strategy-mix",
+      "afterLessonId": "multiway",
+      "title": "Собери стратегию в игре",
+      "kicker": "Свободная серия",
+      "body": "Восемь раздач с разными позициями и глубиной. Не ищи идеальный процент — проговаривай, зачем ставишь, коллируешь или сдаёшься.",
+      "hands": 8,
+      "mode": "random",
+      "modeLabel": "Кэш 6-max",
+      "stack": { "minBb": 25, "maxBb": 80, "label": "25–80 BB" },
+      "tempo": "calm",
+      "duration": "около 10 минут",
+      "nextRoute": "/bb-call-defense-lesson",
+      "nextLabel": "К защите большого блайнда"
+    },
+    {
+      "id": "blind-pressure",
+      "afterLessonId": "blind-versus-blind",
+      "title": "Охота за блайндами",
+      "kicker": "Короткая игровая пауза",
+      "body": "Шесть раздач, чтобы почувствовать цену уже вложенных фишек. Следи, когда оказываешься на SB и BB, но играй всю раздачу целиком.",
+      "hands": 6,
+      "mode": "random",
+      "modeLabel": "Кэш 6-max",
+      "stack": { "minBb": 15, "maxBb": 60, "label": "15–60 BB" },
+      "tempo": "fast",
+      "duration": "около 7 минут",
+      "nextRoute": "/ffstart/versus-aggressive",
+      "nextLabel": "К игре против агрессии"
+    },
+    {
+      "id": "short-stack-run",
+      "afterLessonId": "resteal",
+      "title": "Короткий стек в движении",
+      "kicker": "Мини-сессия MTT",
+      "body": "Восемь турнирных раздач со стеком 25 BB. Почувствуй, как каждое открытие и каждый колл быстрее связывают стек.",
+      "hands": 8,
+      "mode": "tournament",
+      "modeLabel": "Турнир 6-max",
+      "stack": { "minBb": 25, "maxBb": 25, "label": "25 BB" },
+      "tempo": "fast",
+      "duration": "около 8 минут",
+      "nextRoute": "/ffstart/decision-logic",
+      "nextLabel": "К логике решений"
+    },
+    {
+      "id": "dress-rehearsal",
+      "afterLessonId": "resources",
+      "title": "Репетиция самостоятельной игры",
+      "kicker": "Перед итоговым тренажёром",
+      "body": "Десять турнирных раздач без подсказок и оценки. Принимай решение, называй его причину и только потом переходи к следующей руке.",
+      "hands": 10,
+      "mode": "tournament",
+      "modeLabel": "Турнир 6-max",
+      "stack": { "minBb": 50, "maxBb": 50, "label": "50 BB" },
+      "tempo": "calm",
+      "duration": "около 12 минут",
+      "nextRoute": "/ffstart/final-exam",
+      "nextLabel": "К итоговому тренажёру"
+    }
+  ],
+  "modules": [
+    {
+      "id": "welcome",
+      "order": 1,
+      "title": "Вступление",
+      "promise": "Пойми ритм курса и преврати ошибки в маршрут роста.",
+      "lessons": [
+        { "id": "course-start", "title": "Как пройти FF Start", "route": "/ffstart/course-start", "skillKey": "start", "kind": "concept", "minutes": 12, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 6, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "poker-foundation",
+      "order": 2,
+      "title": "Введение в покер",
+      "promise": "Научись читать стол, карты, позиции и доступные действия.",
+      "lessons": [
+        { "id": "poker-history-rules", "title": "Игра, стол и улицы", "route": "/ffstart/poker-history-rules", "skillKey": "start", "kind": "poker", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["istoria_pokera_trainer_n"], "sessionLength": 4, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "combinations", "title": "Комбинации", "route": "/ffstart/combinations", "skillKey": "combos", "kind": "poker", "minutes": 28, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["poker_kombinacii_3_n"], "sessionLength": 10, "passScore": 90 }, "publicStatus": "published" },
+        { "id": "positions", "title": "Позиции за столом", "route": "/ffstart/positions", "skillKey": "positions", "kind": "concept", "minutes": 20, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_pozicii"], "sessionLength": 10, "passScore": 85 }, "publicStatus": "published" },
+        { "id": "hand-actions", "title": "Раздача и основные действия", "route": "/ffstart/hand-actions", "skillKey": "start", "kind": "poker", "minutes": 26, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_razdacha_2_n", "test_termini_n"], "sessionLength": 4, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "hand-reading",
+      "order": 3,
+      "title": "Комбинации в покере",
+      "promise": "Сравнивай готовые руки, кикеры и считай ауты дро без догадок.",
+      "lessons": [
+        { "id": "pairs-kicker", "title": "Пары и кикер", "route": "/ffstart/pairs-kicker", "skillKey": "combos", "kind": "poker", "minutes": 22, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_pari_kiker"], "sessionLength": 8, "passScore": 90 }, "publicStatus": "published" },
+        { "id": "draws-outs", "title": "Дро-комбинации и ауты", "route": "/ffstart/draws-outs", "skillKey": "combos", "kind": "poker", "minutes": 28, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_dro_kombinacii_n"], "sessionLength": 12, "passScore": 85 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "tournaments",
+      "order": 4,
+      "title": "Турнирная игра",
+      "promise": "Связывай формат, стадию и размер стека с текущей задачей.",
+      "lessons": [
+        { "id": "tournament-formats", "title": "Виды и форматы турниров", "route": "/ffstart/tournament-formats", "skillKey": "tournament", "kind": "concept", "minutes": 22, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_vidi_turnirov"], "sessionLength": 10, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "tournament-navigation", "title": "Как ориентироваться в турнире", "route": "/ffstart/tournament-navigation", "skillKey": "tournament", "kind": "concept", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["kak_orientirovatsya_v_turn_dz"], "sessionLength": 10, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "first-strategies",
+      "order": 5,
+      "title": "Первые стратегии",
+      "promise": "Собери базовые линии от префлопа до раздач с несколькими соперниками.",
+      "lessons": [
+        { "id": "preflop-start", "title": "Старт игры: префлоп", "route": "/ffstart/preflop-start", "skillKey": "start", "kind": "poker", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_termini_n"], "sessionLength": 12, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "rfi-open-position", "title": "Опен-рейзы по позициям", "route": "/rfi-open-position-lesson", "skillKey": "open_first", "kind": "legacy", "minutes": 42, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["openraise_from_ep1", "openraise_from_ep2", "openraise_from_mp", "openraise_from_hj", "openraise_from_co", "openraise_from_bu"], "sessionLength": 25, "passScore": 80 }, "publicStatus": "published" },
+        { "id": "betting-purpose", "title": "Зачем мы ставим", "route": "/ffstart/betting-purpose", "skillKey": "start", "kind": "poker", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_stavki_n"], "sessionLength": 12, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "cbet-in-position", "title": "Продолжать ставить или остановиться", "route": "/ffstart/cbet-in-position", "skillKey": "flop", "kind": "poker", "minutes": 32, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_kontbet_n"], "sessionLength": 14, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "play-out-of-position", "title": "Как играть без позиции", "route": "/ffstart/play-out-of-position", "skillKey": "flop", "kind": "poker", "minutes": 30, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_bez_pozicii_n"], "sessionLength": 14, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "isolation-raise", "title": "Изоляционные рейзы", "route": "/ffstart/isolation-raise", "skillKey": "isolation", "kind": "poker", "minutes": 38, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["trainer_izol_reiz_1_n", "trainer_izol_reiz_2_n", "trainer_izol_reiz_3_n"], "sessionLength": 16, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "cold-call", "title": "Когда колл выгоден", "route": "/ffstart/cold-call", "skillKey": "range_call", "kind": "poker", "minutes": 26, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_cold_call"], "sessionLength": 12, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "three-bet", "title": "3-бет: когда повышать", "route": "/ffstart/three-bet", "skillKey": "vs_3bet", "kind": "poker", "minutes": 46, "steps": ["encounter", "wisdom", "deep", "practice", "recall"], "practice": { "sourceRows": ["strategia_3bet_trainer_1_n", "strategia_3bet_trainer_2_n", "strategia_3bet_trainer_3_n", "strategia_3bet_trainer_4_n", "strategia_3bet_trainer_5_n"], "sessionLength": 18, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "versus-three-bet", "title": "Защита против 3-бета", "route": "/ffstart/versus-three-bet", "skillKey": "vs_3bet", "kind": "poker", "minutes": 30, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["zashita_3bet_dz_n"], "sessionLength": 14, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "multiway", "title": "Раздачи с несколькими игроками", "route": "/ffstart/multiway", "skillKey": "flop", "kind": "poker", "minutes": 30, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_multi_poty_n"], "sessionLength": 14, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "blinds",
+      "order": 6,
+      "title": "Игра на блайндах",
+      "promise": "Защищай большой блайнд по выгодной цене и играй шире один на один между SB и BB.",
+      "lessons": [
+        { "id": "bb-call-defense", "title": "Защита BB коллом", "route": "/bb-call-defense-lesson", "skillKey": "bb_defense", "kind": "legacy", "minutes": 44, "steps": ["encounter", "wisdom", "deep", "practice", "recall"], "practice": { "sourceRows": ["test_strategia_bb_n"], "sessionLength": 21, "passScore": 78 }, "publicStatus": "published" },
+        { "id": "blind-versus-blind", "title": "Блайнд против блайнда", "route": "/ffstart/blind-versus-blind", "skillKey": "bb_defense", "kind": "poker", "minutes": 34, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["sb_vs_bb_trainer_1_n", "sb_vs_bb_trainer_2_n"], "sessionLength": 14, "passScore": 78 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "opponent-types",
+      "order": 7,
+      "title": "Против разных соперников",
+      "promise": "Меняй линию по реальному профилю, а не по ярлыку.",
+      "lessons": [
+        { "id": "versus-aggressive", "title": "Если соперник агрессивный", "route": "/ffstart/versus-aggressive", "skillKey": "review", "kind": "poker", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 8, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "versus-passive", "title": "Если соперник пассивный", "route": "/ffstart/versus-passive", "skillKey": "review", "kind": "poker", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 8, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "short-stack",
+      "order": 8,
+      "title": "Игра с коротким стеком",
+      "promise": "Выбирай олл-ин по стеку, позиции и мёртвым деньгам.",
+      "lessons": [
+        { "id": "push-fold", "title": "Олл-ин или пас", "route": "/ffstart/push-fold", "skillKey": "short", "kind": "poker", "minutes": 34, "steps": ["encounter", "wisdom", "deep", "practice", "recall"], "practice": { "sourceRows": ["open_push_short_trainer_1_n", "open_push_short_trainer_2_n"], "sessionLength": 16, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "jam-over-raise", "title": "Олл-ин против ставки", "route": "/ffstart/jam-over-raise", "skillKey": "short", "kind": "poker", "minutes": 30, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["3bet_push_dz_n"], "sessionLength": 14, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "resteal", "title": "Рестил 25–40 BB", "route": "/resteal-lesson", "skillKey": "short", "kind": "legacy", "minutes": 42, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 25, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "thinking-math",
+      "order": 9,
+      "title": "Игровое мышление и математика",
+      "promise": "Считай цену риска и отличай фишки от денежной ценности.",
+      "lessons": [
+        { "id": "decision-logic", "title": "Как принимать решения", "route": "/ffstart/decision-logic", "skillKey": "math", "kind": "concept", "minutes": 26, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_matematika_1"], "sessionLength": 10, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "poker-math", "title": "Цена, ауты и ожидание", "route": "/ffstart/poker-math", "skillKey": "math", "kind": "poker", "minutes": 40, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_matematika_1", "test_matematika_2_n"], "sessionLength": 16, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "icm", "title": "Когда фишки стоят по-разному", "route": "/ffstart/icm", "skillKey": "icm_short", "kind": "concept", "minutes": 32, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["test_icm"], "sessionLength": 12, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "profession",
+      "order": 10,
+      "title": "Покер как профессия",
+      "promise": "Построй реалистичный режим, банкролл и следующий шаг.",
+      "lessons": [
+        { "id": "poker-world", "title": "Как устроен покерный мир", "route": "/ffstart/poker-world", "skillKey": "review", "kind": "concept", "minutes": 20, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 6, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "poker-profession", "title": "Профессия: покерист", "route": "/ffstart/poker-profession", "skillKey": "review", "kind": "concept", "minutes": 22, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 6, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "poker-perspectives", "title": "Перспективы в покере", "route": "/ffstart/poker-perspectives", "skillKey": "review", "kind": "concept", "minutes": 20, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 6, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "microstakes", "title": "Микролимиты без иллюзий", "route": "/ffstart/microstakes", "skillKey": "review", "kind": "concept", "minutes": 24, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 6, "passScore": 75 }, "publicStatus": "published" },
+        { "id": "course-feedback", "title": "Разбор курса и следующий шаг", "route": "/ffstart/course-feedback", "skillKey": "review", "kind": "concept", "minutes": 12, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": [], "sessionLength": 6, "passScore": 75 }, "publicStatus": "published" }
+      ]
+    },
+    {
+      "id": "finish",
+      "order": 11,
+      "title": "Закрепление",
+      "promise": "Собери справочники в систему и проверь себя смешанной серией.",
+      "lessons": [
+        { "id": "resources", "title": "Библиотека решений", "route": "/ffstart/resources", "skillKey": "review", "kind": "concept", "minutes": 20, "steps": ["encounter", "wisdom", "deep", "practice", "recall"], "practice": { "sourceRows": [], "sessionLength": 12, "passScore": 80 }, "publicStatus": "published" },
+        { "id": "final-exam", "title": "Итоговый тренажёр", "route": "/ffstart/final-exam", "skillKey": "exam", "kind": "poker", "minutes": 55, "steps": ["encounter", "wisdom", "deep", "practice"], "practice": { "sourceRows": ["final_exam_trainer_n"], "sessionLength": 25, "passScore": 80 }, "publicStatus": "published" }
+      ]
+    }
+  ]
+}

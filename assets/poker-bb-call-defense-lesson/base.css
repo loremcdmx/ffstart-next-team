@@ -1093,8 +1093,6 @@ body.practice-is-running .topline {
   z-index: 60;
   top: 0;
   display: flex;
-  flex-direction: row;
-  align-items: center;
   gap: 10px;
   min-height: 50px;
   margin-bottom: 6px;
@@ -1108,7 +1106,7 @@ body.practice-is-running .topline {
 body.practice-is-running .lesson-brand { flex: 0 1 auto; min-width: 0; }
 body.practice-is-running .step-tabs {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   flex: 1 1 auto;
   gap: 6px;
   min-width: 0;
@@ -1116,7 +1114,7 @@ body.practice-is-running .step-tabs {
   padding: 0;
 }
 body.practice-is-running .step-tab { width: 100%; min-width: 0; padding: 7px 9px; }
-.practice-screen.is-running { grid-template-rows: auto auto minmax(0, 1fr); min-width: 0; min-height: 620px; height: max(620px, calc(100svh - 68px)); overflow: hidden; }
+.practice-screen.is-running { grid-template-rows: auto; min-width: 0; min-height: 0; height: auto; overflow: visible; }
 .practice-screen.is-running.is-active { display: grid; }
 .practice-screen.is-running .practice-heading { display: none; }
 .practice-screen.is-running .practice-disclaimer { display: grid; grid-template-columns: auto minmax(430px, 1fr); gap: 12px; min-height: 42px; margin: 0 0 5px; padding: 5px 9px; border-radius: 10px; }
@@ -1134,7 +1132,7 @@ body.practice-is-running .step-tab { width: 100%; min-width: 0; padding: 7px 9px
 .practice-screen.is-running .practice-simulator-shell iframe { width: 100%; height: 100%; min-width: 0; min-height: 0; }
 .practice-device-note { display: none; margin: 0; color: rgba(255, 234, 146, .86); font-size: 13px; font-weight: 750; }
 
-@media (max-width: 900px) {
+@media (max-width: 1180px) {
   body.practice-is-running .topline { flex-direction: column; align-items: stretch; }
   body.practice-is-running .lesson-brand { width: 100%; }
   .practice-screen.is-running { min-height: calc(100svh - 126px); height: auto; overflow: visible; }
@@ -1142,7 +1140,6 @@ body.practice-is-running .step-tab { width: 100%; min-width: 0; padding: 7px 9px
 
 @media (max-width: 620px) {
   body.practice-is-running .step-tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  body.practice-is-running .step-tab:last-child { grid-column: 1 / -1; }
 }
 
 @media (max-width: 1120px) {

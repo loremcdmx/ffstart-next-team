@@ -1,0 +1,7 @@
+.git
+.vercel
+node_modules
+browser-qa
+outputs
+**/*.ipynb
+**/*.sql

@@ -13,10 +13,10 @@
   <link rel="stylesheet" href="assets/poker-kit/chips/chips.css?v=ed4e97084f43">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-table.css?v=db213746612e">
   <link rel="stylesheet" href="assets/poker-simulator/simulator-polish.css?v=d5b525b07ce0">
-  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260714-practice-geometry">
+  <link rel="stylesheet" href="assets/poker-trainer-shell/shell.css?v=20260715-ffstart-handoff-v16">
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
-  <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=20260714-prod-refresh-1">
+  <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=20260715-ffstart-handoff-v16">
   <link rel="stylesheet" href="assets/poker-resteal-lesson/rank-comparison.css?v=90e50a2b0bee">
 </head>
 <body>
@@ -43,7 +43,7 @@
           <p class="intro-subtitle">Защищайся рестил-пушами</p>
           <p class="intro-lead">На блайндах новички часто коллируют, пасуют или делают небольшой 3-бет: стек 25–40 BB кажется слишком глубоким для пуша. Из-за этого они теряют часть ожидания — BTN открывает много слабых рук и не может ответить на большой олл-ин со всеми.</p>
           <p class="intro-support">Рестил использует это: ты ставишь олл-ин из блайндов и часто забираешь уже собранный банк без флопа. Сейчас увидишь такой спот за обычным столом.</p>
-          <button class="btn primary intro-cta" type="button" id="startLesson">Понятно, сыграть раздачу</button>
+          <button class="btn primary intro-cta" type="button" id="startLesson">Сыграть раздачу</button>
         </div>
         <div class="intro-table-visual" aria-hidden="true">
           <div class="intro-felt">
@@ -84,7 +84,7 @@
       <div class="wisdom-heading">
         <div>
           <p class="eyebrow">Сначала пойми идею</p>
-          <h2 id="wisdom-title">Рестил не только ворует рейз</h2>
+          <h2 id="wisdom-title">Рестил приносит фишки двумя способами</h2>
         </div>
         <p>Ты наказываешь оппонента за широкий опен: он часто выбрасывает сразу, а при колле твоя рука всё ещё может выиграть.</p>
       </div>
@@ -132,18 +132,18 @@
         <article class="panel objection-card is-call wisdom-slide" data-wisdom-slide>
           <div class="objection-icon fork-icon" aria-hidden="true"><i></i><span></span><b></b></div>
           <p class="eyebrow">«Почему не просто колл?»</p>
-          <h3>Колл тоже плюсовый, но более сложный</h3>
+          <h3>Колл тоже может быть плюсовым, но он сложнее</h3>
           <div class="call-jam-split">
             <div><span>Колл</span><strong>Флоп без позиции</strong><small>ещё несколько сложных решений</small></div>
-            <div><span>Олл-ин</span><strong>Пас соперника сейчас</strong><small>плюс можем выиграть олл-ин</small></div>
+            <div><span>Олл-ин</span><strong>Пас соперника сейчас</strong><small>можешь выиграть и после колла</small></div>
           </div>
-          <p>Колл тоже может быть плюсовым, но оставляет тебя без позиции и создаёт ещё несколько сложных решений. Для начинающего игрока это лишний риск ошибки и внимание, которое отвлекает от других столов, хотя EV колла нередко ниже. В подходящем рестил-споте проще сразу поставить олл-ин, реализовать ожидание и вернуться к другим столам — часто это ещё и лучшая стратегия.</p>
+          <p>Колл тоже может быть плюсовым, но оставляет тебя без позиции и создаёт ещё несколько сложных решений. Для начинающего игрока это повышает риск ошибки и отнимает внимание от других столов, хотя на дистанции колл нередко приносит меньше. В подходящем рестил-споте проще сразу поставить олл-ин, реализовать ожидание и вернуться к другим столам — часто это ещё и лучшая стратегия.</p>
         </article>
 
         <article class="panel objection-card is-pot wisdom-slide" data-wisdom-slide>
           <div class="objection-icon pot-icon" aria-hidden="true"><span>4,5</span><i>BB</i></div>
           <p class="eyebrow">«Зачем рисковать 30 BB ради 4,5?»</p>
-          <h3>Ты не даришь 30 BB даже если вписался</h3>
+          <h3>Ты не теряешь 30 BB автоматически, даже если получил колл</h3>
           <p>В большинстве случаев ты заберёшь раздачу на префлопе без какой-либо дисперсии.</p>
           <div class="risk-balance" aria-hidden="true"><span><i style="width:75%"></i></span><b>Чаще — пас без вскрытия</b></div>
           <small>Широкий опен содержит намного больше рук, чем соперник готов коллировать. Игроки нередко выбрасывают даже руки, которые по стратегии должны рейз-коллить. Если после долгого решения удаётся увидеть такую руку, запомни её: это сильный сигнал, что для соперника она пограничная, и подсказка о его реальном диапазоне колла.</small>
@@ -159,7 +159,7 @@
           <li><i aria-hidden="true">✓</i><div><strong>Один рейзер, без коллеров</strong><span>Лимп, рейз и колл — уже другой спот.</span></div></li>
           <li><i aria-hidden="true">✓</i><div><strong>Опен с поздней позиции</strong><span>Рейзер находится на CO или BTN.</span></div></li>
           <li><i aria-hidden="true">✓</i><div><strong>Эффективный стек 25–40 BB</strong><span>Смотри на меньший из двух стеков.</span></div></li>
-          <li class="is-optional"><i aria-hidden="true">+</i><div><strong>Оппонент не фиш</strong><span><b>Опционально:</b> против фиша жди больше коллов и пушь уже.</span></div></li>
+          <li class="is-optional"><i aria-hidden="true">+</i><div><strong>Соперник не любитель</strong><span><b>Опционально:</b> против любителя жди больше коллов и пушь уже.</span></div></li>
         </ul>
       </article>
 
@@ -178,7 +178,7 @@
           <div class="fgs-pool">
             <strong>2–3</strong>
             <div><b>окна для рестила</b><span>в среднем за полным столом; за коротким столом — чаще</span></div>
-            <small>Большой пул означает редкие повторные встречи. Из-за пары широких рестилов на тебя вряд ли сразу начнут писать нотс.</small>
+            <small>Большой пул означает редкие повторные встречи. Из-за пары широких рестилов на тебя вряд ли сразу начнут делать заметки.</small>
           </div>
           <div class="fgs-choice">
             <div class="fgs-hand"><strong>65s</strong><span>→ чаще колл</span></div>
@@ -297,8 +297,8 @@
       <div class="deep-panel field-insights" id="deepFieldPanel">
       <div class="field-grid field-grid-single">
         <article class="panel comparison-panel">
-          <div class="comparison-heading"><div><p class="eyebrow">Реальные раздачи · январь–июнь 2026</p><h3>Сколько олл-ин и колл выигрывали относительно паса</h3></div><span>Не солвер</span></div>
-          <p class="comparison-note">Плюс по эквити считаем относительно паса: исходный EV действия − EV паса. Пас принят за 0 на общей шкале, а его исходная цена здесь −1,12 BB — большой блайнд и средний уже поставленный ante. Поэтому абсолютный EV действия может быть отрицательным, но действие всё равно может быть лучше паса.</p>
+          <div class="comparison-heading"><div><p class="eyebrow">Реальные раздачи · январь–июнь 2026</p><h3>Насколько олл-ин и колл были выгоднее паса</h3></div><span>Не солвер</span></div>
+          <p class="comparison-note">Сравнение считаем относительно паса: исходный EV действия − EV паса. Пас принят за 0 на общей шкале, а его исходная цена здесь −1,12 BB — большой блайнд и средний уже поставленный ante. Поэтому абсолютный EV действия может быть отрицательным, но действие всё равно может быть лучше паса.</p>
           <div class="bars" id="outcomeBars"></div>
         </article>
       </div>
@@ -314,7 +314,7 @@
         <div class="practice-fair-play">
           <p class="eyebrow">Честная игра</p>
           <strong>Боты не поддаются, ГСЧ честный</strong>
-          <p>Боты играют настолько хорошо, насколько нам удалось обучить их с помощью современных AI-технологий. В будущем они могут стать сильнее. Карты раздаются честно и результат не подкручивается под ученика.</p>
+          <p>Боты играют настолько хорошо, насколько нам удалось обучить их с помощью современных технологий искусственного интеллекта. В будущем они могут стать сильнее. Карты раздаются честно и результат не подкручивается под ученика.</p>
         </div>
         <div class="bot-strength-legend" aria-label="Цвета силы ботов относительно текущей топ-модели">
           <span class="is-red"><i aria-hidden="true"></i><b>Красный</b><small>близко к топ-модели</small></span>
@@ -353,17 +353,18 @@
   <script defer src="assets/poker-kit/decks/deck-library.js?v=b03058b680c1"></script>
   <script defer src="assets/poker-kit/chips/chip-library.js?v=eab58b025e92"></script>
   <script defer src="assets/poker-simulator/simulator-board-render.js?v=cb215df9f7dd"></script>
-  <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=20260714-card-pocket-20"></script>
+  <script defer src="assets/poker-simulator/simulator-seat-slots.js?v=20260715-ffstart-handoff-v16"></script>
   <script defer src="assets/poker-simulator/simulator-seat-renderer.js?v=fe2184958bf0"></script>
-  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260713-pot-label"></script>
-  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260713-pot-layout"></script>
-  <script defer src="assets/poker-simulator/embed.js?v=20260714-practice-api"></script>
-  <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260714-practice-api"></script>
+  <script defer src="assets/poker-simulator/simulator-table-renderer.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-trainer-shell/simulator-snapshot.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-simulator/embed.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260715-ffstart-handoff-v16"></script>
   <script defer src="assets/poker-resteal-lesson/data/browser-bundle.js?v=63cee47708b4"></script>
   <script defer src="assets/poker-resteal-lesson/data.js?v=20260713-2"></script>
   <script defer src="assets/poker-resteal-lesson/data/resteal-rank-data.js?v=c522607916cc"></script>
   <script defer src="assets/poker-resteal-lesson/engine.js?v=20260713-2"></script>
   <script defer src="assets/poker-resteal-lesson/rank-comparison.js?v=eb545d7b77cb"></script>
-  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260714-practice-api"></script>
+  <script defer src="assets/poker-progress/progress.js?v=20260715-ffstart-handoff-v16"></script>
+  <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260715-ffstart-handoff-v16"></script>
 </body>
 </html>

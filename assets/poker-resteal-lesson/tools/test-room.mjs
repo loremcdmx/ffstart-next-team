@@ -53,7 +53,7 @@ assert.match(lessonJs, /const foldBaselineBb = Number\(Content\?\.comparisonFold
 assert.doesNotMatch(lessonJs, /hero_outcomes\?\.pooled\?\.ALL\?\.\[category\]\?\.fold/, "mixed SB/BB category folds never replace the BB baseline");
 assert.match(lessonJs, /const difference = jamRaw - callRaw/, "jam-call delta stays on the original unrounded observations");
 assert.match(lessonJs, /comparisonVsFoldTooltip[\s\S]*EV паса \(\$\{compactSigned\(foldBaselineBb, 2\)\} BB\)[\s\S]*преимущество над пасом, а не абсолютный EV/, "tooltip explains the displayed EV as action minus fold");
-assert.match(lessonHtml, /Плюс по эквити считаем относительно паса: исходный EV действия − EV паса/, "comparison methodology explains the fixed BB rebase");
+assert.match(lessonHtml, /Сравнение считаем относительно паса: исходный EV действия − EV паса/, "comparison methodology explains the fixed BB rebase");
 
 const introPot = context.PokerChipKit.renderAmount(4.5, { maxVisual: 3, detail: true });
 assert.match(introPot, /poker-chip--one/);

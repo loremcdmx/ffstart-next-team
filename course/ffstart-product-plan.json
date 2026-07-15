@@ -1,0 +1,216 @@
+{
+  "schema": "ffstart-product-plan-v1",
+  "source": {
+    "courseVersion": "2026-07-15.1",
+    "mediaVersion": "2026-07-15.media.5",
+    "reviewFile": "course/ffstart-review-final.json",
+    "reviewSummary": {
+      "keep": 40,
+      "question": 5,
+      "remove": 7,
+      "total": 52
+    }
+  },
+  "recommendation": {
+    "modules": 9,
+    "lessons": 29,
+    "playSessions": 5,
+    "plannedMinutesApprox": 850,
+    "activeMedia": {
+      "uniqueVideos": 29,
+      "videoLinks": 30,
+      "durationSeconds": 13064.502
+    },
+    "activePractice": {
+      "generatedSpots": 1106,
+      "specializedLegacySpots": 41,
+      "structuredTotal": 1147,
+      "freePlayHands": 37
+    },
+    "archivePractice": {
+      "generatedSpots": 45,
+      "fullSimulatorHands": 25
+    }
+  },
+  "principles": [
+    "Каждое решение fold, check, call, raise или all-in принимается внутри рабочего shared simulator или полного симулятора.",
+    "Видео остаётся только там, где у него есть вопрос до просмотра, точные остановки и перенос в практику.",
+    "Пять игровых пауз сохраняются: они дают опыт полного стола и снимают усталость от тестового формата.",
+    "Удалённый из основного маршрута материал не стирается: он остаётся в архиве с условием возврата.",
+    "Первые стратегии делятся на префлоп и постфлоп, потому что текущий модуль непропорционально велик.",
+    "Главная программа учит игре; карьерные и промо-материалы не занимают обязательный учебный маршрут."
+  ],
+  "targetModules": [
+    {
+      "order": 1,
+      "id": "start-and-table",
+      "title": "Старт и база стола",
+      "sourceModules": ["welcome", "poker-foundation"],
+      "lessons": ["course-start", "poker-history-rules", "combinations", "positions", "hand-actions"],
+      "playAfter": "first-orbits",
+      "change": "Сжать onboarding до 5–7 минут, оставить короткое видео 02 и сразу показать первый цикл Решение → Мудрость → Чарт → Практика."
+    },
+    {
+      "order": 2,
+      "id": "hand-reading-and-price",
+      "title": "Руки, дро и цена решения",
+      "sourceModules": ["hand-reading", "thinking-math"],
+      "lessons": ["pairs-kicker", "draws-outs", "poker-math"],
+      "change": "Поставить математику сразу после аутов, чтобы формула отвечала на уже возникший игровой вопрос."
+    },
+    {
+      "order": 3,
+      "id": "tournament-context",
+      "title": "Турнирный контекст",
+      "sourceModules": ["tournaments"],
+      "lessons": ["tournament-formats", "tournament-navigation"],
+      "change": "Длинный разбор навигации оставить дополнительным, а не обязательным для продолжения."
+    },
+    {
+      "order": 4,
+      "id": "preflop",
+      "title": "Префлоп",
+      "sourceModules": ["first-strategies"],
+      "lessons": ["preflop-start", "rfi-open-position", "isolation-raise", "cold-call", "three-bet", "versus-three-bet"],
+      "change": "Выделить самостоятельный маршрут от открытия до ответа на 3-бет."
+    },
+    {
+      "order": 5,
+      "id": "postflop",
+      "title": "Постфлоп",
+      "sourceModules": ["first-strategies"],
+      "lessons": ["betting-purpose", "cbet-in-position", "play-out-of-position", "multiway"],
+      "playAfter": "strategy-mix",
+      "change": "Multiway оставить отдельным: 44 уникальные игровые ситуации не дублируются другими уроками."
+    },
+    {
+      "order": 6,
+      "id": "blinds",
+      "title": "Игра на блайндах",
+      "sourceModules": ["blinds"],
+      "lessons": ["bb-call-defense"],
+      "playAfter": "blind-pressure",
+      "change": "Отдельный BvB-урок убрать; сильнейшие диагностические руки можно позже встроить в игровую паузу."
+    },
+    {
+      "order": 7,
+      "id": "short-stack-and-icm",
+      "title": "Короткий стек и ICM",
+      "sourceModules": ["short-stack", "thinking-math"],
+      "lessons": ["push-fold", "jam-over-raise", "icm"],
+      "playAfter": "short-stack-run",
+      "change": "ICM идёт сразу после олл-ин решений; рестил остаётся отдельной архивной лабораторией до повторной валидации."
+    },
+    {
+      "order": 8,
+      "id": "adaptation-and-decisions",
+      "title": "Адаптация и качество решений",
+      "sourceModules": ["opponent-types", "thinking-math"],
+      "lessons": ["decision-logic", "opponent-adjustment"],
+      "derivedLessons": {
+        "opponent-adjustment": {
+          "title": "Агрессивный или пассивный соперник",
+          "sourceLessons": ["versus-aggressive", "versus-passive"],
+          "practiceSpots": 16,
+          "rule": "Сначала определить частоту и тип ошибки соперника, затем выбрать контрастную адаптацию."
+        }
+      },
+      "change": "Два похожих урока собрать в один контрастный сценарий, сохранив оба видео и все практические ситуации."
+    },
+    {
+      "order": 9,
+      "id": "consolidation",
+      "title": "Закрепление и следующий цикл",
+      "sourceModules": ["profession", "finish"],
+      "lessons": ["resources", "final-exam", "course-feedback"],
+      "playBefore": "dress-rehearsal",
+      "change": "Библиотеку сделать необязательной, после экзамена строить персональный маршрут повторения."
+    }
+  ],
+  "decisions": [
+    {"reviewId":"module:welcome","review":"keep","action":"merge","target":"start-and-table","reason":"Сохранить функцию старта, но не тратить отдельный модуль на один урок."},
+    {"reviewId":"lesson:course-start","review":"question","action":"revise","target":"start-and-table","reason":"47 минут видео до первой практики слишком тяжёлые; нужен короткий onboarding."},
+    {"reviewId":"module:poker-foundation","review":"keep","action":"keep","target":"start-and-table","reason":"Даёт обязательный язык стола."},
+    {"reviewId":"lesson:poker-history-rules","review":"keep","action":"keep","target":"start-and-table","reason":"Базовая последовательность улиц нужна до действий."},
+    {"reviewId":"lesson:combinations","review":"keep","action":"keep","target":"start-and-table","reason":"Опорный навык чтения результата."},
+    {"reviewId":"lesson:positions","review":"keep","action":"keep","target":"start-and-table","reason":"Позиция нужна до любого стратегического решения."},
+    {"reviewId":"lesson:hand-actions","review":"keep","action":"keep","target":"start-and-table","reason":"Подготавливает к первой свободной игре."},
+    {"reviewId":"play:first-orbits","review":"keep","action":"keep","target":"start-and-table","reason":"Первая безопасная встреча с полным симулятором."},
+    {"reviewId":"module:hand-reading","review":"keep","action":"merge","target":"hand-reading-and-price","reason":"Математика полезнее сразу после аутов."},
+    {"reviewId":"lesson:pairs-kicker","review":"keep","action":"keep","target":"hand-reading-and-price","reason":"Убирает частую базовую ошибку сравнения рук."},
+    {"reviewId":"lesson:draws-outs","review":"keep","action":"keep","target":"hand-reading-and-price","reason":"Создаёт вопрос, на который отвечает математика."},
+    {"reviewId":"module:tournaments","review":"keep","action":"keep","target":"tournament-context","reason":"Даёт контекст формата до стратегии стеков."},
+    {"reviewId":"lesson:tournament-formats","review":"keep","action":"keep","target":"tournament-context","reason":"Нужен для чтения условий игры."},
+    {"reviewId":"lesson:tournament-navigation","review":"keep","action":"keep","target":"tournament-context","reason":"Объясняет стадии, стек и темп турнира."},
+    {"reviewId":"module:first-strategies","review":"keep","action":"split","target":"preflop,postflop","reason":"322 минуты и больше половины банка практики требуют двух понятных маршрутов."},
+    {"reviewId":"lesson:preflop-start","review":"keep","action":"keep","target":"preflop","reason":"Вводит общий порядок префлоп-решения."},
+    {"reviewId":"lesson:rfi-open-position","review":"keep","action":"keep","target":"preflop","reason":"Ключевая базовая стратегия открытия."},
+    {"reviewId":"lesson:betting-purpose","review":"keep","action":"keep","target":"postflop","reason":"Должен открывать постфлоп-блок."},
+    {"reviewId":"lesson:cbet-in-position","review":"keep","action":"keep","target":"postflop","reason":"Первое системное решение после флопа."},
+    {"reviewId":"lesson:play-out-of-position","review":"keep","action":"keep","target":"postflop","reason":"Контраст к игре в позиции."},
+    {"reviewId":"lesson:isolation-raise","review":"keep","action":"keep","target":"preflop","reason":"Продолжает линию после RFI."},
+    {"reviewId":"lesson:cold-call","review":"keep","action":"keep","target":"preflop","reason":"Нужен до 3-бет ветки."},
+    {"reviewId":"lesson:three-bet","review":"keep","action":"keep","target":"preflop","reason":"Основная агрессивная ветка."},
+    {"reviewId":"lesson:versus-three-bet","review":"keep","action":"keep","target":"preflop","reason":"Должен идти сразу после 3-бета."},
+    {"reviewId":"lesson:multiway","review":"question","action":"keep","target":"postflop","reason":"44 уникальные ситуации оправдывают самостоятельный урок."},
+    {"reviewId":"play:strategy-mix","review":"keep","action":"keep","target":"postflop","reason":"Закрепляет переход от учебных задач к игре."},
+    {"reviewId":"module:blinds","review":"keep","action":"keep","target":"blinds","reason":"Компактная самостоятельная тема."},
+    {"reviewId":"lesson:bb-call-defense","review":"keep","action":"keep","target":"blinds","reason":"Главный измеримый навык защиты блайнда."},
+    {"reviewId":"lesson:blind-versus-blind","review":"remove","action":"archive","target":"archive","reason":"20 однотипных SB limp ситуаций пересекаются с изоляцией и BB-защитой."},
+    {"reviewId":"play:blind-pressure","review":"keep","action":"keep","target":"blinds","reason":"Полная игра сохраняет разнообразие решений на блайндах."},
+    {"reviewId":"module:opponent-types","review":"question","action":"merge","target":"adaptation-and-decisions","reason":"Адаптация полезнее рядом с общей логикой решения."},
+    {"reviewId":"lesson:versus-aggressive","review":"question","action":"merge","target":"opponent-adjustment","reason":"Сохранить как первую половину контрастного урока."},
+    {"reviewId":"lesson:versus-passive","review":"question","action":"merge","target":"opponent-adjustment","reason":"Сохранить как вторую половину контрастного урока."},
+    {"reviewId":"module:short-stack","review":"keep","action":"merge","target":"short-stack-and-icm","reason":"ICM должен завершать практическую ветку короткого стека."},
+    {"reviewId":"lesson:push-fold","review":"keep","action":"keep","target":"short-stack-and-icm","reason":"Базовое решение короткого стека."},
+    {"reviewId":"lesson:jam-over-raise","review":"keep","action":"keep","target":"short-stack-and-icm","reason":"Следующая по сложности олл-ин ветка."},
+    {"reviewId":"lesson:resteal","review":"remove","action":"archive","target":"archive","reason":"Нет видео и оценки качества, есть пересечение с jam-over-raise."},
+    {"reviewId":"play:short-stack-run","review":"keep","action":"keep","target":"short-stack-and-icm","reason":"Даёт игровой темп после ICM."},
+    {"reviewId":"module:thinking-math","review":"keep","action":"split","target":"hand-reading-and-price,short-stack-and-icm,adaptation-and-decisions","reason":"Три темы становятся понятнее рядом с задачей, которую решают."},
+    {"reviewId":"lesson:decision-logic","review":"keep","action":"keep","target":"adaptation-and-decisions","reason":"Даёт общий алгоритм выбора линии."},
+    {"reviewId":"lesson:poker-math","review":"keep","action":"keep","target":"hand-reading-and-price","reason":"Сразу применяет ауты и цену колла."},
+    {"reviewId":"lesson:icm","review":"keep","action":"keep","target":"short-stack-and-icm","reason":"Нужен перед последней короткой игровой сессией."},
+    {"reviewId":"module:profession","review":"remove","action":"archive","target":"archive","reason":"Карьерный блок уводит обязательный маршрут от игровых навыков."},
+    {"reviewId":"lesson:poker-world","review":"remove","action":"archive","target":"archive","reason":"Полезен для отдельной ориентации, но не для основной учебной последовательности."},
+    {"reviewId":"lesson:poker-profession","review":"remove","action":"archive","target":"archive","reason":"38-минутный вебинар слишком тяжёл для обязательного маршрута."},
+    {"reviewId":"lesson:poker-perspectives","review":"remove","action":"archive","target":"archive","reason":"Карьерный контекст лучше вынести в опциональный трек."},
+    {"reviewId":"lesson:microstakes","review":"remove","action":"archive","target":"archive","reason":"Материал про режим и дисперсию можно вернуть позже как post-course сопровождение."},
+    {"reviewId":"lesson:course-feedback","review":"keep","action":"move","target":"consolidation","reason":"Должен строить следующий цикл после экзамена."},
+    {"reviewId":"module:finish","review":"keep","action":"keep","target":"consolidation","reason":"Закрывает обучение практикой и персональным маршрутом."},
+    {"reviewId":"lesson:resources","review":"keep","action":"keep","target":"consolidation","reason":"Нужен как необязательный справочник перед репетицией."},
+    {"reviewId":"play:dress-rehearsal","review":"keep","action":"keep","target":"consolidation","reason":"Последняя свободная игра перед экзаменом."},
+    {"reviewId":"lesson:final-exam","review":"keep","action":"keep","target":"consolidation","reason":"Проверяет смешанный навык и должен вести к карте повторения."}
+  ],
+  "archive": [
+    {
+      "id": "course-start-long-form",
+      "source": ["lesson:course-start", "media:01-chto_vas_zhdet_intro", "media:34-start_za_stolom_vebinar_01"],
+      "keep": "Полную 12-минутную страницу, 6 вопросов и две убранные медиапривязки.",
+      "returnIf": "До первой практики доходят меньше 85% начавших или пользователи не понимают механику курса."
+    },
+    {
+      "id": "blind-versus-blind",
+      "source": ["lesson:blind-versus-blind", "media:22-sb_vs_bb"],
+      "keep": "Видео 3:52 и все 20 ситуаций SB limp → BB check/iso.",
+      "returnIf": "После BB-защиты точность этой ветки ниже 70% либо она даёт не меньше 20% ошибок на блайндах при выборке от 100 игроков."
+    },
+    {
+      "id": "opponent-types-separate",
+      "source": ["lesson:versus-aggressive", "lesson:versus-passive", "media:23-protiv_agressii", "media:24-protiv_passiva"],
+      "keep": "Обе исходные страницы, оба видео и все 16 ситуаций.",
+      "returnIf": "Объединённый урок длиннее 35 минут или разница точности двух веток превышает 15 процентных пунктов."
+    },
+    {
+      "id": "resteal",
+      "source": ["lesson:resteal"],
+      "keep": "Legacy-страницу и 25-раздачную full-simulator сессию.",
+      "returnIf": "Ошибки reshove 25–40 BB входят в топ-3 дорогих повторных ошибок либо диагностическая точность ниже 70%."
+    },
+    {
+      "id": "poker-profession-track",
+      "source": ["module:profession", "lesson:poker-world", "lesson:poker-profession", "lesson:poker-perspectives", "lesson:microstakes"],
+      "keep": "Четыре страницы, 25 практических ситуаций и видео 30, 31, 32, 33, 34.",
+      "returnIf": "Новой команде нужен отдельный pre-course трек о профессии или post-course сопровождение по режиму, банкроллу и дисперсии; в основной маршрут не возвращать без данных о пользе."
+    }
+  ]
+}

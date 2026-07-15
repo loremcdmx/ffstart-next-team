@@ -16,6 +16,7 @@
   let completionTimer = 0;
   let pendingCompletionCount = 0;
   let completionHintScheduled = false;
+  let courseCompletionPosted = false;
 
   function sessionHands(value = params.get("hands")) {
     const requested = Number(value);
@@ -742,6 +743,21 @@
     return `${approximate ? "≈" : ""}${normalized >= 0 ? "+" : "−"}${Math.abs(normalized).toFixed(1).replace(".", ",")} BB`;
   }
 
+  function postCourseCompletion(played) {
+    const completedHands = Math.floor(Number(played) || 0);
+    const targetOrigin = String(root.location?.origin || "");
+    if (courseCompletionPosted || completedHands < 25 || !active || !targetOrigin || targetOrigin === "null" || root.parent === root || typeof root.parent?.postMessage !== "function") return false;
+    root.parent.postMessage({
+      schema: "ffstart-legacy-bridge-v1",
+      type: "ffstart:resteal-complete",
+      lessonId: "resteal",
+      completedHands: 25,
+      run: String(params.get("run") || "")
+    }, targetOrigin);
+    courseCompletionPosted = true;
+    return true;
+  }
+
   function installHud() {
     if (!active || !root.document) return;
     const total = sessionHands();
@@ -785,6 +801,7 @@
         element.classList.toggle("is-negative", numeric < -0.005);
       });
       const adviceShown = updateDrillAdvice(payload, metrics.entries, metrics);
+      postCourseCompletion(played);
       hud.classList.toggle("is-complete", played >= total);
       hud.setAttribute("aria-label", `Сыграно ${played} из ${total}. Пушей ${metrics.jams}. Пасов на пуш ${metrics.folds}. По факту ${formatBb(metrics.netBb)}. По эквити ${formatBb(metrics.evNetBb, metrics.sampled)}.`);
       if (played >= total && !completionHintScheduled) {
@@ -881,6 +898,7 @@
     showSessionComplete,
     updateDrillAdvice,
     formatBb,
+    postCourseCompletion,
     installHud,
     restartSession,
     installRestartHandler

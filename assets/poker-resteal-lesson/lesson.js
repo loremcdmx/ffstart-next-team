@@ -4,6 +4,7 @@
   const Engine = window.PokerRestealEngine;
   const Content = window.PokerRestealData;
   const PROGRESS_KEY = "ff-learning-hub:resteal:v1";
+  const FFSTART_COURSE_CONTEXT = new URLSearchParams(window.location.search).get("from") === "ffstart";
   const DATA_ROOT = "assets/poker-resteal-lesson/data/";
   const DATA_VERSION = "20260711-v2";
   const files = [
@@ -34,9 +35,11 @@
     unlocked: false,
     wisdomStory: 0,
     wisdomHand: "QJo",
-    practiceHands: 10,
+    practiceHands: FFSTART_COURSE_CONTEXT ? 25 : 10,
     practiceStarted: false,
     practiceRun: 0,
+    courseReported: false,
+    courseSessionId: "",
     infoTrigger: null
   };
 
@@ -93,6 +96,50 @@
   const advantageOverFold = (rawEvBb) => Number(rawEvBb || 0) - foldBaselineBb;
   const comparisonVsFoldTooltip = (actionLabel, rawEvBb, advantageBb) =>
     `Плюс по эквити считаем относительно паса: исходный EV ${actionLabel} ${compactSigned(rawEvBb, 2)} BB − EV паса (${compactSigned(foldBaselineBb, 2)} BB) = ${compactSigned(advantageBb, 2)} BB. Показанное число — преимущество над пасом, а не абсолютный EV.`;
+  function configureFfStartNavigation() {
+    if (!FFSTART_COURSE_CONTEXT) return;
+    const home = $(".lesson-home");
+    const footerLinks = $$(".lesson-footer a");
+    if (home) {
+      home.href = "/ffstart#program";
+      home.textContent = "← К программе";
+    }
+    if (footerLinks[0]) {
+      footerLinks[0].href = "/ffstart#program";
+      footerLinks[0].textContent = "← К программе";
+    }
+    if (footerLinks[1]) {
+      footerLinks[1].href = "/ffstart/play-session?session=short-stack-run";
+      footerLinks[1].textContent = "Игровая пауза: короткий стек →";
+    }
+  }
+
+  function reportFfStartCompletion(event) {
+    if (!FFSTART_COURSE_CONTEXT || state.courseReported) return false;
+    const frame = $("#restealSimulator");
+    if (!frame || event.source !== frame.contentWindow || event.origin !== window.location.origin) return false;
+    const message = event.data;
+    if (!message || message.schema !== "ffstart-legacy-bridge-v1" || message.type !== "ffstart:resteal-complete" || message.lessonId !== "resteal" || message.run !== state.courseSessionId || Number(message.completedHands) < 25) return false;
+    const api = window.FFPlayerProgress;
+    if (!api || typeof api.setResult !== "function") return false;
+    try {
+      api.setResult("ffstart_resteal", {
+        evaluated: false,
+        completed: true,
+        completedHands: 25,
+        targetHands: 25,
+        attempts: 25,
+        status: "passed"
+      }, {
+        session: { id: state.courseSessionId, type: "full-simulator", mode: "resteal", total: 25 },
+        metadata: { courseContext: true, evaluated: false }
+      });
+      state.courseReported = true;
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
 
   function showStep(next, options = {}) {
     if (!state.unlocked && next !== "idea") return;
@@ -162,7 +209,7 @@
         state.loading = null;
         console.error("Resteal data load failed", error);
         $("#matrixStatus").classList.remove("is-ready");
-        $("#matrixStatus").textContent = "Данные урока не загрузились. Пересобери browser-bundle.js.";
+        $("#matrixStatus").textContent = "Данные урока временно недоступны. Обнови страницу.";
         throw error;
       });
     return state.loading;
@@ -180,7 +227,7 @@
 
   function renderRoomTable(host, spot, selectedKey = "") {
     if (!window.FFTrainerSimulator?.renderDecision) {
-      host.innerHTML = '<p class="table-load-error">Стол не загрузился: проверь simulator snapshot.</p>';
+      host.innerHTML = '<p class="table-load-error">Стол временно недоступен. Обнови страницу.</p>';
       return;
     }
     window.FFTrainerSimulator.renderDecision(host, spot, {
@@ -261,7 +308,7 @@
         <div class="reason-line"><i></i><div><b>Широкий опен часто сдаётся</b><small>BTN не может коллировать со всеми руками</small></div></div>
         <div class="reason-line"><i></i><div><b>QJo может выиграть колл</b><small>${modelCopy}</small></div></div>
       </div>
-      <div class="ev-callout"><i>!</i><div><strong>Это просто и плюсово</strong><span>Не окажешься в сложной постфлоп-ситуации, а сразу напечатаешь EV-шку.</span></div></div>
+      <div class="ev-callout"><i>!</i><div><strong>Это просто и плюсово</strong><span>Не окажешься в сложной ситуации после флопа, а решение останется прибыльным на дистанции.</span></div></div>
       <button class="btn primary" type="button" id="openWisdom">Разобрать главную идею</button>`;
     $("#openWisdom").addEventListener("click", () => showStep("wisdom", { focusHeading: true }));
   }
@@ -293,7 +340,7 @@
       hands: state.practiceHands,
       tables: 1,
       tempo: "fast",
-      run: `${Date.now().toString(36)}-${state.practiceRun}`,
+      run: state.courseSessionId || `${Date.now().toString(36)}-${state.practiceRun}`,
       title: "Практика рестила с большого блайнда"
     };
   }
@@ -309,6 +356,8 @@
   function startPracticeSession() {
     state.practiceStarted = true;
     state.practiceRun += 1;
+    state.courseReported = false;
+    state.courseSessionId = `ffstart-resteal-${Date.now().toString(36)}-${state.practiceRun}`;
     document.body.classList.add("practice-is-running");
     $("#practiceScreen").classList.add("is-running");
     $("#practiceSimulatorShell").hidden = false;
@@ -845,6 +894,7 @@
     $("#startPracticeSession").addEventListener("click", startPracticeSession);
     $("#exitPractice").addEventListener("click", () => showStep("wisdom", { focusHeading: true }));
     $("#restealSimulator").addEventListener("load", () => setPracticeSimulatorLoading(false));
+    window.addEventListener("message", reportFfStartCompletion);
     $$("[data-select-hand]").forEach((button) => button.addEventListener("click", () => selectHand(button.dataset.selectHand, "theory")));
     $$(".info-button").forEach((button) => {
       button.setAttribute("aria-expanded", "false");
@@ -866,6 +916,7 @@
   }
 
   function init() {
+    configureFfStartNavigation();
     renderIntroTableArt();
     renderFirstTable();
     renderFirstCoach();

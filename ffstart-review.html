@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0910">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Внутренняя страница для ревью архитектуры программы FF Start.">
+  <title>Ревью архитектуры · FF Start</title>
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/assets/poker-kit/tokens.css?v=20260716-review-v1">
+  <link rel="stylesheet" href="/assets/ffstart-course/course.css?v=20260715-ffstart-v20">
+  <link rel="stylesheet" href="/assets/ffstart-course/review.css?v=20260716-review-v3">
+</head>
+<body class="review-page">
+  <div class="course-glow is-one" aria-hidden="true"></div>
+  <div class="course-glow is-two" aria-hidden="true"></div>
+
+  <header class="course-header review-header">
+    <a class="course-brand" href="/ffstart" aria-label="Вернуться к программе FF Start">
+      <span>FF</span>
+      <div><strong>Start</strong><small>ревью архитектуры</small></div>
+    </a>
+    <div class="review-header__aside">
+      <span data-save-state aria-live="polite">Автосохранение готово</span>
+      <a class="course-header__action" href="/ffstart">Открыть программу</a>
+    </div>
+  </header>
+
+  <main class="review-main">
+    <section class="review-hero" aria-labelledby="review-title">
+      <div class="review-hero__copy">
+        <p class="course-eyebrow">Внутренний разбор программы</p>
+        <h1 id="review-title">Проверь каждый шаг<br><em>до следующей сборки</em></h1>
+        <p>Оцени отдельно порядок модулей, каждый урок и игровые паузы. В карточке видно, какая мысль объясняется, какие видео встроены и что именно отрабатывает тренажёр.</p>
+      </div>
+      <aside class="review-progress" aria-label="Прогресс ревью">
+        <div class="review-progress__head"><span>Разобрано</span><strong data-reviewed-count>0 из 52</strong></div>
+        <div class="review-progress__track" aria-hidden="true"><i data-reviewed-bar></i></div>
+        <dl class="review-progress__stats">
+          <div class="is-keep"><dt>Оставить</dt><dd data-count-keep>0</dd></div>
+          <div class="is-question"><dt>Под вопросом</dt><dd data-count-question>0</dd></div>
+          <div class="is-remove"><dt>Убрать</dt><dd data-count-remove>0</dd></div>
+          <div class="is-empty"><dt>Без решения</dt><dd data-count-empty>52</dd></div>
+        </dl>
+        <p><strong data-structure-counts>11 модулей · 36 уроков · 5 игровых пауз</strong><span>Статус модуля не меняет статусы уроков внутри.</span></p>
+      </aside>
+    </section>
+
+    <section class="review-actions" aria-label="Работа с решениями">
+      <div>
+        <button class="review-button is-primary" type="button" data-export-review>Зафиксировать итог</button>
+        <button class="review-button" type="button" data-import-review>Загрузить решения</button>
+        <button class="review-button" type="button" data-copy-summary>Скопировать сводку</button>
+        <a class="review-button is-plan" href="/ffstart-handoff">Открыть итоговый план</a>
+        <input type="file" accept="application/json,.json" data-import-file hidden>
+      </div>
+      <p data-action-status role="status" aria-live="polite">Каждое изменение сразу пишется в основную и резервную копии. Для переноса из браузера зафиксируй итог файлом.</p>
+    </section>
+
+    <section class="review-toolbar" aria-label="Фильтры программы">
+      <div class="review-toolbar__topline">
+        <div><p class="course-eyebrow">Все пункты программы</p><strong data-visible-count>Показываем 52 из 52</strong></div>
+        <button class="review-filter-toggle" type="button" aria-expanded="false" data-filters-toggle>Фильтры</button>
+      </div>
+      <div class="review-toolbar__controls" data-filter-controls>
+        <label class="review-search"><span>Найти тему</span><input type="search" placeholder="Например, 3-бет или короткий стек" data-filter-search></label>
+        <label><span>Решение</span><select data-filter-status><option value="all">Все решения</option><option value="empty">Без решения</option><option value="keep">Оставить</option><option value="question">Под вопросом</option><option value="remove">Убрать</option></select></label>
+        <label><span>Тип</span><select data-filter-type><option value="all">Вся архитектура</option><option value="module">Модули</option><option value="lesson">Уроки</option><option value="play">Игровые паузы</option></select></label>
+        <label><span>Сигнал</span><select data-filter-signal><option value="all">Все материалы</option><option value="no-video">Без видео</option><option value="long-video">Длинные видео</option><option value="guided-video">Видео по фрагментам</option><option value="full-simulator">Полный симулятор</option><option value="recall">Есть восстановление чарта</option></select></label>
+        <div class="review-toolbar__buttons"><button type="button" data-expand-all>Развернуть всё</button><button type="button" data-collapse-all>Свернуть модули</button></div>
+      </div>
+    </section>
+
+    <section class="review-program" data-review-root aria-busy="true">
+      <div class="course-loading">Собираем карту программы…</div>
+    </section>
+  </main>
+
+  <footer class="course-footer review-footer"><a href="/ffstart">← К программе</a><span>FF Start · решения ревью не влияют на прогресс учеников</span></footer>
+  <script src="/assets/ffstart-course/review.js?v=20260716-review-v3"></script>
+</body>
+</html>

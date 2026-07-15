@@ -106,6 +106,7 @@ footer {
 }
 
 .github-link svg { width: 18px; fill: currentColor; }
+.github-link span { color: var(--acid); font-size: 17px; }
 .github-link:hover { transform: translateY(-1px); border-color: rgba(216, 243, 109, .4); background: rgba(216, 243, 109, .06); }
 .github-link:focus-visible,
 .primary-action:focus-visible,
@@ -174,6 +175,43 @@ h1 em { color: var(--acid); font-weight: inherit; }
 
 .path-note span { color: var(--muted); }
 .path-note strong { color: #dce7df; font-weight: 750; }
+
+.course-banner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(24px, 4vw, 52px);
+  padding: clamp(25px, 3.5vw, 42px);
+  border: 1px solid rgba(216, 243, 109, .2);
+  border-radius: 24px;
+  background:
+    linear-gradient(120deg, rgba(216, 243, 109, .055), transparent 44%),
+    linear-gradient(150deg, rgba(21, 42, 32, .96), rgba(9, 20, 15, .98));
+  box-shadow: var(--shadow);
+}
+
+.course-banner .eyebrow { margin-bottom: 12px; }
+.course-banner h2,
+.trainer-heading h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -.04em;
+  line-height: 1.04;
+}
+.course-banner h2 { max-width: 680px; font-size: clamp(28px, 3.4vw, 44px); }
+.course-banner > div > p:last-child { max-width: 660px; margin: 14px 0 0; color: var(--muted); font-size: 13px; line-height: 1.62; }
+.course-banner dl { display: grid; grid-template-columns: repeat(3, minmax(72px, 1fr)); gap: 8px; margin: 0; }
+.course-banner dl div { display: grid; min-height: 76px; align-content: center; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); text-align: center; }
+.course-banner dt { color: var(--acid); font-size: 20px; font-weight: 850; font-variant-numeric: tabular-nums; }
+.course-banner dd { margin: 3px 0 0; color: var(--muted); font-size: 9px; text-transform: uppercase; letter-spacing: .08em; }
+.course-banner__action { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 14px; padding: 12px 17px; border-radius: 12px; color: #0c160d; background: var(--acid); font-size: 12px; font-weight: 900; text-decoration: none; white-space: nowrap; }
+.course-banner__action span { font-size: 17px; }
+
+.trainer-heading { display: grid; justify-items: center; padding: 76px 0 18px; text-align: center; }
+.trainer-heading .eyebrow { margin-bottom: 13px; }
+.trainer-heading h2 { font-size: clamp(32px, 4vw, 52px); }
+.trainer-heading > p:last-child { max-width: 580px; margin: 13px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
 
 .trainer-grid {
   display: grid;
@@ -345,7 +383,7 @@ h1 em { color: var(--acid); font-weight: inherit; }
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr;
   gap: 9px;
   margin-top: auto;
 }
@@ -383,6 +421,9 @@ footer {
 footer a { color: #aebcb3; text-underline-offset: 4px; }
 
 @media (max-width: 900px) {
+  .course-banner { grid-template-columns: 1fr; }
+  .course-banner dl { width: 100%; }
+  .course-banner__action { justify-self: start; }
   .trainer-grid { grid-template-columns: 1fr; max-width: 640px; margin-inline: auto; }
   .trainer-card { min-height: auto; }
   .trainer-card > p { min-height: auto; }
@@ -395,12 +436,16 @@ footer a { color: #aebcb3; text-underline-offset: 4px; }
   .brand strong { font-size: 12px; }
   .brand small { font-size: 10px; }
   .brand-mark { width: 37px; height: 37px; border-radius: 11px; }
-  .github-link { width: 42px; min-height: 42px; padding: 0; font-size: 0; }
-  .github-link svg { width: 19px; }
+  .github-link { min-height: 39px; padding: 0 11px; font-size: 10px; }
+  .github-link span { font-size: 14px; }
   .hero { padding: 58px 0 38px; }
   h1 { font-size: clamp(42px, 14vw, 64px); }
   .hero-copy { font-size: 15px; line-height: 1.58; }
   .path-note { display: grid; gap: 5px; border-radius: 14px; }
+  .course-banner { padding: 19px; border-radius: 19px; }
+  .course-banner dl { grid-template-columns: 1fr; }
+  .course-banner dl div { min-height: 58px; }
+  .trainer-heading { padding-top: 58px; }
   .trainer-grid { gap: 13px; padding-bottom: 54px; }
   .trainer-card { padding: 17px; border-radius: 19px; }
   .card-symbol { margin: 18px 0 22px; }

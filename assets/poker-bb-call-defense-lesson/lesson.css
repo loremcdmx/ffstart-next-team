@@ -530,6 +530,239 @@
   font-size: clamp(1.7rem, 3vw, 3rem);
 }
 
+.bb-call-lesson .bb-league-data-slide {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  min-height: 520px;
+  padding: clamp(20px, 2.7vw, 36px);
+}
+
+.league-defense-head {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+}
+
+.league-defense-head .eyebrow {
+  margin: 0 0 5px;
+  color: #ffe05f;
+  font-size: 0.68rem;
+}
+
+.league-defense-head h2,
+.league-defense-head h3 {
+  margin: 0;
+  color: #f7f7fb;
+  font-size: clamp(1.45rem, 2.25vw, 2.25rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.league-defense-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 3fr) minmax(0, 3fr);
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.league-defense-controls > div {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.league-defense-controls > div > span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.6rem;
+  font-weight: 850;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.league-defense-controls .segmented-control {
+  display: grid;
+  gap: 4px;
+}
+
+.league-filter-group.is-position .segmented-control { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.league-filter-group.is-size .segmented-control,
+.league-filter-group.is-league .segmented-control { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.league-defense-controls .segmented-control button {
+  width: 100%;
+  min-height: 36px;
+  padding: 5px 6px;
+  border-radius: 8px;
+  font-size: 0.68rem;
+}
+
+.league-defense-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 0;
+}
+
+.league-range-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+  padding: 10px 12px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  background: rgba(8, 9, 14, 0.72);
+}
+
+.league-range-card.is-novice { border-color: rgba(255, 224, 95, 0.25); }
+.league-range-card.is-league { border-color: rgba(78, 217, 167, 0.28); }
+
+.league-range-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.league-range-head > div:first-child { display: grid; gap: 2px; }
+.league-range-head span, .league-range-head strong { display: block; }
+.league-range-head span { color: #f7f7fb; font-size: 0.82rem; font-weight: 900; }
+.league-range-head strong { color: rgba(255, 255, 255, 0.48); font-size: 0.62rem; }
+
+.league-defend-total {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  justify-items: end;
+  gap: 0 7px;
+}
+
+.league-defend-total small { color: rgba(255, 255, 255, 0.46); font-size: 0.57rem; font-weight: 850; text-transform: uppercase; }
+.league-defend-total b { color: var(--bb-call); font-size: 1.42rem; line-height: 1; }
+.league-defend-total em { grid-column: 1 / -1; color: rgba(255, 255, 255, 0.52); font-size: 0.6rem; font-style: normal; font-weight: 820; }
+.league-defend-total em.is-up { color: #8cecc9; }
+.league-defend-total em.is-down { color: #ff9eaa; }
+
+.league-action-bar {
+  display: flex;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.league-action-bar i { min-width: 0; }
+.league-action-bar .is-fold, .league-action-legend i.is-fold { background: #d7d9e2; }
+.league-action-bar .is-call, .league-action-legend i.is-call { background: var(--bb-call); }
+.league-action-bar .is-raise, .league-action-legend i.is-raise { background: var(--bb-raise); }
+
+.league-action-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 0.61rem;
+}
+
+.league-action-legend span { display: flex; align-items: center; gap: 4px; }
+.league-action-legend i { width: 7px; height: 7px; border-radius: 50%; }
+.league-action-legend b { color: rgba(255, 255, 255, 0.86); }
+
+.league-range-matrix {
+  display: grid;
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  gap: 1px;
+  width: min(100%, 190px);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.league-range-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #d7d9e2 0 var(--fold-end), var(--bb-call) var(--fold-end) var(--call-end), var(--bb-raise) var(--call-end) 100%);
+  color: #101117;
+  font: inherit;
+  cursor: pointer;
+}
+
+.league-range-cell span { font-size: clamp(0.34rem, 0.55vw, 0.48rem); font-weight: 950; line-height: 1; letter-spacing: -0.03em; pointer-events: none; }
+.league-range-cell small { display: none; }
+.league-range-cell.is-low-sample { color: #101117; }
+.league-range-cell.is-low-sample::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-top: 7px solid rgba(72, 74, 82, 0.88);
+  border-left: 7px solid transparent;
+  pointer-events: none;
+}
+.league-range-cell.is-no-data { background: rgba(255, 255, 255, 0.035); color: rgba(255, 255, 255, 0.2); cursor: default; }
+
+.league-range-cell.is-reliable::after {
+  content: "";
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(10, 12, 16, 0.72);
+}
+
+.league-range-cell:hover, .league-range-cell:focus-visible { z-index: 3; outline: 2px solid #ffe05f; outline-offset: 1px; transform: scale(1.35); }
+
+.league-range-card footer { display: flex; justify-content: space-between; gap: 8px; color: rgba(255, 255, 255, 0.38); font-size: 0.58rem; }
+.league-range-card.is-low-chart .league-range-matrix { opacity: 0.42; }
+
+.league-low-chart-note {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  z-index: 4;
+  width: max-content;
+  max-width: 75%;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 224, 95, 0.38);
+  border-radius: 9px;
+  background: rgba(12, 11, 8, 0.93);
+  color: #ffe05f;
+  font-size: 0.62rem;
+  font-weight: 850;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.league-range-empty { display: grid; min-height: 245px; place-items: center; color: rgba(255, 255, 255, 0.5); font-size: 0.8rem; text-align: center; }
+
+.league-defense-source { margin: 0; color: rgba(255, 255, 255, 0.38); font-size: 0.6rem; line-height: 1.35; text-align: center; }
+
 .adjustment-list {
   display: grid;
   gap: 11px;
@@ -1147,9 +1380,6 @@
 }
 
 .ff-realization-stats small,
-.ff-realization-bands > small,
-.ff-realization-scope,
-.ff-realization-method small,
 .ff-realization-card.is-low-sample > small {
   color: rgba(255, 255, 255, 0.48);
   font-size: 0.68rem;
@@ -1168,6 +1398,13 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 7px;
+}
+
+.ff-realization-bands > small,
+.ff-realization-scope,
+.ff-realization-method small {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.68rem;
 }
 
 .ff-realization-bands > span {
@@ -1303,14 +1540,17 @@
 }
 
 .bb-call-lesson .practice-screen.is-running {
-  grid-template-rows: minmax(0, 1fr);
+  grid-template-rows: auto;
+  min-height: 0;
+  height: auto;
+  overflow: visible;
 }
 
 .bb-call-lesson .practice-screen.is-running .practice-run {
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
   gap: 8px;
   min-height: 0;
-  height: 100%;
+  height: auto;
 }
 
 .bb-call-lesson .practice-screen.is-running .practice-layout {
@@ -1327,9 +1567,8 @@
 }
 
 .bb-call-lesson .practice-layout.has-answer #practiceCoach {
-  max-height: 100%;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+  max-height: none;
+  overflow: visible;
 }
 
 .bb-call-lesson .practice-run .lesson-table-host {
@@ -1581,6 +1820,31 @@
   align-items: stretch;
 }
 
+.memory-screen.is-review .memory-layout {
+  grid-template-columns: minmax(620px, 1.18fr) minmax(420px, 0.82fr);
+}
+
+.memory-screen.is-review .memory-range-matrix {
+  width: min(100%, 640px);
+}
+
+.memory-screen.is-review .memory-coach {
+  overflow: visible;
+  background: linear-gradient(160deg, rgba(154, 101, 214, 0.1), transparent 42%), var(--panel);
+}
+
+.memory-screen.is-review .memory-coach::after {
+  display: none;
+}
+
+.memory-screen.is-review #memoryCoachBody {
+  gap: 12px;
+}
+
+.memory-screen.is-review #memoryCoachBody h3 {
+  font-size: clamp(1.85rem, 2.45vw, 2.8rem);
+}
+
 .memory-range-card {
   display: grid;
   min-width: 0;
@@ -1647,24 +1911,66 @@
   color: rgba(255, 255, 255, 0.48);
 }
 
+.memory-chart-legend.is-review {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 9px 16px;
+}
+
+.memory-review-view-switch {
+  display: inline-grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.memory-review-view-switch button {
+  min-height: 32px;
+  padding: 5px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.58);
+  background: transparent;
+  font: inherit;
+  font-size: 0.69rem;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.memory-review-view-switch button.is-active {
+  border-color: rgba(255, 224, 95, 0.35);
+  color: #17141c;
+  background: #ffe05f;
+}
+
+.memory-review-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 12px;
+}
+
 .memory-chart-legend .is-review-correct i {
-  border: 2px solid #4ed9a7;
-  background: rgba(78, 217, 167, 0.15);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: #24262d;
 }
 
 .memory-chart-legend .is-review-missed i {
-  border: 2px dashed var(--memory-error-missed);
-  background: rgba(255, 120, 137, 0.13);
+  border-color: #ffc1c8;
+  background: var(--memory-error-missed);
 }
 
 .memory-chart-legend .is-review-extra i {
-  border: 2px dashed var(--memory-error-extra);
-  background: rgba(255, 224, 95, 0.13);
+  border-color: #fff1a8;
+  background: var(--memory-error-extra);
 }
 
 .memory-chart-legend .is-review-action i {
-  border: 2px dashed var(--memory-error-action);
-  background: rgba(170, 122, 243, 0.14);
+  border-color: #dac7ff;
+  background: var(--memory-error-action);
 }
 
 .memory-chart-legend .is-shape-pair {
@@ -1687,16 +1993,12 @@
   background: #b9dfbd;
 }
 
-.is-code-f {
-  background: #fff;
-}
-
 .is-code-b {
   background: linear-gradient(135deg, #f79a9f 0 50%, #b9dfbd 50% 100%);
 }
 
-.is-code-m {
-  background: linear-gradient(135deg, #b9dfbd 0 50%, #fff 50% 100%);
+.is-code-f {
+  background: #fff;
 }
 
 .memory-matrix-scroll {
@@ -1737,28 +2039,65 @@
   background: #93a2ab;
 }
 
-.memory-range-matrix.is-review .memory-range-cell.is-review-correct {
-  border-color: #a8f0ce;
-  box-shadow: inset 0 0 0 2px rgba(13, 100, 70, 0.75);
+.memory-range-matrix.is-review .memory-range-cell {
+  cursor: pointer;
 }
 
-.memory-range-matrix.is-review .memory-range-cell.is-review-error {
-  --memory-review-accent: var(--memory-error-missed);
+.memory-range-matrix.is-review[data-review-mode="diff"] .memory-range-cell.is-review-correct {
+  border-color: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.32);
+  background: #1a1c22 !important;
+  box-shadow: none;
+  opacity: 0.58;
+}
+
+.memory-range-matrix.is-review[data-review-mode="diff"] .memory-range-cell.is-review-error {
   z-index: 2;
-  border: 2px dashed var(--memory-review-accent);
-  box-shadow: inset 0 0 0 1px #08090d, 0 0 0 1px var(--memory-review-accent);
+  border: 1px solid rgba(255, 255, 255, 0.56);
+  color: #18141c;
+  box-shadow: inset 0 0 0 1px rgba(20, 16, 24, 0.26);
 }
 
-.memory-range-matrix.is-review .memory-range-cell.is-review-error-missed {
-  --memory-review-accent: var(--memory-error-missed);
+.memory-range-matrix.is-review[data-review-mode="diff"] .memory-range-cell.is-review-error-missed {
+  background: var(--memory-error-missed) !important;
 }
 
-.memory-range-matrix.is-review .memory-range-cell.is-review-error-extra {
-  --memory-review-accent: var(--memory-error-extra);
+.memory-range-matrix.is-review[data-review-mode="diff"] .memory-range-cell.is-review-error-extra {
+  background: var(--memory-error-extra) !important;
 }
 
-.memory-range-matrix.is-review .memory-range-cell.is-review-error-action {
-  --memory-review-accent: var(--memory-error-action);
+.memory-range-matrix.is-review[data-review-mode="diff"] .memory-range-cell.is-review-error-action {
+  color: #fff;
+  background: var(--memory-error-action) !important;
+}
+
+.memory-range-matrix.is-review[data-review-mode="diff"] .memory-range-cell.is-review-muted {
+  filter: saturate(0.15);
+  opacity: 0.13;
+}
+
+.memory-range-matrix.is-review .memory-range-cell.is-review-selected {
+  z-index: 5;
+  border-color: #fff;
+  box-shadow: inset 0 0 0 2px #17141c, 0 0 0 3px #ffe05f;
+  opacity: 1 !important;
+}
+
+.memory-review-mark {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  width: clamp(10px, 1.1vw, 15px);
+  height: clamp(10px, 1.1vw, 15px);
+  place-items: center;
+  border-radius: 3px;
+  color: #fff;
+  background: rgba(17, 14, 20, 0.78);
+  font-size: clamp(0.4rem, 0.62vw, 0.58rem) !important;
+  font-weight: 950 !important;
+  line-height: 1;
+  opacity: 1 !important;
 }
 
 .memory-hint {
@@ -1817,7 +2156,7 @@
 
 .memory-example {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 7px;
 }
 
@@ -1838,6 +2177,10 @@
 
 .memory-example .is-call {
   background: #b9dfbd;
+}
+
+.memory-example .is-mix {
+  background: linear-gradient(135deg, #f79a9f 0 50%, #b9dfbd 50% 100%);
 }
 
 .memory-example .is-raise {
@@ -1898,10 +2241,6 @@
   text-align: left;
 }
 
-.memory-tools button:last-child {
-  grid-column: 1 / -1;
-}
-
 .memory-tools button.is-active {
   border-color: #ffe05f;
   color: #17141c;
@@ -1931,6 +2270,295 @@
 .memory-actions .btn {
   width: 100%;
   min-width: 0;
+}
+
+.memory-review-overview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.memory-review-overview > div {
+  display: grid;
+  gap: 4px;
+}
+
+.memory-review-overview > div span,
+.memory-review-overview > p span {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.memory-review-overview > div strong {
+  color: #f7f7fb;
+  font-size: 0.78rem;
+  line-height: 1.38;
+}
+
+.memory-review-overview > p {
+  display: grid;
+  justify-items: end;
+  gap: 1px;
+  margin: 0;
+  text-align: right;
+}
+
+.memory-review-overview > p b {
+  color: #f7f7fb;
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.memory-review-overview > p small {
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 0.62rem;
+}
+
+.memory-review-overview.is-clean {
+  border-color: rgba(78, 217, 167, 0.42);
+  background: rgba(78, 217, 167, 0.07);
+}
+
+.memory-review-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.memory-review-metric {
+  --memory-review-tone: var(--memory-error-missed);
+  display: grid;
+  min-width: 0;
+  min-height: 88px;
+  align-content: start;
+  gap: 3px;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid var(--memory-review-tone);
+  border-radius: 11px;
+  color: #f7f7fb;
+  background: rgba(255, 255, 255, 0.028);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.memory-review-metric.is-extra {
+  --memory-review-tone: var(--memory-error-extra);
+}
+
+.memory-review-metric.is-action {
+  --memory-review-tone: var(--memory-error-action);
+}
+
+.memory-review-metric.is-active {
+  border-color: var(--memory-review-tone);
+  background: color-mix(in srgb, var(--memory-review-tone) 12%, rgba(255, 255, 255, 0.025));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--memory-review-tone) 28%, transparent);
+}
+
+.memory-review-metric span {
+  overflow-wrap: anywhere;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.67rem;
+  font-weight: 850;
+  line-height: 1.2;
+}
+
+.memory-review-metric strong {
+  color: var(--memory-review-tone);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.memory-review-metric small {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.56rem;
+  line-height: 1.25;
+}
+
+.memory-review-details {
+  --memory-review-tone: var(--memory-error-missed);
+  display: grid;
+  gap: 9px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--memory-review-tone) 40%, rgba(255, 255, 255, 0.08));
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--memory-review-tone) 7%, rgba(255, 255, 255, 0.018));
+}
+
+.memory-review-details.is-extra {
+  --memory-review-tone: var(--memory-error-extra);
+}
+
+.memory-review-details.is-action {
+  --memory-review-tone: var(--memory-error-action);
+}
+
+.memory-review-details.is-empty {
+  --memory-review-tone: #4ed9a7;
+  padding: 16px;
+}
+
+.memory-review-details.is-empty strong,
+.memory-review-details.is-empty p {
+  margin: 0;
+}
+
+.memory-review-details.is-empty p {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.75rem;
+}
+
+.memory-review-selection {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 12px;
+  padding: 9px 10px;
+  border-radius: 10px;
+  background: rgba(8, 7, 12, 0.42);
+}
+
+.memory-review-selection > span {
+  grid-row: 1 / span 2;
+  display: grid;
+  min-width: 60px;
+  gap: 1px;
+}
+
+.memory-review-selection > span small {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.52rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.memory-review-selection > span strong {
+  color: var(--memory-review-tone);
+  font-size: 1.25rem;
+}
+
+.memory-review-selection p,
+.memory-review-selection > small {
+  margin: 0;
+}
+
+.memory-review-selection p {
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-size: 0.76rem;
+}
+
+.memory-review-selection p b {
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.memory-review-selection p i {
+  margin: 0 6px;
+  color: rgba(255, 255, 255, 0.35);
+  font-style: normal;
+}
+
+.memory-review-selection p em {
+  color: var(--memory-review-tone);
+  font-style: normal;
+  font-weight: 850;
+}
+
+.memory-review-selection > small {
+  color: rgba(255, 255, 255, 0.46);
+  font-size: 0.62rem;
+}
+
+.memory-review-hand-list {
+  display: grid;
+  gap: 5px;
+}
+
+.memory-review-hand {
+  --memory-review-tone: var(--memory-error-missed);
+  display: grid;
+  grid-template-columns: minmax(0, 0.72fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 7px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--memory-review-tone);
+  border-radius: 9px;
+  color: #f7f7fb;
+  background: rgba(255, 255, 255, 0.024);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.memory-review-hand.is-extra {
+  --memory-review-tone: var(--memory-error-extra);
+}
+
+.memory-review-hand.is-action {
+  --memory-review-tone: var(--memory-error-action);
+}
+
+.memory-review-hand.is-active {
+  border-color: var(--memory-review-tone);
+  background: color-mix(in srgb, var(--memory-review-tone) 10%, rgba(255, 255, 255, 0.024));
+}
+
+.memory-review-hand > span {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.memory-review-hand > span:first-child {
+  justify-content: space-between;
+}
+
+.memory-review-hand strong {
+  color: #f7f7fb;
+  font-size: 0.78rem;
+}
+
+.memory-review-hand small {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.56rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.memory-review-hand b {
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.65rem;
+}
+
+.memory-review-hand i {
+  color: rgba(255, 255, 255, 0.28);
+  font-style: normal;
+}
+
+.memory-review-hand em {
+  color: var(--memory-review-tone);
+  font-size: 0.65rem;
+  font-style: normal;
+  font-weight: 850;
+}
+
+.memory-review-more {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.42) !important;
+  font-size: 0.63rem;
 }
 
 .memory-score-card {
@@ -2095,13 +2723,11 @@
 
 .memory-error-list {
   display: grid;
-  max-height: 236px;
+  max-height: none;
   padding: 5px;
   margin: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  overflow: visible;
   list-style: none;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
 
 .memory-error-item {
@@ -2204,7 +2830,7 @@
 
   .bb-call-lesson .step-tabs {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     width: 100%;
     gap: 7px;
     overflow: visible;
@@ -2222,6 +2848,10 @@
     grid-template-columns: 1fr;
     gap: 28px;
     min-height: 500px;
+  }
+
+  .bb-call-lesson .league-data-panel.bb-league-data-slide {
+    gap: 10px;
   }
 
   .slide-takeaway {
@@ -2242,6 +2872,14 @@
     grid-template-columns: 1fr;
   }
 
+  .memory-screen.is-review .memory-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-screen.is-review .memory-review-hand-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .practice-hud {
     grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
   }
@@ -2251,16 +2889,15 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 920px) {
   .bb-call-lesson .practice-screen.is-running {
-    overflow-x: hidden;
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    overflow: visible;
+    overscroll-behavior: auto;
   }
 
   .bb-call-lesson .practice-screen.is-running .practice-run {
     height: auto;
-    min-height: 100%;
+    min-height: 0;
   }
 
   .bb-call-lesson .practice-screen.is-running .practice-layout,
@@ -2287,6 +2924,49 @@
   .bb-call-lesson .wisdom-slide {
     min-height: 590px;
     padding: 26px;
+  }
+
+  .bb-call-lesson .league-data-panel.bb-league-data-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, auto);
+    height: clamp(520px, calc(100svh - 170px), 700px);
+    min-height: 0;
+    align-content: start;
+    align-items: start;
+    gap: 10px;
+    padding: 18px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+  }
+
+  .bb-league-data-slide .league-defense-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 7px;
+  }
+
+  .bb-league-data-slide .league-defense-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .bb-league-data-slide .league-defense-controls > div {
+    grid-template-columns: 58px minmax(0, 1fr);
+    align-items: center;
+  }
+
+  .bb-league-data-slide .league-defense-controls .segmented-control button {
+    min-height: 34px;
+  }
+
+  .bb-league-data-slide .league-defense-comparison {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bb-league-data-slide .league-defense-source {
+    text-align: left;
   }
 
   .price-equation {
@@ -2459,10 +3139,6 @@
     font-size: 0.82rem;
   }
 
-  .bb-call-lesson .step-tab:last-child {
-    grid-column: 1 / -1;
-  }
-
   .bb-call-lesson .lesson-table-host .ff-shell-simulator-snapshot {
     --trainer-table-plane-height: min(340px, 80cqw);
   }
@@ -2509,12 +3185,31 @@
     text-align: left;
   }
 
+  .memory-chart-legend.is-review,
+  .memory-review-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .memory-review-overview > p {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .memory-review-key {
+    grid-row: 2;
+  }
+
+  .memory-review-metrics,
+  .memory-screen.is-review .memory-review-hand-list {
+    grid-template-columns: 1fr;
+  }
+
   .memory-error-groups {
     grid-template-columns: 1fr;
   }
 
   .memory-error-list {
-    max-height: 212px;
+    max-height: none;
   }
 
   .memory-actions {
@@ -2564,6 +3259,64 @@
     padding: clamp(20px, 3vh, 30px) clamp(28px, 3.5vw, 46px);
   }
 
+  .bb-call-lesson .league-data-panel.bb-league-data-slide {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    align-content: start;
+    gap: 6px;
+    padding: 14px clamp(24px, 3vw, 38px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .bb-league-data-slide .league-defense-head {
+    gap: 12px;
+  }
+
+  .bb-league-data-slide .league-defense-head h2,
+  .bb-league-data-slide .league-defense-head h3 {
+    font-size: clamp(1.35rem, 2vw, 1.85rem);
+  }
+
+  .bb-league-data-slide .league-defense-controls {
+    gap: 7px;
+    padding: 6px;
+  }
+
+  .bb-league-data-slide .league-defense-controls .segmented-control button {
+    min-height: 32px;
+    padding-block: 5px;
+  }
+
+  .bb-league-data-slide .league-defense-comparison {
+    min-height: 0;
+    gap: 10px;
+  }
+
+  .bb-league-data-slide .league-range-card {
+    min-height: 0;
+    gap: 4px;
+    padding: 7px 9px 6px;
+  }
+
+  .bb-league-data-slide .league-range-matrix {
+    width: min(100%, clamp(154px, 20vh, 174px));
+  }
+
+  .bb-league-data-slide .league-action-legend {
+    font-size: 0.56rem;
+  }
+
+  .bb-league-data-slide .league-range-card footer {
+    font-size: 0.54rem;
+  }
+
+  .bb-league-data-slide .league-defense-source {
+    font-size: 0.55rem;
+    line-height: 1.2;
+  }
+
   .bb-call-lesson .wisdom-copy-block {
     gap: 10px;
   }
@@ -2604,7 +3357,7 @@
 
   .bb-call-lesson .step-tabs {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     width: 100%;
     gap: 7px;
     overflow: visible;
@@ -2614,5 +3367,30 @@
   .bb-call-lesson .step-tab {
     width: 100%;
     min-width: 0;
+  }
+}
+
+/* The data tab has wide comparison cards: spend that space on the matrices.
+   Keep the existing compact mobile treatment for the later mobile pass. */
+@media (min-width: 761px) {
+  .bb-call-lesson .league-data-screen .league-range-card {
+    gap: 8px;
+    padding: 12px 14px 10px;
+  }
+
+  .bb-call-lesson .league-data-screen .league-range-matrix {
+    width: min(100%, clamp(260px, 45svh, 440px));
+  }
+
+  .bb-call-lesson .league-data-screen .league-range-cell span {
+    font-size: clamp(0.5rem, 0.65vw, 0.72rem);
+  }
+
+  .bb-call-lesson .league-data-screen .league-action-legend {
+    font-size: 0.68rem;
+  }
+
+  .bb-call-lesson .league-data-screen .league-range-card footer {
+    font-size: 0.64rem;
   }
 }

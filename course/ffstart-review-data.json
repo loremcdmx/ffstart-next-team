@@ -1,0 +1,3643 @@
+{
+  "schema": "ffstart-architecture-review-data-v1",
+  "versions": {
+    "course": "2026-07-15.1",
+    "media": "2026-07-15.media.5",
+    "practice": "ffstart-practice-index-v1"
+  },
+  "title": "Архитектура FF Start",
+  "totals": {
+    "modules": 11,
+    "lessons": 36,
+    "playSessions": 5,
+    "reviewItems": 52,
+    "lessonMinutes": 1031,
+    "uniqueVideos": 36,
+    "videoLinks": 38,
+    "videoSeconds": 17096.472,
+    "checkpoints": 116,
+    "practice": {
+      "generatedSpots": 1151,
+      "legacySpots": 41,
+      "fullSimulatorLessons": 1
+    }
+  },
+  "modules": [
+    {
+      "reviewId": "module:welcome",
+      "type": "module",
+      "id": "welcome",
+      "order": 1,
+      "title": "Вступление",
+      "summary": "Пойми ритм курса и преврати ошибки в маршрут роста.",
+      "totals": {
+        "lessons": 1,
+        "minutes": 12,
+        "videoLinks": 3,
+        "videoSeconds": 2805.928,
+        "generatedPracticeSpots": 6,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 0
+      },
+      "items": [
+        {
+          "reviewId": "lesson:course-start",
+          "type": "lesson",
+          "id": "course-start",
+          "order": 1,
+          "title": "Как пройти FF Start",
+          "route": "/ffstart/course-start",
+          "minutes": 12,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Сначала реши задачу так, как сделал бы за столом. После ответа откроется короткий разбор, затем — понятная схема и серия новых ситуаций.",
+          "content": {
+            "encounterTitle": "Первое решение важнее первого ответа",
+            "encounterSummary": "Сначала реши задачу так, как сделал бы за столом. После ответа откроется короткий разбор, затем — понятная схема и серия новых ситуаций.",
+            "wisdomTitles": [
+              "Решение запускает обучение",
+              "Ошибка показывает точку роста",
+              "Короткие серии дают честную обратную связь",
+              "Иди по порядку, возвращайся по слабому месту"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Один ритм на весь курс",
+            "deepSummary": "Каждый урок ведёт от собственного решения к правилу, затем проверяет перенос правила на новые ситуации.",
+            "deepCardTitles": [
+              "Четыре шага урока",
+              "Что считать прогрессом"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "ladder"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 3,
+            "durationSeconds": 2805.928,
+            "checkpointCount": 10,
+            "longFormCount": 1,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "01-chto_vas_zhdet_intro",
+                "title": "Покер как профессия: что вас ждёт",
+                "summary": "Посмотри на обучение как на рабочую среду: практика, поддержка и постепенный рост игрока.",
+                "learningTitle": "Рост строится на повторяемом процессе",
+                "watchFor": "Что превращает интерес к покеру в устойчивый навык?",
+                "rule": "Оценивай качество решений и повторяемость процесса, а не одну выплату.",
+                "practiceCue": "После каждой ошибки назови пропущенный сигнал и проверь его в следующей раздаче.",
+                "checkpointCount": 3,
+                "durationSeconds": 425.92,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              },
+              {
+                "id": "02-chto_vas_zhdet",
+                "title": "Как устроен FF Start",
+                "summary": "Разбери ритм курса: сначала идея, затем решение в тренажёре и честная обратная связь.",
+                "learningTitle": "Теория сразу превращается в решение",
+                "watchFor": "Как устроен переход от объяснения к игре за столом?",
+                "rule": "После нового понятия сразу реши несколько настоящих ситуаций и назови главный сигнал.",
+                "practiceCue": "Перед ответом назови один сигнал: позицию, стек, предыдущий экшен или цену.",
+                "checkpointCount": 3,
+                "durationSeconds": 81.96,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              },
+              {
+                "id": "34-start_za_stolom_vebinar_01",
+                "title": "Что за работа — играть в покер",
+                "summary": "Большой разговор о пути игрока, ежедневной работе и переходе от интереса к устойчивой практике.",
+                "learningTitle": "Переход к профессии начинается с проверки режима",
+                "watchFor": "Какие признаки показывают, что нагрузка уже не разрушает качество?",
+                "rule": "Наращивай обязательства и столы после устойчивого процесса, а не после календарного срока.",
+                "practiceCue": "После игровой серии выбери одну утечку, исправь её и сравни следующий период.",
+                "checkpointCount": 4,
+                "durationSeconds": 2298.048,
+                "longForm": true,
+                "guided": false,
+                "usageCount": 2
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "start",
+            "trainerTitle": "Как пройти FF Start",
+            "title": "Настрой рабочий ритм",
+            "summary": "Пройди короткую серию ситуаций. После каждого ответа назови главный сигнал и только затем переходи дальше.",
+            "bankSize": 6,
+            "sessionLength": 6,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Как проходить стратегический урок?",
+              "Что важнее одного результата банка?",
+              "Когда переходить дальше?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "reviewId": "module:poker-foundation",
+      "type": "module",
+      "id": "poker-foundation",
+      "order": 2,
+      "title": "Введение в покер",
+      "summary": "Научись читать стол, карты, позиции и доступные действия.",
+      "totals": {
+        "lessons": 4,
+        "minutes": 98,
+        "videoLinks": 3,
+        "videoSeconds": 459.371,
+        "generatedPracticeSpots": 31,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 1
+      },
+      "items": [
+        {
+          "reviewId": "lesson:poker-history-rules",
+          "type": "lesson",
+          "id": "poker-history-rules",
+          "order": 2,
+          "title": "Игра, стол и улицы",
+          "route": "/ffstart/poker-history-rules",
+          "minutes": 24,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "У каждого игрока две закрытые карты. Общие карты появляются на флопе, тёрне и ривере, а победителя определяют лучшие пять карт.",
+          "content": {
+            "encounterTitle": "Раздача — это последовательность улиц",
+            "encounterSummary": "У каждого игрока две закрытые карты. Общие карты появляются на флопе, тёрне и ривере, а победителя определяют лучшие пять карт.",
+            "wisdomTitles": [
+              "Действие передаётся по часовой стрелке",
+              "Четыре улицы — четыре новых решения",
+              "Банк выигрывают без вскрытия или на шоудауне",
+              "Фишки измеряют решения, блайнды — их масштаб"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Карта одной раздачи",
+            "deepSummary": "Позиции задают порядок действий, улицы добавляют информацию, а круг торговли завершается, когда активные игроки уравняли ставки.",
+            "deepCardTitles": [
+              "От кнопки к блайндам",
+              "Когда заканчивается круг торговли",
+              "Из семи карт выбираются пять"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "seat-map",
+              "flow",
+              "compare"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 0,
+            "durationSeconds": 0,
+            "checkpointCount": 0,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": []
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "start",
+            "trainerTitle": "Игра, стол и улицы",
+            "title": "Разметь раздачу по улицам",
+            "summary": "В каждой ситуации определи этап раздачи, порядок действий и условие, при котором банк перейдёт игроку.",
+            "bankSize": 6,
+            "sessionLength": 4,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Как идут улицы в холдеме?",
+              "Кто действует первым на префлопе?",
+              "Что происходит после последней ставки на ривере?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:combinations",
+          "type": "lesson",
+          "id": "combinations",
+          "order": 3,
+          "title": "Комбинации",
+          "route": "/ffstart/combinations",
+          "minutes": 28,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Игрок использует любую пятёрку из своих закрытых и общих карт. Более высокая категория всегда побеждает низкую, независимо от красоты отдельных карт.",
+          "content": {
+            "encounterTitle": "Сравниваются не семь карт, а лучшие пять",
+            "encounterSummary": "Игрок использует любую пятёрку из своих закрытых и общих карт. Более высокая категория всегда побеждает низкую, независимо от красоты отдельных карт.",
+            "wisdomTitles": [
+              "Иерархия сильнее впечатления",
+              "Низ лестницы встречается чаще",
+              "Внутри одной категории сравнение идёт сверху вниз",
+              "Общий стол может уравнять руки",
+              "Туз бывает верхом или низом стрита"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Алгоритм сравнения рук",
+            "deepSummary": "Один порядок проверки защищает от двух частых ошибок: лишней шестой карты и поспешного сравнения кикеров.",
+            "deepCardTitles": [
+              "Полная лестница силы",
+              "Три проверки до ответа",
+              "Когда нужен кикер"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "hand-rank",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 101.376,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "03-poker_kombinacii_1",
+                "title": "Десять покерных комбинаций",
+                "summary": "Пройди комбинации от старшей карты до флеш-рояля и закрепи порядок их силы.",
+                "learningTitle": "Комбинация всегда состоит из лучших пяти карт",
+                "watchFor": "Какие пять карт действительно входят в итоговую комбинацию?",
+                "rule": "Сначала собери лучшие пять карт, затем сравни категорию и старшинство внутри неё.",
+                "practiceCue": "В каждой раздаче сначала вслух назови лучшие пять карт героя.",
+                "checkpointCount": 3,
+                "durationSeconds": 101.376,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "combos",
+            "trainerTitle": "Комбинации",
+            "title": "Собери лучшую пятёрку",
+            "summary": "Определи комбинацию каждого игрока и сравни руки в строгом порядке: категория, старшинство, кикер.",
+            "bankSize": 10,
+            "sessionLength": 10,
+            "passScore": 90,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 10,
+              "conceptChoice": 0,
+              "families": {
+                "choice": 10
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Как точнее всего называется комбинация игрока?",
+              "Какая лучшая комбинация у игрока?",
+              "Какая лучшая комбинация у игрока?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:positions",
+          "type": "lesson",
+          "id": "positions",
+          "order": 4,
+          "title": "Позиции за столом",
+          "route": "/ffstart/positions",
+          "minutes": 20,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Чем позже ты действуешь, тем больше соперников уже показали намерение. Это позволяет точнее выбирать руки, подбирать размеры ставок и контролировать банк.",
+          "content": {
+            "encounterTitle": "Позднее действие даёт больше информации",
+            "encounterSummary": "Чем позже ты действуешь, тем больше соперников уже показали намерение. Это позволяет точнее выбирать руки, подбирать размеры ставок и контролировать банк.",
+            "wisdomTitles": [
+              "BTN — главный ориентир",
+              "Ранняя позиция требует более сильных рук",
+              "Позиция работает на каждой улице",
+              "Блайнды платят за вход, но теряют позицию",
+              "Размер стола меняет названия, но не принцип"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Позиция меняет допустимый риск",
+            "deepSummary": "Одна и та же рука может быть хорошим входом на BTN и пасом из UTG, потому что различаются число соперников и будущий порядок действий.",
+            "deepCardTitles": [
+              "Карта семиместного стола",
+              "Три вопроса о позиции",
+              "Почему диапазон расширяется"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "seat-map",
+              "ladder",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 178.432,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 1,
+            "items": [
+              {
+                "id": "04-pozicii_za_stolom",
+                "title": "Позиции и порядок хода",
+                "summary": "Увидь, как баттон задаёт позиции и почему одна и та же рука играется по-разному.",
+                "learningTitle": "Позиция задаёт порядок и объём информации",
+                "watchFor": "Кто действует первым сейчас и кто получит последнее слово?",
+                "rule": "Найди BTN, посчитай игроков позади и отдельно определи порядок на текущей улице.",
+                "practiceCue": "Перед выбором линии найди BTN и назови, кто действует после тебя.",
+                "checkpointCount": 3,
+                "durationSeconds": 178.432,
+                "longForm": false,
+                "guided": true,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "positions",
+            "trainerTitle": "Позиции за столом",
+            "title": "Определи позицию до карт",
+            "summary": "В каждой ситуации сначала найди BTN и свою позицию, затем оцени игроков позади и только после этого переходи к решению.",
+            "bankSize": 10,
+            "sessionLength": 10,
+            "passScore": 85,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 10,
+              "families": {
+                "choice": 10
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Где BTN?",
+              "Что происходит в средней позиции?",
+              "Как запомнить порядок конца стола?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:hand-actions",
+          "type": "lesson",
+          "id": "hand-actions",
+          "order": 5,
+          "title": "Раздача и основные действия",
+          "route": "/ffstart/hand-actions",
+          "minutes": 26,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Если ставки нет, можно чекнуть или поставить. Если ставка есть, можно сбросить, уравнять или повысить. Олл-ин означает поставить весь оставшийся стек.",
+          "content": {
+            "encounterTitle": "Каждое действие отвечает на текущую цену",
+            "encounterSummary": "Если ставки нет, можно чекнуть или поставить. Если ставка есть, можно сбросить, уравнять или повысить. Олл-ин означает поставить весь оставшийся стек.",
+            "wisdomTitles": [
+              "Чек возможен только без ставки",
+              "Колл уравнивает последнюю ставку",
+              "Рейз создаёт новую цену",
+              "Круг заканчивается, когда все ответили"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Дерево доступных действий",
+            "deepSummary": "Набор кнопок определяется не силой руки, а состоянием торговли. Сила руки помогает выбрать из доступного набора.",
+            "deepCardTitles": [
+              "Если ставки ещё нет",
+              "Если ставка уже есть",
+              "Что меняет действие"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "ladder",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 179.563,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "05-razdacha_deystvia",
+                "title": "Как проходит раздача",
+                "summary": "Свяжи улицы, обязательные ставки и доступные действия в одну понятную последовательность.",
+                "learningTitle": "Каждое действие зависит от текущей цены",
+                "watchFor": "Какие действия доступны именно в этой точке раздачи?",
+                "rule": "Сначала назови улицу, банк, цену продолжения и эффективный стек.",
+                "practiceCue": "До клика назови банк, доплату и меньший из двух участвующих стеков.",
+                "checkpointCount": 3,
+                "durationSeconds": 179.563,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "start",
+            "trainerTitle": "Раздача и основные действия",
+            "title": "Выбери доступное действие",
+            "summary": "Сначала определи текущую цену, затем выбери линию прямо за учебным столом и проверь, как она меняет раздачу.",
+            "bankSize": 5,
+            "sessionLength": 4,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 4,
+              "tableBackedChoice": 1,
+              "conceptChoice": 0,
+              "families": {
+                "call": 1,
+                "check": 1,
+                "choice": 1,
+                "raise": 2
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "BB чекнул. Какое действие сейчас недоступно?",
+              "BTN открыл до 2,5 BB, а ты уже поставил 1 BB. Сколько нужно доплатить для колла?",
+              "Что означает действие «олл-ин»?"
+            ]
+          }
+        },
+        {
+          "reviewId": "play:first-orbits",
+          "type": "play",
+          "id": "first-orbits",
+          "afterLessonId": "hand-actions",
+          "title": "Первые круги за столом",
+          "route": "/ffstart/play-session?session=first-orbits",
+          "summary": "Пять живых раздач без оценки. Осмотрись за столом, попробуй кнопки и замечай, как позиция меняется вместе с баттоном.",
+          "kicker": "Просто сыграй",
+          "hands": 5,
+          "mode": "random",
+          "modeLabel": "Кэш 6-max",
+          "stackLabel": "40–80 BB",
+          "tempo": "calm",
+          "duration": "около 7 минут"
+        }
+      ]
+    },
+    {
+      "reviewId": "module:hand-reading",
+      "type": "module",
+      "id": "hand-reading",
+      "order": 3,
+      "title": "Комбинации в покере",
+      "summary": "Сравнивай готовые руки, кикеры и считай ауты дро без догадок.",
+      "totals": {
+        "lessons": 2,
+        "minutes": 50,
+        "videoLinks": 2,
+        "videoSeconds": 397.995,
+        "generatedPracticeSpots": 48,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 0
+      },
+      "items": [
+        {
+          "reviewId": "lesson:pairs-kicker",
+          "type": "lesson",
+          "id": "pairs-kicker",
+          "order": 6,
+          "title": "Пары и кикер",
+          "route": "/ffstart/pairs-kicker",
+          "minutes": 22,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Если у игроков одна и та же пара, сначала сравнивается старший кикер, затем второй и третий. Общие карты могут сделать кикеры одинаковыми и разделить банк.",
+          "content": {
+            "encounterTitle": "Одинаковую пару решают оставшиеся карты",
+            "encounterSummary": "Если у игроков одна и та же пара, сначала сравнивается старший кикер, затем второй и третий. Общие карты могут сделать кикеры одинаковыми и разделить банк.",
+            "wisdomTitles": [
+              "Карманная пара уже готова префлоп",
+              "Топ-пара зависит от доски",
+              "Оверпара выше любой карты доски",
+              "Доска может забрать кикер у обоих"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Как сравнивать пары без догадок",
+            "deepSummary": "Сравнение идёт слоями: достоинство пары, затем оставшиеся карты по одной, пока не появится различие.",
+            "deepCardTitles": [
+              "Порядок сравнения одной пары",
+              "Четыре вида пары после флопа",
+              "Парная доска меняет пятёрку"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "hand-rank",
+              "flow",
+              "ladder"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 175.659,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "06-pari_kiker",
+                "title": "Пары и кикер",
+                "summary": "Научись различать виды пар и определять победителя, когда основные комбинации совпали.",
+                "learningTitle": "Название пары ещё не определяет победителя",
+                "watchFor": "Когда кикер решает исход, а когда банк делится?",
+                "rule": "Сравни лучшие пять карт целиком; кикер учитывается только если входит в эту пятёрку.",
+                "practiceCue": "Назови тип пары и пять карт, которыми герой выходит на вскрытие.",
+                "checkpointCount": 3,
+                "durationSeconds": 175.659,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "combos",
+            "trainerTitle": "Пары и кикер",
+            "title": "Сравни пару до последнего кикера",
+            "summary": "Собери пятёрку каждого игрока, найди уровень пары и только при равенстве переходи к кикерам.",
+            "bankSize": 8,
+            "sessionLength": 8,
+            "passScore": 90,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 8,
+              "conceptChoice": 0,
+              "families": {
+                "choice": 8
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Сначала ранг каре?",
+              "Сравни старшую?",
+              "Пять карт сверху?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:draws-outs",
+          "type": "lesson",
+          "id": "draws-outs",
+          "order": 7,
+          "title": "Дро-комбинации и ауты",
+          "route": "/ffstart/draws-outs",
+          "minutes": 28,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Дро ещё не готовая комбинация. Сначала определи, какие карты дадут сильную руку, затем убери дубли и сомнительные ауты.",
+          "content": {
+            "encounterTitle": "Аут — карта, которая действительно улучшает руку",
+            "encounterSummary": "Дро ещё не готовая комбинация. Сначала определи, какие карты дадут сильную руку, затем убери дубли и сомнительные ауты.",
+            "wisdomTitles": [
+              "Флеш-дро обычно имеет девять аутов",
+              "Открытый стрит-дро имеет восемь аутов",
+              "Правило 4 и 2 даёт быструю оценку",
+              "Один и тот же аут нельзя считать дважды",
+              "Монстр-дро силён, бэкдор хрупок"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "От аутов к выгодному продолжению",
+            "deepSummary": "Вероятность улучшения полезна только вместе с ценой колла и качеством аутов.",
+            "deepCardTitles": [
+              "Быстрый справочник дро",
+              "Цена колла против эквити",
+              "Проверка каждого аута"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "ladder",
+              "compare",
+              "flow",
+              "odds"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 222.336,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "07-dro_kombinacii",
+                "title": "Дро-комбинации и ауты",
+                "summary": "Распознавай незаконченные комбинации и считай карты, которые могут усилить руку.",
+                "learningTitle": "Дро оценивается по уникальным аутам",
+                "watchFor": "Сколько разных карт реально улучшает руку на следующей улице?",
+                "rule": "Считай уникальные ауты и отделяй полноценное дро от двухкарточного бэкдора.",
+                "practiceCue": "Перед действием назови тип дро, уникальные ауты и возможные грязные карты.",
+                "checkpointCount": 3,
+                "durationSeconds": 222.336,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "combos",
+            "trainerTitle": "Дро-комбинации и ауты",
+            "title": "Посчитай только чистые ауты",
+            "summary": "Для каждой доски назови дро, исключи повторы и угрозы, оцени вероятность по правилу 4 и 2 и сравни её с ценой продолжения.",
+            "bankSize": 40,
+            "sessionLength": 12,
+            "passScore": 85,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 40,
+              "conceptChoice": 0,
+              "families": {
+                "choice": 40
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Сколько здесь потенциальных аутов на улучшение?",
+              "Сколько здесь потенциальных аутов на улучшение?",
+              "Сколько здесь потенциальных аутов на улучшение?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "reviewId": "module:tournaments",
+      "type": "module",
+      "id": "tournaments",
+      "order": 4,
+      "title": "Турнирная игра",
+      "summary": "Связывай формат, стадию и размер стека с текущей задачей.",
+      "totals": {
+        "lessons": 2,
+        "minutes": 46,
+        "videoLinks": 3,
+        "videoSeconds": 3865.0460000000003,
+        "generatedPracticeSpots": 30,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 0
+      },
+      "items": [
+        {
+          "reviewId": "lesson:tournament-formats",
+          "type": "lesson",
+          "id": "tournament-formats",
+          "order": 8,
+          "title": "Виды и форматы турниров",
+          "route": "/ffstart/tournament-formats",
+          "minutes": 22,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "В кэш-игре фишки можно докупить и обменять на деньги. В многостоловом турнире участники начинают с турнирными стеками и играют, пока не останется победитель.",
+          "content": {
+            "encounterTitle": "В турнире фишки ведут к месту, а не к кассе",
+            "encounterSummary": "В кэш-игре фишки можно докупить и обменять на деньги. В многостоловом турнире участники начинают с турнирными стеками и играют, пока не останется победитель.",
+            "wisdomTitles": [
+              "Кэш и турнир измеряют успех по-разному",
+              "Фризаут, ре-энтри и ребай задают правила участия",
+              "Обычный, KO, PKO и сателлит задают тип выплат",
+              "Обычная, турбо и гипер-турбо — это скорость"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Три независимые настройки турнира",
+            "deepSummary": "Один турнир может одновременно быть, например, ре-энтри, PKO и турбо: каждая характеристика отвечает на свой вопрос.",
+            "deepCardTitles": [
+              "Разделяй настройки до регистрации",
+              "Глубина стека важнее числа фишек",
+              "Проверка перед регистрацией"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "flow",
+              "stack-zones"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 170.411,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "08-vidi_turnirov",
+                "title": "Виды и форматы турниров",
+                "summary": "Сравни форматы по структуре, скорости и выплатам, чтобы понимать задачу до первой раздачи.",
+                "learningTitle": "Формат меняет цель каждой фишки",
+                "watchFor": "Что именно можно выиграть или потерять в выбранном формате?",
+                "rule": "До первой раздачи проверь формат, правила повторного входа и устройство выплат.",
+                "practiceCue": "Перед решением назови формат и добавочную ценность баунти, если она есть.",
+                "checkpointCount": 3,
+                "durationSeconds": 170.411,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "tournament",
+            "trainerTitle": "Виды и форматы турниров",
+            "title": "Распознай формат до решения",
+            "summary": "Для каждой ситуации отдельно определи правила входов и докупок, тип выплат и скорость, а затем оцени, как они меняют цену риска.",
+            "bankSize": 12,
+            "sessionLength": 10,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 12,
+              "families": {
+                "choice": 12
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Ты проигрываешь весь стек в обычном фризаут-турнире. Что происходит дальше?",
+              "В турнире был разрешён повторный вход, но поздняя регистрация закрылась 12 минут назад. Ты проигрываешь весь стек. Что теперь?",
+              "Турнир с тайными баунти, но баунти-фаза начинается только после ITM. Сейчас середина турнира, до призов далеко. Как трактовать баунти?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:tournament-navigation",
+          "type": "lesson",
+          "id": "tournament-navigation",
+          "order": 9,
+          "title": "Как ориентироваться в турнире",
+          "route": "/ffstart/tournament-navigation",
+          "minutes": 24,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Чтобы понять положение в турнире, переведи стек в BB, сравни его со средним, проверь текущий уровень и стадию поля.",
+          "content": {
+            "encounterTitle": "Число фишек ничего не говорит без блайндов",
+            "encounterSummary": "Чтобы понять положение в турнире, переведи стек в BB, сравни его со средним, проверь текущий уровень и стадию поля.",
+            "wisdomTitles": [
+              "Стек в BB показывает запас решений",
+              "Средний стек — ориентир, а не цель",
+              "Скорость структуры определяет время на ожидание",
+              "Стадия меняет цену вылета"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Панель турнирной ситуации",
+            "deepSummary": "Четыре числа дают рабочую картину: твой стек в BB, эффективный стек, средний стек и расстояние до следующего этапа.",
+            "deepCardTitles": [
+              "Зоны глубины",
+              "Эффективный стек зависит от соперника",
+              "Чек-лист перед раздачей"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "ladder",
+              "flow",
+              "stack-zones"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 2,
+            "durationSeconds": 3694.635,
+            "checkpointCount": 7,
+            "longFormCount": 1,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "09-kak_orientirovatsya_v_turn",
+                "title": "Как ориентироваться в турнире",
+                "summary": "Свяжи стадию турнира, эффективный стек и рост блайндов с планом на раздачу.",
+                "learningTitle": "Структура турнира постоянно меняет масштаб решений",
+                "watchFor": "Как стадия и скорость роста блайндов меняют срочность решения?",
+                "rule": "Сравни свой стек в BB со структурой и покрытием соперников, а не только со средним стеком.",
+                "practiceCue": "Назови стадию, эффективный стек и следующую угрозу ростом блайндов.",
+                "checkpointCount": 3,
+                "durationSeconds": 144.896,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              },
+              {
+                "id": "36-start_za_stolom_vebinar_03",
+                "title": "Как выбирать, что играть",
+                "summary": "Большой разбор турнирного селекта: формат, поле, расписание и нагрузка на игровую сессию.",
+                "learningTitle": "Селект соединяет ожидание, время и нагрузку",
+                "watchFor": "Как хороший турнир влияет на всю сессию, а не только на собственную ожидаемую доходность?",
+                "rule": "Выбирай игру по полю, структуре, времени завершения и реальному стартовому стеку.",
+                "practiceCue": "Перед регистрацией проверь структуру, поле, ожидаемое время окончания и стек при текущем входе.",
+                "checkpointCount": 4,
+                "durationSeconds": 3549.739,
+                "longForm": true,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "tournament",
+            "trainerTitle": "Как ориентироваться в турнире",
+            "title": "Собери картину турнира",
+            "summary": "По данным каждой ситуации определи глубину, темп, стадию и эффективный стек, а затем выбери лучший ориентир для решения.",
+            "bankSize": 18,
+            "sessionLength": 10,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 18,
+              "families": {
+                "choice": 18
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "У тебя 55 BB, до призов далеко. Какой общий план лучше всего подходит ранней стадии?",
+              "До призов три вылета. У тебя 62 BB, ты покрываешь весь стол; позади стеки 11–18 BB. Какой общий план лучше?",
+              "У тебя 5 BB на финальном столе, рядом два стека по 3 BB, а следующий скачок выплат большой. Что помнить перед олл-ином с BTN?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "reviewId": "module:first-strategies",
+      "type": "module",
+      "id": "first-strategies",
+      "order": 5,
+      "title": "Первые стратегии",
+      "summary": "Собери базовые линии от префлопа до раздач с несколькими соперниками.",
+      "totals": {
+        "lessons": 10,
+        "minutes": 322,
+        "videoLinks": 11,
+        "videoSeconds": 2566.7969999999996,
+        "generatedPracticeSpots": 588,
+        "legacyPracticeSpots": 20,
+        "fullSimulatorPractices": 0,
+        "playSessions": 1
+      },
+      "items": [
+        {
+          "reviewId": "lesson:preflop-start",
+          "type": "lesson",
+          "id": "preflop-start",
+          "order": 10,
+          "title": "Старт игры: префлоп",
+          "route": "/ffstart/preflop-start",
+          "minutes": 24,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Сначала определи, кто уже вложил фишки и каким действием. Затем учти позицию, эффективный стек и только после этого оцени стартовую руку.",
+          "content": {
+            "encounterTitle": "Префлоп начинается не с карт, а с истории действий",
+            "encounterSummary": "Сначала определи, кто уже вложил фишки и каким действием. Затем учти позицию, эффективный стек и только после этого оцени стартовую руку.",
+            "wisdomTitles": [
+              "Опен-рейз первым повышает ставку",
+              "Лимп отдаёт инициативу",
+              "Колл и 3-бет отвечают на открытие",
+              "Последний рейзер несёт инициативу на флоп",
+              "Четыре фильтра идут в одном порядке"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Базовое дерево префлопа",
+            "deepSummary": "Термины становятся полезными, когда сразу направляют к нужному типу решения.",
+            "deepCardTitles": [
+              "История ведёт к ветке",
+              "Ядро сильных открытий",
+              "Стек меняет цену повышения"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "ladder",
+              "range-matrix",
+              "stack-zones"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 178.688,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "10-termini_prefop",
+                "title": "Префлоп: первый круг решений",
+                "summary": "Разбери вход в раздачу до флопа и роль позиции, стека и предыдущего экшена.",
+                "learningTitle": "Префлоп-линия читается как последовательность",
+                "watchFor": "Кто создал цену и кто сейчас владеет инициативой?",
+                "rule": "Определи первое агрессивное действие и последнего агрессора до выбора своей линии.",
+                "practiceCue": "В каждой раздаче проговори: неоткрытый банк, опен, колд-колл, лимп или 3-бет.",
+                "checkpointCount": 3,
+                "durationSeconds": 178.688,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "start",
+            "trainerTitle": "Старт игры: префлоп",
+            "title": "Назови ветку до выбора",
+            "summary": "В каждой раздаче сначала восстанови историю префлопа, затем учти позицию и эффективный стек и только после этого выбирай действие за столом.",
+            "bankSize": 13,
+            "sessionLength": 12,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 12,
+              "tableBackedChoice": 1,
+              "conceptChoice": 0,
+              "families": {
+                "choice": 1,
+                "fold": 3,
+                "raise": 8,
+                "check": 1
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "До тебя все спасовали. Ты на BTN с K♠ Q♠ и стеком 40 BB. Как открыть раздачу?",
+              "До тебя все спасовали. Ты на UTG с A♠ Q♠ и стеком 44 BB. Как сыграть?",
+              "SB лимп 1 BB. Ты на BB с 9♣ 2♦ и стеком 29 BB. Как сыграть?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:rfi-open-position",
+          "type": "lesson",
+          "id": "rfi-open-position",
+          "order": 11,
+          "title": "Опен-рейзы по позициям",
+          "route": "/rfi-open-position-lesson",
+          "minutes": 42,
+          "kind": "legacy",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Одна и та же рука меняет решение вместе с позицией: чем меньше игроков осталось за спиной, тем шире можно открываться первым входом.",
+          "content": {
+            "encounterTitle": "Позиция управляет шириной опен-рейза",
+            "encounterSummary": "Одна и та же рука меняет решение вместе с позицией: чем меньше игроков осталось за спиной, тем шире можно открываться первым входом.",
+            "wisdomTitles": [
+              "Меньше игроков — шире опен",
+              "Расширяй один чарт — не учи пять заново",
+              "Offsuit-клетка весит втрое больше"
+            ],
+            "wisdomCount": 3,
+            "deepTitle": "Диапазоны по позициям и проверка памяти",
+            "deepSummary": "Пять позиционных чартов, восстановление диапазона по памяти и проверка по комбинациям, а не только по клеткам.",
+            "deepCardTitles": [
+              "Матрицы стартовых рук"
+            ],
+            "deepCardCount": 1,
+            "visualTypes": [
+              "flow",
+              "ladder",
+              "compare",
+              "range-matrix"
+            ],
+            "recall": true
+          },
+          "media": {
+            "count": 2,
+            "durationSeconds": 637.965,
+            "checkpointCount": 6,
+            "longFormCount": 0,
+            "guidedCount": 2,
+            "items": [
+              {
+                "id": "11-reindzhi_open_reizov",
+                "title": "Какие руки открывать",
+                "summary": "Посмотри, почему диапазон первого рейза расширяется по мере приближения к баттону.",
+                "learningTitle": "Диапазон выбирается по позиции и стеку",
+                "watchFor": "Почему одна и та же рука меняет действие при смене позиции?",
+                "rule": "Используй актуальный чарт, а из принципа запомни направление: раньше уже, позже шире.",
+                "practiceCue": "Выбери позицию и стек, затем восстанови границу по текущей матрице.",
+                "checkpointCount": 3,
+                "durationSeconds": 256.725,
+                "longForm": false,
+                "guided": true,
+                "usageCount": 1
+              },
+              {
+                "id": "12-reindzhi_open_reizov_zapomni",
+                "title": "Как запоминать диапазоны",
+                "summary": "Освой ориентиры, с которыми диапазон легче восстановить, чем заучить клетку за клеткой.",
+                "learningTitle": "Чарт запоминается через форму и опорные точки",
+                "watchFor": "Какие ориентиры позволяют восстановить диапазон без зубрёжки?",
+                "rule": "Смотри коротко, закрывай чарт, восстанавливай и исправляй конкретные клетки.",
+                "practiceCue": "После десяти секунд просмотра закрой матрицу и восстанови форму текущего чарта.",
+                "checkpointCount": 3,
+                "durationSeconds": 381.24,
+                "longForm": false,
+                "guided": true,
+                "usageCount": 2
+              }
+            ]
+          },
+          "practice": {
+            "trainerKey": "open_first",
+            "trainerTitle": "Опен-рейзы по позициям",
+            "title": "Пограничные опен-рейзы",
+            "summary": "Выбирай рейз 2 BB или пас по позиции, затем закрепляй границу в живых раздачах без предыдущих входов.",
+            "mediaLinkedSpots": 0,
+            "delivery": "specialized-table",
+            "bankSize": 20,
+            "sessionLength": 25,
+            "passScore": 80,
+            "grading": "accuracy",
+            "sourceVersion": "rfi-open-page7-20260713-v5",
+            "interaction": {
+              "pokerAction": 20,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "fold": 7,
+                "raise": 13
+              }
+            }
+          }
+        },
+        {
+          "reviewId": "lesson:betting-purpose",
+          "type": "lesson",
+          "id": "betting-purpose",
+          "order": 12,
+          "title": "Зачем мы ставим",
+          "route": "/ffstart/betting-purpose",
+          "minutes": 24,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "До ставки назови руки хуже, которые ответят, или руки лучше, которые смогут сбросить. Если ни один ответ не находится, чек часто сохраняет больше ценности.",
+          "content": {
+            "encounterTitle": "У хорошей ставки есть конкретная цель",
+            "encounterSummary": "До ставки назови руки хуже, которые ответят, или руки лучше, которые смогут сбросить. Если ни один ответ не находится, чек часто сохраняет больше ценности.",
+            "wisdomTitles": [
+              "Вэлью получает оплату от рук слабее",
+              "Блеф выбивает руки сильнее",
+              "Полублеф имеет запас на улучшение",
+              "Защита лишает бесплатной карты",
+              "Сайзинг следует за целью"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Цель, ответ соперника и размер",
+            "deepSummary": "Сильное решение связывает цель ставки, диапазон продолжения соперника и размер, который вызывает нужный ответ.",
+            "deepCardTitles": [
+              "Четыре рабочие цели",
+              "Проверка ставки",
+              "Как часто должен сработать чистый блеф"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "flow",
+              "ladder"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 209.387,
+            "checkpointCount": 4,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "13-strategia_stavok",
+                "title": "Зачем мы ставим",
+                "summary": "Отдели ставки на вэлью от блефа и выбирай размер под цель, а не по привычке.",
+                "learningTitle": "Размер ставки следует за её целью",
+                "watchFor": "Как цель и диапазон ответа превращаются в конкретный размер?",
+                "rule": "Сначала назови руки хуже, которые заплатят, или руки лучше, которые могут сбросить.",
+                "practiceCue": "Перед ставкой назови цель и минимум три руки соперника, на которые она рассчитана.",
+                "checkpointCount": 4,
+                "durationSeconds": 209.387,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "start",
+            "trainerTitle": "Зачем мы ставим",
+            "title": "Назови цель до ставки",
+            "summary": "В каждой раздаче выбери действие за столом, затем проверь, какие худшие руки платят, какие лучшие сбрасывают и подходит ли размер.",
+            "bankSize": 12,
+            "sessionLength": 12,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 12,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "raise": 8,
+                "check": 4
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "BB чекнул. Как продолжить с топ-сетом?",
+              "Пассивный соперник коллировал флоп и тёрн. Ривер ничего не изменил. Что делать с промахнувшимися оверкартами?",
+              "BB чекнул опасный тёрн. Как сыграть топ-пару со слабым кикером?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:cbet-in-position",
+          "type": "lesson",
+          "id": "cbet-in-position",
+          "order": 13,
+          "title": "Продолжать ставить или остановиться",
+          "route": "/ffstart/cbet-in-position",
+          "minutes": 32,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "После опен-рейза против блайнда контбет часто выигрывает банк сразу. Решение уточняют сила руки, структура флопа, количество соперников и план на тёрн.",
+          "content": {
+            "encounterTitle": "Контбет продолжает префлоп-инициативу",
+            "encounterSummary": "После опен-рейза против блайнда контбет часто выигрывает банк сразу. Решение уточняют сила руки, структура флопа, количество соперников и план на тёрн.",
+            "wisdomTitles": [
+              "В позиции контбет часто доступен",
+              "Сухой флоп меняется редко",
+              "Дровяной флоп требует цены",
+              "Слабая рука использует малый стандарт",
+              "Позиция оставляет право на чек"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Сила руки × структура доски",
+            "deepSummary": "Контбет становится понятным, когда цель и размер выводятся из того, кто продолжит и какие тёрны изменят преимущество.",
+            "deepCardTitles": [
+              "Два полюса структуры",
+              "Пять шагов контбета",
+              "Рабочие ориентиры размера"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "ladder",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 147.648,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "14-kontbet_pozicia",
+                "title": "Контбет в позиции",
+                "summary": "Разбери, когда преимущество позиции помогает продолжить ставкой, а когда лучше остановиться.",
+                "learningTitle": "Структура доски управляет контбетом",
+                "watchFor": "Какие тёрны меняют доску и сколько соперник готов платить сейчас?",
+                "rule": "Размер выбирается по структуре, силе диапазонов и тому, какие руки продолжают.",
+                "practiceCue": "До ставки классифицируй доску как сухую или динамичную и назови руки продолжения.",
+                "checkpointCount": 3,
+                "durationSeconds": 147.648,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "flop",
+            "trainerTitle": "Продолжать ставить или остановиться",
+            "title": "Продолжи инициативу осознанно",
+            "summary": "За учебным столом оцени силу руки и структуру флопа, выбери чек или размер контбета и проверь план на следующую карту.",
+            "bankSize": 60,
+            "sessionLength": 14,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 60,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "raise": 54,
+                "check": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Флоп 2♥ 2♦ 5♣ · банк 5,5 BB. BB чекнул. Ты на BTN с J♥ T♠. Как сыграть?",
+              "Флоп T♠ 4♣ 4♦ · банк 5,5 BB. BB чекнул. Ты на BTN с J♠ 9♠. Как сыграть?",
+              "Флоп 9♣ 3♦ 5♥ · банк 5,5 BB. BB чекнул. Ты на BTN с Q♠ 9♠. Как сыграть?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:play-out-of-position",
+          "type": "lesson",
+          "id": "play-out-of-position",
+          "order": 14,
+          "title": "Как играть без позиции",
+          "route": "/ffstart/play-out-of-position",
+          "minutes": 30,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Против позиционного колла нельзя автоматически продолжать каждой рукой. Большая часть диапазона начинает с чека, а ставки сохраняются для сильных рук и дро.",
+          "content": {
+            "encounterTitle": "Без позиции чек защищает весь диапазон",
+            "encounterSummary": "Против позиционного колла нельзя автоматически продолжать каждой рукой. Большая часть диапазона начинает с чека, а ставки сохраняются для сильных рук и дро.",
+            "wisdomTitles": [
+              "Чек — базовая развилка без позиции",
+              "Сильные руки ставят крупно",
+              "Дро ставит в два темпа",
+              "Средние руки ловят один темп",
+              "Пропущенная ставка открывает отложенную атаку"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Линии по классу руки",
+            "deepSummary": "Без позиции сначала определяется класс руки, затем размер ставки соперника и только после — глубина продолжения.",
+            "deepCardTitles": [
+              "Базовое дерево флопа",
+              "Размер соперника меняет защиту",
+              "Цена чек-колла"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "ladder",
+              "flow",
+              "odds"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 224.512,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "15-igra_bez_pozicii",
+                "title": "Игра без позиции",
+                "summary": "Собери более осторожный план, когда соперник получает информацию о твоём действии первым.",
+                "learningTitle": "Без позиции чек часто сохраняет диапазон",
+                "watchFor": "Какие руки продолжают после чека и на каких улицах план должен остановиться?",
+                "rule": "Переоценивай руку после каждой новой карты и каждого следующего размера соперника.",
+                "practiceCue": "Перед ответом назови категорию руки и план не только на эту, но и на следующую улицу.",
+                "checkpointCount": 3,
+                "durationSeconds": 224.512,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "flop",
+            "trainerTitle": "Как играть без позиции",
+            "title": "Защити диапазон без позиции",
+            "summary": "Определи класс руки, выбери ставку или чек за столом и после ответа соперника реши, сколько улиц и какой размер выдерживает твоя рука.",
+            "bankSize": 83,
+            "sessionLength": 14,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 83,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "check": 27,
+                "call": 18,
+                "fold": 9,
+                "raise": 29
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Выбери линию для этой руки Какое действие доступно прямо сейчас?",
+              "Выбери линию для этой руки Какое действие доступно прямо сейчас?",
+              "Выбери линию для этой руки Какое действие доступно прямо сейчас?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:isolation-raise",
+          "type": "lesson",
+          "id": "isolation-raise",
+          "order": 15,
+          "title": "Изоляционные рейзы",
+          "route": "/ffstart/isolation-raise",
+          "minutes": 38,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "После одного или нескольких лимпов рейз назначает цену остальным игрокам. Сильная рука получает больший банк, а лишние соперники чаще покидают раздачу.",
+          "content": {
+            "encounterTitle": "Изолейт превращает лимп в выгодный банк",
+            "encounterSummary": "После одного или нескольких лимпов рейз назначает цену остальным игрокам. Сильная рука получает больший банк, а лишние соперники чаще покидают раздачу.",
+            "wisdomTitles": [
+              "Изолейт наказывает дешёвый вход",
+              "Позиция разрешает изолировать шире",
+              "Размер должен отделить лимпера",
+              "Несколько лимперов требуют более сильной руки",
+              "Оверлимп — редкое осознанное исключение"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Диапазон, размер и план после флопа",
+            "deepSummary": "Изоляционный рейз заканчивается выгодно только тогда, когда размер сокращает поле, а рука умеет продолжать против колла.",
+            "deepCardTitles": [
+              "Почему BTN — лучшая точка",
+              "Шкала рабочего размера",
+              "План после колла"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "flow",
+              "ladder",
+              "compare",
+              "seat-map"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 266.944,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "16-izol_reiz",
+                "title": "Изоляционный рейз",
+                "summary": "Научись изолировать лимпера с инициативой и заранее понимать, против кого строится банк.",
+                "learningTitle": "Изолейт строит банк против нужного соперника",
+                "watchFor": "Как позиция, число лимперов и сила руки меняют размер и диапазон?",
+                "rule": "Увеличивай размер без позиции и против нескольких лимперов, одновременно сужая диапазон.",
+                "practiceCue": "Назови число лимперов, позицию после флопа и цель выбранного размера.",
+                "checkpointCount": 3,
+                "durationSeconds": 266.944,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "isolation",
+            "trainerTitle": "Изоляционные рейзы",
+            "title": "Изолируй с планом",
+            "summary": "За учебным столом учти число лимперов, позицию и эффективный стек, выбери диапазон и размер, затем проверь продолжение на флопе.",
+            "bankSize": 183,
+            "sessionLength": 16,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 183,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "raise": 115,
+                "fold": 41,
+                "call": 11,
+                "check": 16
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "UTG Лимп 1 BB. Ты на BTN с A♥ 4♦ и стеком 50 BB. Как сыграть?",
+              "HJ Лимп 1 BB. Ты на BB с A♦ 8♠ и стеком 49 BB. Как сыграть?",
+              "Наш соперник сыграл лимп префлоп, мы поставили изолейт размером 4 BB, соперник заколлил. Как мы хотим играть на флопе после чека от соперника?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:cold-call",
+          "type": "lesson",
+          "id": "cold-call",
+          "order": 16,
+          "title": "Когда колл выгоден",
+          "route": "/ffstart/cold-call",
+          "minutes": 26,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Колд-колл — это уравнивание опен-рейза. Он особенно полезен в позиции со средними парами, одномастными коннекторами и бродвеем, когда рука слишком хороша для паса, но недостаточно сильна для 3-бета.",
+          "content": {
+            "encounterTitle": "Колл сохраняет среднюю руку в управляемом банке",
+            "encounterSummary": "Колд-колл — это уравнивание опен-рейза. Он особенно полезен в позиции со средними парами, одномастными коннекторами и бродвеем, когда рука слишком хороша для паса, но недостаточно сильна для 3-бета.",
+            "wisdomTitles": [
+              "Позиция делает колл сильнее",
+              "Игроки за спиной сужают диапазон",
+              "Полблайнда на SB — скидка, но не подарок",
+              "План после колла зависит от позиции"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Собери колл до клика",
+            "deepSummary": "Колд-колл выгоден не из-за красивой руки, а когда цена, позиция и реализация складываются в одну понятную линию.",
+            "deepCardTitles": [
+              "Фильтр из четырёх вопросов",
+              "Типичные кандидаты"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "ladder",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 237.376,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "17-cold_call_sb",
+                "title": "Когда колл выгоден",
+                "summary": "Оцени цену колла, позицию и риск игроков за спиной до того, как вложить фишки.",
+                "learningTitle": "Колд-колл оценивает не только цену",
+                "watchFor": "Кто ещё может повысить и где герой окажется после флопа?",
+                "rule": "Сравни диапазон рейзера, риск сквиза и способность руки реализовать эквити.",
+                "practiceCue": "Перед коллом назови опенера, игроков за спиной и план на флоп после чека.",
+                "checkpointCount": 3,
+                "durationSeconds": 237.376,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "range_call",
+            "trainerTitle": "Когда колл выгоден",
+            "title": "Выбери колл только там, где он выдерживает контекст",
+            "summary": "Сравнивай похожие руки при разных позициях, стеках и действиях за спиной. Симулятор сразу покажет, какой сигнал изменил решение.",
+            "bankSize": 28,
+            "sessionLength": 12,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 28,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "call": 10,
+                "fold": 10,
+                "raise": 8
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "CO открыл до 2,2 BB. Ты на BB с Q9s, к коллу 1,2 BB. Как сыграть?",
+              "UTG открыл до 2,3 BB. Ты на BB с QJo, к коллу 1,3 BB. Как сыграть?",
+              "MP открыл до 2,2 BB. Ты на BB с T9o, к коллу 1,2 BB. Как сыграть?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:three-bet",
+          "type": "lesson",
+          "id": "three-bet",
+          "order": 17,
+          "title": "3-бет: когда повышать",
+          "route": "/ffstart/three-bet",
+          "minutes": 46,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice",
+            "recall"
+          ],
+          "summary": "3-бет — это повторное повышение после опен-рейза. Он увеличивает банк с сильными руками и уменьшает число соперников. Для старта надёжнее 3-бетить на вэлью и расширяться только после устойчивой базы.",
+          "content": {
+            "encounterTitle": "3-бет строит большой банк с сильным диапазоном",
+            "encounterSummary": "3-бет — это повторное повышение после опен-рейза. Он увеличивает банк с сильными руками и уменьшает число соперников. Для старта надёжнее 3-бетить на вэлью и расширяться только после устойчивой базы.",
+            "wisdomTitles": [
+              "У 3-бета две базовые задачи",
+              "Без позиции размер больше",
+              "Глубина меняет размер и цену ошибки",
+              "4-бет требует дисциплины"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "От префлопа к плану на флоп",
+            "deepSummary": "Хороший 3-бет заранее отвечает на два вопроса: какие более слабые руки платят и что делать после колла.",
+            "deepCardTitles": [
+              "Три постфлоп-класса",
+              "Узкая база для старта"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "compare",
+              "ladder",
+              "stack-zones",
+              "flow",
+              "range-matrix"
+            ],
+            "recall": true
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 254.208,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "18-strategia_3bet",
+                "title": "Когда делать 3-бет",
+                "summary": "Разбери 3-бет на вэлью и в блеф, учитывая позиции, стеки и диапазон рейзера.",
+                "learningTitle": "3-бет меняется вместе со стеком и позициями",
+                "watchFor": "Какая часть диапазона продолжит против 3-бета и что герой сделает на 4-бет?",
+                "rule": "Размер и состав 3-бета определяют позиции, эффективный стек и ожидаемый ответ на 4-бет.",
+                "practiceCue": "До повышения назови цель, размер и заранее выбери ответ на 4-бет.",
+                "checkpointCount": 3,
+                "durationSeconds": 254.208,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "vs_3bet",
+            "trainerTitle": "3-бет: когда повышать",
+            "title": "Тренируй диапазон вместе с размером",
+            "summary": "В каждой ситуации выбери действие внутри стола и сверь не только руку, но позицию, стек и размер опен-рейза.",
+            "bankSize": 109,
+            "sessionLength": 18,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 109,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "call": 37,
+                "raise": 52,
+                "fold": 20
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "UTG Рейз 2 BB. Ты на UTG+2 с J♠ J♥ и стеком 50 BB. Как сыграть?",
+              "UTG+1 Рейз 2 BB. Ты на HJ с A♥ A♦ и стеком 25 BB. Как сыграть?",
+              "BTN Рейз 2 BB. Ты на BB с A♦ A♣ и стеком 79 BB. Как сыграть?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:versus-three-bet",
+          "type": "lesson",
+          "id": "versus-three-bet",
+          "order": 18,
+          "title": "Защита против 3-бета",
+          "route": "/ffstart/versus-three-bet",
+          "minutes": 30,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Большинство сильных и средних рук защищаются коллом, вершина диапазона повышает, а нижняя часть спокойно уходит в пас. Конкретная граница зависит от позиций, стека и размера 3-бета.",
+          "content": {
+            "encounterTitle": "После 3-бета доступны пас, колл и 4-бет",
+            "encounterSummary": "Большинство сильных и средних рук защищаются коллом, вершина диапазона повышает, а нижняя часть спокойно уходит в пас. Конкретная граница зависит от позиций, стека и размера 3-бета.",
+            "wisdomTitles": [
+              "Пас сохраняет стек для лучшей ситуации",
+              "Базовая рамка: 60 BB+ и 3-бет до 6 BB",
+              "Позиция добавляет пограничные коллы",
+              "При 30 BB часть коллов превращается в олл-ин"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Защита — это диапазон, а не одна красивая рука",
+            "deepSummary": "Сильная защита сохраняет достаточно рук против давления, но не тащит доминированную часть в слишком большой банк.",
+            "deepCardTitles": [
+              "Постфлоп без позиции",
+              "Постфлоп в позиции"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "range-matrix",
+              "stack-zones"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 285.973,
+            "checkpointCount": 4,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "19-zashita_3bet",
+                "title": "Защита против 3-бета",
+                "summary": "Выбирай между пасом, коллом и повышением по силе диапазонов и глубине эффективного стека.",
+                "learningTitle": "Защита от 3-бета начинается с диапазонов",
+                "watchFor": "Как новая цена и глубина меняют форму диапазона продолжения?",
+                "rule": "Сравни позиции, размер 3-бета и эффективный стек до выбора паса, колла или 4-бета.",
+                "practiceCue": "Перед защитой назови позиции, размер в множителях и стек после возможного колла.",
+                "checkpointCount": 4,
+                "durationSeconds": 285.973,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "vs_3bet",
+            "trainerTitle": "Защита против 3-бета",
+            "title": "Защити опен без автопилота",
+            "summary": "Практика меняет позицию 3-беттора, стек и руки на границе. Каждое решение проходит через тот же интерактивный стол.",
+            "bankSize": 56,
+            "sessionLength": 14,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 56,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "call": 26,
+                "raise": 8,
+                "fold": 22
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Ты открыл до 2 BB · HJ 3-бет до 8 BB. Ты на UTG+1 с 8♥ 8♦ и стеком 58 BB. Как сыграть?",
+              "Ты открыл до 2 BB · BTN 3-бет до 8 BB. Ты на UTG+2 с K♥ J♥ и стеком 58 BB. Как сыграть?",
+              "Ты открыл до 2 BB · BTN 3-бет до 8 BB. Ты на HJ с A♥ K♠ и стеком 58 BB. Как сыграть?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:multiway",
+          "type": "lesson",
+          "id": "multiway",
+          "order": 19,
+          "title": "Раздачи с несколькими игроками",
+          "route": "/ffstart/multiway",
+          "minutes": 30,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Привычная ставка один на один теряет силу: больше диапазонов попали в доску, больше дро продолжают и выше вероятность сильной готовой комбинации.",
+          "content": {
+            "encounterTitle": "Каждый новый соперник отнимает долю эквити",
+            "encounterSummary": "Привычная ставка один на один теряет силу: больше диапазонов попали в доску, больше дро продолжают и выше вероятность сильной готовой комбинации.",
+            "wisdomTitles": [
+              "Даже AA теряет запас",
+              "Контбетов становится меньше",
+              "Сильное вэлью играет быстро",
+              "Рейз поздней улицы — сильный сигнал"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Три класса рук — три скорости",
+            "deepSummary": "Мультипот вознаграждает ясную классификацию: сильное вэлью ускоряется, средняя рука контролирует банк, слабое дро избегает дорогого давления.",
+            "deepCardTitles": [
+              "Светофор мультипота",
+              "Четыре сигнала перед ставкой"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "ladder",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 124.096,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "20-multi_poty",
+                "title": "Игра в мультипоте",
+                "summary": "Увидь, почему против нескольких соперников нужны сильнее руки и аккуратнее блефы.",
+                "learningTitle": "Каждый соперник повышает требования к руке",
+                "watchFor": "Сколько диапазонов должно проиграть или сбросить, чтобы действие заработало?",
+                "rule": "В мультипоте играй средние руки осторожнее, а сильное вэлью — быстрее и крупнее.",
+                "practiceCue": "Перед ставкой назови число соперников и худшие руки каждого, которые продолжат.",
+                "checkpointCount": 3,
+                "durationSeconds": 124.096,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "flop",
+            "trainerTitle": "Раздачи с несколькими игроками",
+            "title": "Замедли автоконтбет, ускорь сильное вэлью",
+            "summary": "Серия ситуаций меняет число соперников, доску и силу руки, чтобы решение не зависело от одного шаблона.",
+            "bankSize": 44,
+            "sessionLength": 14,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 44,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "fold": 8,
+                "raise": 18,
+                "check": 18
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Выбери лучшее действие против рейза соперника на флопе.",
+              "Выбери лучшее действие против рейза соперника на флопе.",
+              "Выбери лучшее действие против двоих соперников на флопе."
+            ]
+          }
+        },
+        {
+          "reviewId": "play:strategy-mix",
+          "type": "play",
+          "id": "strategy-mix",
+          "afterLessonId": "multiway",
+          "title": "Собери стратегию в игре",
+          "route": "/ffstart/play-session?session=strategy-mix",
+          "summary": "Восемь раздач с разными позициями и глубиной. Не ищи идеальный процент — проговаривай, зачем ставишь, коллируешь или сдаёшься.",
+          "kicker": "Свободная серия",
+          "hands": 8,
+          "mode": "random",
+          "modeLabel": "Кэш 6-max",
+          "stackLabel": "25–80 BB",
+          "tempo": "calm",
+          "duration": "около 10 минут"
+        }
+      ]
+    },
+    {
+      "reviewId": "module:blinds",
+      "type": "module",
+      "id": "blinds",
+      "order": 6,
+      "title": "Игра на блайндах",
+      "summary": "Защищай большой блайнд по выгодной цене и играй шире один на один между SB и BB.",
+      "totals": {
+        "lessons": 2,
+        "minutes": 78,
+        "videoLinks": 2,
+        "videoSeconds": 540.096,
+        "generatedPracticeSpots": 20,
+        "legacyPracticeSpots": 21,
+        "fullSimulatorPractices": 0,
+        "playSessions": 1
+      },
+      "items": [
+        {
+          "reviewId": "lesson:bb-call-defense",
+          "type": "lesson",
+          "id": "bb-call-defense",
+          "order": 20,
+          "title": "Защита BB коллом",
+          "route": "/bb-call-defense-lesson",
+          "minutes": 44,
+          "kind": "legacy",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice",
+            "recall"
+          ],
+          "summary": "Защита большого блайнда зависит от позиции рейзера, размера опена, формы руки и того, насколько хорошо рука реализует эквити после флопа.",
+          "content": {
+            "encounterTitle": "Колл на BB начинается с цены",
+            "encounterSummary": "Защита большого блайнда зависит от позиции рейзера, размера опена, формы руки и того, насколько хорошо рука реализует эквити после флопа.",
+            "wisdomTitles": [
+              "BB — самая дешёвая точка входа",
+              "Потери живут в некрасивых руках",
+              "Чем крупнее опен, тем уже защита",
+              "Одномастные и связанные защищаются лучше",
+              "Не нажимай пас до того, как увидел рейзера"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Цена колла и точные матрицы",
+            "deepSummary": "Сравнение защит новых игроков и лиг, расчёт цены колла, точные матрицы и требуемая реализация выбранной руки.",
+            "deepCardTitles": [
+              "Цена колла",
+              "Диапазон BB",
+              "Эквити и нужная реализация"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "odds",
+              "compare",
+              "ladder",
+              "flow",
+              "range-matrix"
+            ],
+            "recall": true
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 307.691,
+            "checkpointCount": 4,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "21-strategia_bb",
+                "title": "Защита большого блайнда",
+                "summary": "Свяжи цену колла, позицию рейзера и играбельность руки в единую защитную стратегию.",
+                "learningTitle": "Цена защиты BB продолжается после флопа",
+                "watchFor": "Как размер ставки меняет руки для колла, чек-рейза и паса?",
+                "rule": "Чем крупнее опен или контбет, тем сильнее должна быть продолжающая часть диапазона.",
+                "practiceCue": "Назови цену, категорию руки и следующую улицу, на которой план продолжится.",
+                "checkpointCount": 4,
+                "durationSeconds": 307.691,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "trainerKey": "bb_defense",
+            "trainerTitle": "Защита BB коллом",
+            "title": "Отработай границу колла",
+            "summary": "Решай префлоп-ситуации за интерактивным столом, а затем восстанови выбранный чарт защиты по памяти.",
+            "mediaLinkedSpots": 0,
+            "delivery": "specialized-table",
+            "bankSize": 21,
+            "sessionLength": 21,
+            "passScore": 78,
+            "grading": "accuracy",
+            "sourceVersion": "bb-call-defense-alpha-20260712-v2",
+            "interaction": {
+              "pokerAction": 21,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "call": 12,
+                "fold": 5,
+                "raise": 4
+              }
+            }
+          }
+        },
+        {
+          "reviewId": "lesson:blind-versus-blind",
+          "type": "lesson",
+          "id": "blind-versus-blind",
+          "order": 21,
+          "title": "Блайнд против блайнда",
+          "route": "/ffstart/blind-versus-blind",
+          "minutes": 34,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Малый блайнд делит руки между рейзом и лимпом, большой блайнд получает позицию. Поэтому слабая на вид рука может продолжать, а одна пара чаще имеет вэлью.",
+          "content": {
+            "encounterTitle": "Широкие диапазоны требуют другой шкалы силы",
+            "encounterSummary": "Малый блайнд делит руки между рейзом и лимпом, большой блайнд получает позицию. Поэтому слабая на вид рука может продолжать, а одна пара чаще имеет вэлью.",
+            "wisdomTitles": [
+              "SB начинает почти со всем диапазоном",
+              "Тип банка задаёт частоту ставки",
+              "BB получает позицию",
+              "Отложенная ставка наказывает чек-чек"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Одна дуэль — три разных банка",
+            "deepSummary": "Лимп-пот, рейженый банк и 3-бет-банк похожи только участниками. Размер банка, инициатива и диапазоны требуют разных решений.",
+            "deepCardTitles": [
+              "Карта ролей SB и BB",
+              "План BB после лимпа"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "ladder",
+              "seat-map"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 232.405,
+            "checkpointCount": 4,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "22-sb_vs_bb",
+                "title": "Блайнд против блайнда",
+                "summary": "Разбери широкие диапазоны и давление уже вложенных фишек в игре один на один.",
+                "learningTitle": "Блайнд против блайнда — отдельная широкая ветка",
+                "watchFor": "Как префлоп-линия меняет стандартный первый размер после флопа?",
+                "rule": "Сначала определи тип банка: лимпованный, рейженный или 3-бет-пот.",
+                "practiceCue": "Перед решением назови тип банка и игрока, который владеет инициативой.",
+                "checkpointCount": 4,
+                "durationSeconds": 232.405,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "bb_defense",
+            "trainerTitle": "Блайнд против блайнда",
+            "title": "Переключай план по типу банка",
+            "summary": "Тренажёр чередует рейзы, лимпы, изоляции и постфлоп-ветки, сохраняя все действия внутри общего стола.",
+            "bankSize": 20,
+            "sessionLength": 14,
+            "passScore": 78,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 20,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "raise": 15,
+                "check": 5
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "SB вошёл лимпом. Ты на BB с AA и стеком 50 BB. Чек или изолейт?",
+              "SB вошёл лимпом. Ты на BB с JTo и стеком 35 BB. Чек или изолейт?",
+              "SB вошёл лимпом. Ты на BB с K2s и стеком 20 BB. Чек или изолейт?"
+            ]
+          }
+        },
+        {
+          "reviewId": "play:blind-pressure",
+          "type": "play",
+          "id": "blind-pressure",
+          "afterLessonId": "blind-versus-blind",
+          "title": "Охота за блайндами",
+          "route": "/ffstart/play-session?session=blind-pressure",
+          "summary": "Шесть раздач, чтобы почувствовать цену уже вложенных фишек. Следи, когда оказываешься на SB и BB, но играй всю раздачу целиком.",
+          "kicker": "Короткая игровая пауза",
+          "hands": 6,
+          "mode": "random",
+          "modeLabel": "Кэш 6-max",
+          "stackLabel": "15–60 BB",
+          "tempo": "fast",
+          "duration": "около 7 минут"
+        }
+      ]
+    },
+    {
+      "reviewId": "module:opponent-types",
+      "type": "module",
+      "id": "opponent-types",
+      "order": 7,
+      "title": "Против разных соперников",
+      "summary": "Меняй линию по реальному профилю, а не по ярлыку.",
+      "totals": {
+        "lessons": 2,
+        "minutes": 48,
+        "videoLinks": 2,
+        "videoSeconds": 467.797,
+        "generatedPracticeSpots": 16,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 0
+      },
+      "items": [
+        {
+          "reviewId": "lesson:versus-aggressive",
+          "type": "lesson",
+          "id": "versus-aggressive",
+          "order": 22,
+          "title": "Если соперник агрессивный",
+          "route": "/ffstart/versus-aggressive",
+          "minutes": 24,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Третий крупный баррель, рейз тёрна или рейз ривера резко сужают диапазон соперника. Топ-пара может стать пасом, если естественных блефов мало.",
+          "content": {
+            "encounterTitle": "Крупная поздняя агрессия часто недоблефована",
+            "encounterSummary": "Третий крупный баррель, рейз тёрна или рейз ривера резко сужают диапазон соперника. Топ-пара может стать пасом, если естественных блефов мало.",
+            "wisdomTitles": [
+              "Рейз ривера заслуживает уважения",
+              "Второй крупный баррель усиливает историю",
+              "Иногда промахнувшихся дро достаточно",
+              "Огромный размер требует больше блефов"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Уважай линию, но проверяй исключения",
+            "deepSummary": "Правильный блеф-кетч появляется на пересечении размера, диапазона вэлью, пропущенных дро и цены колла.",
+            "deepCardTitles": [
+              "Четыре вопроса блеф-кетча",
+              "Сила руки и сила линии — разные шкалы"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "ladder"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 285.653,
+            "checkpointCount": 4,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "23-protiv_agressii",
+                "title": "Против агрессивного соперника",
+                "summary": "Не соревнуйся в количестве ставок: защищай сильные руки и используй лишнюю агрессию соперника.",
+                "learningTitle": "Агрессия не создаёт автоматический колл",
+                "watchFor": "Какие блефы дошли до этой улицы и сколько их осталось?",
+                "rule": "После каждого нового барреля заново оцени диапазон, а не защищай уже вложенные фишки.",
+                "practiceCue": "Перечисли возможные блефы и вэлью перед каждым пограничным коллом.",
+                "checkpointCount": 4,
+                "durationSeconds": 285.653,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Если соперник агрессивный",
+            "title": "Тренируй дисциплину поздних улиц",
+            "summary": "В каждой раздаче найди хотя бы две реальные блефовые комбинации до колла. Если их нет, симулятор закрепит пас.",
+            "bankSize": 8,
+            "sessionLength": 8,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 8,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "call": 3,
+                "fold": 3,
+                "raise": 2
+              }
+            },
+            "mediaLinkedSpots": 3,
+            "sampleQuestions": [
+              "Ты поставил небольшой контбет с топ-парой, а агрессивный BB сделал чек-рейз. Что делать?",
+              "Агрессивный BTN открывает широко. Ты на BB с A5s и стеком 28 BB. Как ответить?",
+              "Широкий BTN поставил три улицы, а на ривере промахнулись стрит- и флеш-дро. Как сыграть второй парой?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:versus-passive",
+          "type": "lesson",
+          "id": "versus-passive",
+          "order": 23,
+          "title": "Если соперник пассивный",
+          "route": "/ffstart/versus-passive",
+          "minutes": 24,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Пассивная линия часто оставляет у соперника средние и слабые руки. Их можно выбивать крупной одноуличной ставкой, если твоя история убедительна и после колла есть план остановки.",
+          "content": {
+            "encounterTitle": "Чек сужает сильную часть диапазона",
+            "encounterSummary": "Пассивная линия часто оставляет у соперника средние и слабые руки. Их можно выбивать крупной одноуличной ставкой, если твоя история убедительна и после колла есть план остановки.",
+            "wisdomTitles": [
+              "Атакуй пропущенную ставку",
+              "Два чека усиливают сигнал",
+              "Продолжение требует новой причины",
+              "Крупный размер покупает фолд-эквити"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Чек — информация, не гарантия",
+            "deepSummary": "Пассивная линия создаёт возможность, когда твоя ставка выбивает конкретные руки и не превращается в бесконечный блеф после сопротивления.",
+            "deepCardTitles": [
+              "Формула одноуличной атаки",
+              "Не все чеки одинаковы"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "flow",
+              "ladder",
+              "compare"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 182.144,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "24-protiv_passiva",
+                "title": "Против пассивного соперника",
+                "summary": "Чаще добирай со своими сильными руками и уважай редкую ответную агрессию.",
+                "learningTitle": "Пассивность открывает отложенные ставки",
+                "watchFor": "Сколько раз соперник отказался от ставки и какие пары всё ещё могут коллировать?",
+                "rule": "Ставь после признаков слабости, но останавливай блеф, когда пассивный диапазон уже заплатил.",
+                "practiceCue": "Перед отложенной ставкой назови цель и заранее реши, продолжишь ли после колла.",
+                "checkpointCount": 3,
+                "durationSeconds": 182.144,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Если соперник пассивный",
+            "title": "Преврати слабость в одну точную атаку",
+            "summary": "Практика учит выбирать улицу и размер, а после колла — не продолжать без новой причины.",
+            "bankSize": 8,
+            "sessionLength": 8,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 8,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "raise": 5,
+                "fold": 1,
+                "check": 2
+              }
+            },
+            "mediaLinkedSpots": 3,
+            "sampleQuestions": [
+              "Пассивный BB чекнул три улицы. У тебя вторая пара на безопасном ривере. Как сыграть?",
+              "Пассивный соперник коллировал две улицы, а ривер ничего не изменил. Как сыграть с промахнувшимися оверкартами?",
+              "Ты поставил крупно на тёрне после чек-чек флопа, получил колл и промахнулся на ривере. Как продолжить?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "reviewId": "module:short-stack",
+      "type": "module",
+      "id": "short-stack",
+      "order": 8,
+      "title": "Игра с коротким стеком",
+      "summary": "Выбирай олл-ин по стеку, позиции и мёртвым деньгам.",
+      "totals": {
+        "lessons": 3,
+        "minutes": 106,
+        "videoLinks": 2,
+        "videoSeconds": 458.56,
+        "generatedPracticeSpots": 89,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 1,
+        "playSessions": 1
+      },
+      "items": [
+        {
+          "reviewId": "lesson:push-fold",
+          "type": "lesson",
+          "id": "push-fold",
+          "order": 24,
+          "title": "Олл-ин или пас",
+          "route": "/ffstart/push-fold",
+          "minutes": 34,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice",
+            "recall"
+          ],
+          "summary": "Пуш забирает блайнды и анте без вскрытия или реализует всю эквити руки после колла. Диапазон зависит от позиции, эффективного стека и игроков позади.",
+          "content": {
+            "encounterTitle": "Короткий стек сокращает дерево решений",
+            "encounterSummary": "Пуш забирает блайнды и анте без вскрытия или реализует всю эквити руки после колла. Диапазон зависит от позиции, эффективного стека и игроков позади.",
+            "wisdomTitles": [
+              "0–9 BB: мёртвые деньги особенно ценны",
+              "10–14 BB: пуши остаются широкими, но сужаются",
+              "Позиция расширяет диапазон",
+              "Колл олл-ина тайтовее собственного пуша"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Эффективный стек решает первым",
+            "deepSummary": "Короткая стратегия ломается, если смотреть только на свой стек или переносить чиповую модель на баббл без поправки на выплаты.",
+            "deepCardTitles": [
+              "Пять сигналов олл-ина",
+              "Учебная ветка 15 BB из ранней позиции"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "compare",
+              "stack-zones",
+              "ladder",
+              "flow",
+              "range-matrix"
+            ],
+            "recall": true
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 243.541,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "25-open_push_short",
+                "title": "Олл-ин или пас",
+                "summary": "Выбирай первый олл-ин по позиции, стеку и диапазонам игроков, которые ещё не сказали слово.",
+                "learningTitle": "Пуш и колл — разные задачи",
+                "watchFor": "Кто создаёт фолд-эквити и каким стеком реально рискует герой?",
+                "rule": "Пушить можно шире, чем коллировать: в колле нет возможности забрать банк без борьбы.",
+                "practiceCue": "До олл-ина назови эффективный стек, игроков позади и ценность банка без колла.",
+                "checkpointCount": 3,
+                "durationSeconds": 243.541,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "short",
+            "trainerTitle": "Олл-ин или пас",
+            "title": "Доведи короткое решение до автоматизма",
+            "summary": "Симулятор смешивает стек, позицию и конкретную руку. Решение всегда принимается за столом: олл-ин или пас.",
+            "bankSize": 30,
+            "sessionLength": 16,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 30,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "all-in": 20,
+                "fold": 10
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "До тебя все спасовали. Ты на EP с JJ и стеком 15 BB. Олл-ин или пас?",
+              "До тебя все спасовали. Ты на SB с Q8o и стеком 15 BB. Олл-ин или пас?",
+              "До тебя все спасовали. Ты на SB с 22 и стеком 10 BB. Олл-ин или пас?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:jam-over-raise",
+          "type": "lesson",
+          "id": "jam-over-raise",
+          "order": 25,
+          "title": "Олл-ин против ставки",
+          "route": "/ffstart/jam-over-raise",
+          "minutes": 30,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Прибыль олл-ина складывается из мёртвых денег, фолд-эквити и эквити руки после колла. Чем позже позиция опенера, тем шире его диапазон и тем больше рук он вынужден выбросить.",
+          "content": {
+            "encounterTitle": "При 16–22 BB 3-бет-пуш превращает давление в максимум",
+            "encounterSummary": "Прибыль олл-ина складывается из мёртвых денег, фолд-эквити и эквити руки после колла. Чем позже позиция опенера, тем шире его диапазон и тем больше рук он вынужден выбросить.",
+            "wisdomTitles": [
+              "Ранний опен требует сильной вершины",
+              "Пограничные руки меняются вместе с опенером",
+              "BB чаще коллирует ранние опены",
+              "Покрытие особенно важно в нокауте"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Олл-ин зарабатывает до вскрытия",
+            "deepSummary": "Рука для 3-бет-пуша не обязана доминировать диапазон колла, если значимая часть опена выбрасывает и в банке уже лежат мёртвые деньги.",
+            "deepCardTitles": [
+              "Три источника ценности",
+              "Глубина стратегии"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "compare",
+              "range-matrix",
+              "flow",
+              "stack-zones"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 215.019,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "26-3bet_push",
+                "title": "Олл-ин против рейза",
+                "summary": "Оцени мёртвые деньги, фолд-эквити и силу руки перед рестилом на коротком стеке.",
+                "learningTitle": "Рестил живёт между фолд-эквити и покрытием",
+                "watchFor": "Как позиция опенера и покрытие меняют одну и ту же руку?",
+                "rule": "Чем позже и шире опенер, тем больше рук могут прибыльно поставить олл-ин.",
+                "practiceCue": "Назови позицию рейзера, эффективный стек и руки, с которыми он продолжит.",
+                "checkpointCount": 3,
+                "durationSeconds": 215.019,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "short",
+            "trainerTitle": "Олл-ин против ставки",
+            "title": "Сопоставь руку с позицией опенера",
+            "summary": "Практика меняет опенера от ранней позиции до баттона и проверяет, где колл или пас лучше олл-ина.",
+            "bankSize": 59,
+            "sessionLength": 14,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 59,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {
+                "all-in": 18,
+                "fold": 29,
+                "call": 12
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "CO открыл до 2,1 BB. Ты на SB с KK и стеком 14 BB. Олл-ин, колл или пас?",
+              "EP открыл до 2,1 BB. Ты на CO с JTo и стеком 20 BB. Олл-ин, колл или пас?",
+              "Ты открыл с SB, BB поставил олл-ин 24 BB. Как сыграть 53s, если к коллу 21,4 BB?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:resteal",
+          "type": "lesson",
+          "id": "resteal",
+          "order": 26,
+          "title": "Рестил 25–40 BB",
+          "route": "/resteal-lesson",
+          "minutes": 42,
+          "kind": "legacy",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Олл-ин после позднего опена получает прибыль через фолд соперника и через эквити при колле; решение меняют стек, мёртвые деньги и диапазон открытия.",
+          "content": {
+            "encounterTitle": "Рестил выигрывает фишки двумя способами",
+            "encounterSummary": "Олл-ин после позднего опена получает прибыль через фолд соперника и через эквити при колле; решение меняют стек, мёртвые деньги и диапазон открытия.",
+            "wisdomTitles": [
+              "Один олл-ин — два пути к фишкам",
+              "Прибыльное решение не обязано выигрывать каждый раз",
+              "Колл возможен, но сложнее в реализации",
+              "Чеклист перед пушем",
+              "Подстройка соперника меняет будущие решения"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Когда олл-ин приносит фишки",
+            "deepSummary": "Интерактивная матрица показывает влияние стека, размера опена, диапазона открытия и диапазона колла; отдельно разобраны PKO и будущая подстройка.",
+            "deepCardTitles": [
+              "Матрица прибыльности",
+              "Профиль соперника",
+              "Риск и награда"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "ladder",
+              "range-matrix"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 0,
+            "durationSeconds": 0,
+            "checkpointCount": 0,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": []
+          },
+          "practice": {
+            "trainerKey": "short",
+            "trainerTitle": "Рестил 25–40 BB",
+            "title": "Отработай рестил в полном симуляторе",
+            "summary": "Сыграй 25 полноценных раздач: курс засчитывает завершённую серию, а не процент совпадений с одной кнопкой.",
+            "mediaLinkedSpots": 0,
+            "delivery": "full-simulator",
+            "bankSize": null,
+            "sessionLength": 25,
+            "passScore": null,
+            "grading": "completion",
+            "interaction": {
+              "pokerAction": null,
+              "tableBackedChoice": 0,
+              "conceptChoice": 0,
+              "families": {}
+            }
+          }
+        },
+        {
+          "reviewId": "play:short-stack-run",
+          "type": "play",
+          "id": "short-stack-run",
+          "afterLessonId": "resteal",
+          "title": "Короткий стек в движении",
+          "route": "/ffstart/play-session?session=short-stack-run",
+          "summary": "Восемь турнирных раздач со стеком 25 BB. Почувствуй, как каждое открытие и каждый колл быстрее связывают стек.",
+          "kicker": "Мини-сессия MTT",
+          "hands": 8,
+          "mode": "tournament",
+          "modeLabel": "Турнир 6-max",
+          "stackLabel": "25 BB",
+          "tempo": "fast",
+          "duration": "около 8 минут"
+        }
+      ]
+    },
+    {
+      "reviewId": "module:thinking-math",
+      "type": "module",
+      "id": "thinking-math",
+      "order": 9,
+      "title": "Игровое мышление и математика",
+      "summary": "Считай цену риска и отличай фишки от денежной ценности.",
+      "totals": {
+        "lessons": 3,
+        "minutes": 98,
+        "videoLinks": 4,
+        "videoSeconds": 4459.285000000001,
+        "generatedPracticeSpots": 129,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 0
+      },
+      "items": [
+        {
+          "reviewId": "lesson:decision-logic",
+          "type": "lesson",
+          "id": "decision-logic",
+          "order": 27,
+          "title": "Как принимать решения",
+          "route": "/ffstart/decision-logic",
+          "minutes": 26,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Ты не видишь все карты и не контролируешь действия соперников. Поэтому задача — выбрать лучшее действие по доступной информации до того, как станет известен результат.",
+          "content": {
+            "encounterTitle": "Хорошее решение может проиграть",
+            "encounterSummary": "Ты не видишь все карты и не контролируешь действия соперников. Поэтому задача — выбрать лучшее действие по доступной информации до того, как станет известен результат.",
+            "wisdomTitles": [
+              "Решение и результат — две оси",
+              "Неопределённость не отменяет действие",
+              "Серия важнее одного дня",
+              "Разбор возвращает контроль"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Процесс, который выдерживает неизвестность",
+            "deepSummary": "Сильное мышление соединяет факты, вероятности и дисциплину, а затем отделяет качество выбора от эмоциональной оценки исхода.",
+            "deepCardTitles": [
+              "Матрица решения и исхода",
+              "Шесть сигналов до клика"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "compare",
+              "flow",
+              "ladder"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 2,
+            "durationSeconds": 3956.992,
+            "checkpointCount": 7,
+            "longFormCount": 1,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "27-igrovaya_logika",
+                "title": "Логика игрового решения",
+                "summary": "Собирай действие из доступной информации и отделяй качество решения от результата одной раздачи.",
+                "learningTitle": "Качество решения отделено от результата",
+                "watchFor": "Что игрок контролирует, когда будущие карты неизвестны?",
+                "rule": "Оценивай решение по информации до клика, а результат — как один случайный ранаут.",
+                "practiceCue": "Сделай выбор до открытия ранаута, затем отдельно оцени действие и результат.",
+                "checkpointCount": 3,
+                "durationSeconds": 129.856,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              },
+              {
+                "id": "35-start_za_stolom_vebinar_02",
+                "title": "Почему мы играем хуже, чем умеем",
+                "summary": "Разбор A-game: что мешает использовать знания за столом и как возвращаться к качественным решениям.",
+                "learningTitle": "A-game возвращается через ранние сигналы",
+                "watchFor": "По каким ранним признакам можно остановить падение качества?",
+                "rule": "Заметь триггер и телесный сигнал раньше, чем перейдёшь в C-game.",
+                "practiceCue": "После сложной руки отметь состояние A, B или C и выбери одно действие восстановления.",
+                "checkpointCount": 4,
+                "durationSeconds": 3827.136,
+                "longForm": true,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "math",
+            "trainerTitle": "Как принимать решения",
+            "title": "Выбери лучшую кнопку до результата",
+            "summary": "Серия решений заставляет проговаривать причину и только затем показывает обратную связь.",
+            "bankSize": 11,
+            "sessionLength": 10,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 11,
+              "families": {
+                "choice": 11
+              }
+            },
+            "mediaLinkedSpots": 1,
+            "sampleQuestions": [
+              "Ты сделал прибыльный колл, но дро не закрылось. Как оценить решение?",
+              "После серии повторяется одна и та же ошибка. Какой следующий шаг?",
+              "Решения стали быстрыми, злость толкает нажать привычную кнопку, а новые сигналы почти не замечаются. Что происходит и что делать?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:poker-math",
+          "type": "lesson",
+          "id": "poker-math",
+          "order": 28,
+          "title": "Цена, ауты и ожидание",
+          "route": "/ffstart/poker-math",
+          "minutes": 40,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Шансы банка показывают минимальную долю побед для колла. Эквити и ауты оценивают, как часто рука победит или усилится.",
+          "content": {
+            "encounterTitle": "Колл выгоден, когда шанс выше цены",
+            "encounterSummary": "Шансы банка показывают минимальную долю побед для колла. Эквити и ауты оценивают, как часто рука победит или усилится.",
+            "wisdomTitles": [
+              "Пять в банк двадцать — порог 25%",
+              "Ауты переводят дро в вероятность",
+              "Правило четырёх и двух — быстрый ориентир",
+              "Ставка требует цели"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "От формулы к решению",
+            "deepSummary": "Математика не предсказывает ривер. Она показывает, насколько часто выбранная кнопка должна сработать, чтобы окупить риск.",
+            "deepCardTitles": [
+              "Алгоритм колла с дро",
+              "Эквити меняется с каждой картой",
+              "Ожидание измеряет серию"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "odds",
+              "ladder",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 308.885,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "28-matematika_1",
+                "title": "Базовая математика покера",
+                "summary": "Сравнивай шансы банка, вероятность усиления и ожидаемую ценность вместо решения на ощущениях.",
+                "learningTitle": "Цена сравнивается с вероятностью",
+                "watchFor": "Какой процент нужен и какие карты действительно дают победу?",
+                "rule": "Цена колла = доплата ÷ итоговый банк после колла.",
+                "practiceCue": "Сначала рассчитай порог, затем ауты или эквити, и только потом выбирай действие.",
+                "checkpointCount": 3,
+                "durationSeconds": 308.885,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "math",
+            "trainerTitle": "Цена, ауты и ожидание",
+            "title": "Считай цену прямо за столом",
+            "summary": "В задачах меняются банк, ставка, число аутов и эквити. Выбор остаётся внутри интерактивного стола.",
+            "bankSize": 40,
+            "sessionLength": 16,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 35,
+              "tableBackedChoice": 5,
+              "conceptChoice": 0,
+              "families": {
+                "fold": 29,
+                "call": 6,
+                "choice": 5
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "До следующей карты около 18 % эквити, цена колла 33 %. Что делать?",
+              "До следующей карты около 8 % эквити, цена колла 13 %. Что делать?",
+              "До следующей карты около 30 % эквити, цена колла 25 %. Что делать?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:icm",
+          "type": "lesson",
+          "id": "icm",
+          "order": 29,
+          "title": "Когда фишки стоят по-разному",
+          "route": "/ffstart/icm",
+          "minutes": 32,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "На баббле и финальном столе проигранные фишки часто стоят дороже выигранных. Поэтому короткий стек может выбросить сильную руку, а чип-лидер — давить шире.",
+          "content": {
+            "encounterTitle": "Фишки не равны деньгам",
+            "encounterSummary": "На баббле и финальном столе проигранные фишки часто стоят дороже выигранных. Поэтому короткий стек может выбросить сильную руку, а чип-лидер — давить шире.",
+            "wisdomTitles": [
+              "Две трети фишек — не две трети фонда",
+              "Короткие фишки ценнее своей доли",
+              "Чип-лидер давит, короткие коллируют узко",
+              "Денежное EV показывает полезность конкретной руки",
+              "Нокаут меняет вес по стадиям"
+            ],
+            "wisdomCount": 5,
+            "deepTitle": "Одна формула — разные диапазоны",
+            "deepSummary": "ICM суммирует вероятность каждого места, умноженную на выплату. Но решение всё равно требует конкретных стеков, позиций и диапазона соперника.",
+            "deepCardTitles": [
+              "Как модель переводит стек в деньги",
+              "Почему AK или QQ иногда пас",
+              "Граница применимости"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "compare",
+              "ladder",
+              "seat-map",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 193.408,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "29-icm_finalka",
+                "title": "Когда фишки стоят по-разному",
+                "summary": "Пойми, почему давление выплат меняет цену риска на баббле и за финальным столом.",
+                "learningTitle": "Фишки и деньги растут нелинейно",
+                "watchFor": "Кто рискует вылетом и как это меняет цену колла?",
+                "rule": "Чем ближе скачок выплат, тем дороже потеря стека и шире давление покрывающего игрока.",
+                "practiceCue": "Перед ответом назови стеки, выплаты, покрытие и место следующего вылета.",
+                "checkpointCount": 3,
+                "durationSeconds": 193.408,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "icm_short",
+            "trainerTitle": "Когда фишки стоят по-разному",
+            "title": "Решай в деньгах, не только в фишках",
+            "summary": "Практика использует реальные структуры стеков и выплат. После ответа мудрость показывает руки на границе и денежную цену решения.",
+            "bankSize": 78,
+            "sessionLength": 12,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 75,
+              "tableBackedChoice": 0,
+              "conceptChoice": 3,
+              "families": {
+                "choice": 3,
+                "call": 26,
+                "all-in": 14,
+                "fold": 35
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Какую долю стартовых рук стоит продолжать на BTN после показанного экшена?",
+              "После показанного экшена ты на CO · с A♣ J♣ · стек 39 BB · к коллу 2,1 BB. Как продолжить?",
+              "После показанного экшена ты на CO · с A♠ Q♥ · стек 31 BB · к коллу 15,5 BB. Как продолжить?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "reviewId": "module:profession",
+      "type": "module",
+      "id": "profession",
+      "order": 10,
+      "title": "Покер как профессия",
+      "summary": "Построй реалистичный режим, банкролл и следующий шаг.",
+      "totals": {
+        "lessons": 5,
+        "minutes": 98,
+        "videoLinks": 5,
+        "videoSeconds": 3373.645,
+        "generatedPracticeSpots": 31,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 0
+      },
+      "items": [
+        {
+          "reviewId": "lesson:poker-world",
+          "type": "lesson",
+          "id": "poker-world",
+          "order": 30,
+          "title": "Как устроен покерный мир",
+          "route": "/ffstart/poker-world",
+          "minutes": 20,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Понимание ролей помогает отделить площадку для игры от условий регистрации, обучения, банкролла и сопровождения.",
+          "content": {
+            "encounterTitle": "За столом играют люди, вокруг стола работает индустрия",
+            "encounterSummary": "Понимание ролей помогает отделить площадку для игры от условий регистрации, обучения, банкролла и сопровождения.",
+            "wisdomTitles": [
+              "Покер-рум проводит игру",
+              "Аффилиат — партнёр рума, не тренер",
+              "Школа даёт структуру, покерный фонд добавляет банкролл",
+              "Условия важнее обещания"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Карта индустрии без иллюзий",
+            "deepSummary": "Каждый участник экосистемы полезен в своей роли, но ни площадка, ни бонус, ни курс сами по себе не гарантируют доход.",
+            "deepCardTitles": [
+              "Путь игрока через экосистему",
+              "Что нельзя обещать"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "flow",
+              "compare"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 207.552,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "30-prof_poker_01",
+                "title": "Как устроен покерный мир",
+                "summary": "Познакомься с экосистемой обучения, банкролла, анализа и игры на реальных лимитах.",
+                "learningTitle": "Покерная работа опирается на инфраструктуру",
+                "watchFor": "Какая часть системы помогает играть, а какая — учиться и управлять риском?",
+                "rule": "Понимай, кто предоставляет игру, обучение, капитал и обратную связь — вместе с обязательствами.",
+                "practiceCue": "Перед выбором условий работы назови площадку, источник банкролла и способ разбора ошибок.",
+                "checkpointCount": 3,
+                "durationSeconds": 207.552,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Как устроен покерный мир",
+            "title": "Выбери роль по реальным условиям",
+            "summary": "Ситуации проверяют понимание экосистемы: кто отвечает за игру, обучение, банкролл и договорённости.",
+            "bankSize": 6,
+            "sessionLength": 6,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Что поддерживает покерную экосистему?",
+              "Почему нельзя смешивать турнир и кэш-стратегию?",
+              "Зачем нужна команда и обучение?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:poker-profession",
+          "type": "lesson",
+          "id": "poker-profession",
+          "order": 31,
+          "title": "Профессия: покерист",
+          "route": "/ffstart/poker-profession",
+          "minutes": 22,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Покерист ежедневно принимает сотни решений, защищает концентрацию, разбирает руки и управляет банкроллом. Это ближе к работе аналитика или интеллектуального спортсмена, чем к случайной игре вечером.",
+          "content": {
+            "encounterTitle": "Профессиональная игра — это режим решений",
+            "encounterSummary": "Покерист ежедневно принимает сотни решений, защищает концентрацию, разбирает руки и управляет банкроллом. Это ближе к работе аналитика или интеллектуального спортсмена, чем к случайной игре вечером.",
+            "wisdomTitles": [
+              "Турнир может занять весь рабочий день",
+              "Столы добавляются после качества",
+              "Игра — только часть работы",
+              "Режим защищает решения"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Профессия держится на устойчивости",
+            "deepSummary": "Навык, банкролл, объём и отдых должны расти вместе. Перекос в любую сторону снижает качество решений и повышает риск выгорания.",
+            "deepCardTitles": [
+              "Неделя игрока",
+              "Пять профессиональных качеств"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "ladder",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 2,
+            "durationSeconds": 2490.3469999999998,
+            "checkpointCount": 7,
+            "longFormCount": 1,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "31-prof_poker_02",
+                "title": "Профессия: покерист",
+                "summary": "Разбери рабочий режим, дисциплину, восстановление и ожидания от профессиональной игры.",
+                "learningTitle": "Качество определяет рабочую нагрузку",
+                "watchFor": "Какая нагрузка оставляет достаточно внимания на сложное решение?",
+                "rule": "Увеличивай объём только после того, как текущая нагрузка сохраняет качество решений.",
+                "practiceCue": "После серии оцени не только результат, но и усталость, время реакции и повторяющиеся ошибки.",
+                "checkpointCount": 3,
+                "durationSeconds": 192.299,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              },
+              {
+                "id": "34-start_za_stolom_vebinar_01",
+                "title": "Что за работа — играть в покер",
+                "summary": "Большой разговор о пути игрока, ежедневной работе и переходе от интереса к устойчивой практике.",
+                "learningTitle": "Переход к профессии начинается с проверки режима",
+                "watchFor": "Какие признаки показывают, что нагрузка уже не разрушает качество?",
+                "rule": "Наращивай обязательства и столы после устойчивого процесса, а не после календарного срока.",
+                "practiceCue": "После игровой серии выбери одну утечку, исправь её и сравни следующий период.",
+                "checkpointCount": 4,
+                "durationSeconds": 2298.048,
+                "longForm": true,
+                "guided": false,
+                "usageCount": 2
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Профессия: покерист",
+            "title": "Собери рабочий режим",
+            "summary": "Сценарии проверяют выбор объёма, числа столов, разбора и отдыха без обещаний лёгкого результата.",
+            "bankSize": 6,
+            "sessionLength": 6,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Что делает игру профессией?",
+              "Что считать хорошим объёмом?",
+              "Что отделять от банкролла?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:poker-perspectives",
+          "type": "lesson",
+          "id": "poker-perspectives",
+          "order": 32,
+          "title": "Перспективы в покере",
+          "route": "/ffstart/poker-perspectives",
+          "minutes": 20,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Рост появляется, когда задания, разбор ошибок и достаточный объём подтверждают качество решений. Один апстрик или большой занос не заменяют устойчивый процесс.",
+          "content": {
+            "encounterTitle": "Сначала профессия, потом доход",
+            "encounterSummary": "Рост появляется, когда задания, разбор ошибок и достаточный объём подтверждают качество решений. Один апстрик или большой занос не заменяют устойчивый процесс.",
+            "wisdomTitles": [
+              "Первые выигрыши — ещё не устойчивый доход",
+              "ABI — средняя стоимость входа",
+              "Переход выше требует подтверждения",
+              "Покер открывает соседние роли"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Рост без обещаний",
+            "deepSummary": "Системная среда сокращает хаос обучения, но результат остаётся вероятностным. Критерии перехода должны быть наблюдаемыми и обратимыми.",
+            "deepCardTitles": [
+              "Лестница развития",
+              "Три честных показателя"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 221.367,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "32-perspective_poker",
+                "title": "Перспективы в покере",
+                "summary": "Посмотри на рост через качество решений, объём и развитие навыка, а не через обещание быстрых денег.",
+                "learningTitle": "Первые месяцы измеряются навыками",
+                "watchFor": "Какие показатели роста находятся под контролем самого игрока?",
+                "rule": "Планируй развитие по навыкам и процессу, а не по обещанной сумме к дате.",
+                "practiceCue": "Выбери один повторяющийся лик и задай измеримый объём практики на неделю.",
+                "checkpointCount": 3,
+                "durationSeconds": 221.367,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Перспективы в покере",
+            "title": "Выбери следующий шаг по критериям",
+            "summary": "Практика отделяет реальные сигналы роста от апстрика, обещаний и желания перепрыгнуть этап.",
+            "bankSize": 6,
+            "sessionLength": 6,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Какой навык переносится за пределы покера?",
+              "Почему перспектива длинная?",
+              "Как выбрать следующий шаг?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:microstakes",
+          "type": "lesson",
+          "id": "microstakes",
+          "order": 33,
+          "title": "Микролимиты без иллюзий",
+          "route": "/ffstart/microstakes",
+          "minutes": 24,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Цель первого уровня — перенести решения из тренажёра в реальную игру, заметить эмоциональные реакции и не ломать плюсовые линии из-за короткого результата.",
+          "content": {
+            "encounterTitle": "Микролимиты проверяют дисциплину на фоне дисперсии",
+            "encounterSummary": "Цель первого уровня — перенести решения из тренажёра в реальную игру, заметить эмоциональные реакции и не ломать плюсовые линии из-за короткого результата.",
+            "wisdomTitles": [
+              "80% всё равно проигрывают два раза из десяти",
+              "Эмоция не оценивает стратегию",
+              "Малая выборка выглядит несправедливо",
+              "Структура разрывает петлю тильта"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Учебная среда с настоящим шумом",
+            "deepSummary": "Микролимиты полезны, когда каждая сессия поставляет решения для разбора, а деньги не становятся ежедневной оценкой собственной компетентности.",
+            "deepCardTitles": [
+              "Разбор без знания будущего",
+              "Объём работает только с качеством"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "ladder",
+              "compare",
+              "flow"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 454.379,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": [
+              {
+                "id": "33-microlim_02",
+                "title": "Микролимиты без иллюзий",
+                "summary": "Научись выдерживать шум короткой дистанции и не менять рабочую стратегию из-за эмоций.",
+                "learningTitle": "Микролимиты — среда для повторения",
+                "watchFor": "Изменилось ли следующее решение из-за новых данных или только из-за эмоции?",
+                "rule": "После результата вернись к информации до клика и не перестраивай стратегию по одной серии.",
+                "practiceCue": "После проигранного банка назови эмоцию и снова пройди полный алгоритм следующей руки.",
+                "checkpointCount": 3,
+                "durationSeconds": 454.379,
+                "longForm": false,
+                "guided": false,
+                "usageCount": 1
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Микролимиты без иллюзий",
+            "title": "Сохрани стратегию под давлением исхода",
+            "summary": "Сценарии проверяют решения после переезда, серии вылетов и необычной линии соперника — без смены стандарта из-за эмоции.",
+            "bankSize": 7,
+            "sessionLength": 6,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 1,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6,
+                "raise": 1
+              }
+            },
+            "mediaLinkedSpots": 1,
+            "sampleQuestions": [
+              "Что сильнее всего на микролимитах?",
+              "Что важнее красивой линии?",
+              "Прошлая раздача закончилась неприятным переездом. В новом неоткрытом банке ты на BTN с AQs и 30 BB. Как сыграть?"
+            ]
+          }
+        },
+        {
+          "reviewId": "lesson:course-feedback",
+          "type": "lesson",
+          "id": "course-feedback",
+          "order": 34,
+          "title": "Разбор курса и следующий шаг",
+          "route": "/ffstart/course-feedback",
+          "minutes": 12,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "Собери ошибки по темам, выбери одну частую причину и назначь короткую серию повторения. Так весь курс превращается в персональный следующий цикл.",
+          "content": {
+            "encounterTitle": "Курс заканчивается картой слабых мест",
+            "encounterSummary": "Собери ошибки по темам, выбери одну частую причину и назначь короткую серию повторения. Так весь курс превращается в персональный следующий цикл.",
+            "wisdomTitles": [
+              "Группируй по причине",
+              "Повтор должен быть узким",
+              "Сильный навык объясняется вслух",
+              "Следующий шаг должен быть наблюдаемым"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Персональная петля после курса",
+            "deepSummary": "Сильная программа не заканчивается финальным экраном: она оставляет короткий список повторений и ясный критерий следующего уровня.",
+            "deepCardTitles": [
+              "Карта ошибок",
+              "Маршрут повторения"
+            ],
+            "deepCardCount": 2,
+            "visualTypes": [
+              "compare",
+              "flow",
+              "ladder"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 0,
+            "durationSeconds": 0,
+            "checkpointCount": 0,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": []
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Разбор курса и следующий шаг",
+            "title": "Собери свой следующий цикл",
+            "summary": "Практика предлагает сценарии выбора: что повторить, как измерить и когда переходить к новой теме.",
+            "bankSize": 6,
+            "sessionLength": 6,
+            "passScore": 75,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 6,
+              "families": {
+                "choice": 6
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Как выбрать сильный навык курса?",
+              "Что повторять первым?",
+              "Что значит закончить FF Start?"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "reviewId": "module:finish",
+      "type": "module",
+      "id": "finish",
+      "order": 11,
+      "title": "Закрепление",
+      "summary": "Собери справочники в систему и проверь себя смешанной серией.",
+      "totals": {
+        "lessons": 2,
+        "minutes": 75,
+        "videoLinks": 1,
+        "videoSeconds": 381.24,
+        "generatedPracticeSpots": 163,
+        "legacyPracticeSpots": 0,
+        "fullSimulatorPractices": 0,
+        "playSessions": 1
+      },
+      "items": [
+        {
+          "reviewId": "lesson:resources",
+          "type": "lesson",
+          "id": "resources",
+          "order": 35,
+          "title": "Библиотека решений",
+          "route": "/ffstart/resources",
+          "minutes": 20,
+          "kind": "concept",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice",
+            "recall"
+          ],
+          "summary": "Библиотека собирает префлоп, постфлоп, короткий стек, математику и ICM в единый порядок чтения. Каждая карточка отвечает на один вопрос за столом.",
+          "content": {
+            "encounterTitle": "Справочник работает, когда ведёт к решению",
+            "encounterSummary": "Библиотека собирает префлоп, постфлоп, короткий стек, математику и ICM в единый порядок чтения. Каждая карточка отвечает на один вопрос за столом.",
+            "wisdomTitles": [
+              "Сначала тип решения",
+              "Чарт — начало, не конец",
+              "Математика проверяет цену",
+              "Повторение превращает справочник в навык"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Восемь разделов в одной системе",
+            "deepSummary": "Используй раздел, который соответствует текущему вопросу, и не смешивай диапазоны из разных стеков и стадий.",
+            "deepCardTitles": [
+              "1. Термины и 169 классов стартовых рук",
+              "2. Первый вход в банк",
+              "3. Изоляция и колд-колл",
+              "4. 3-бет и защита",
+              "5. Блайнды",
+              "6. Короткий стек",
+              "7. Постфлоп и математика",
+              "8. Турнирное давление"
+            ],
+            "deepCardCount": 8,
+            "visualTypes": [
+              "flow",
+              "compare",
+              "odds",
+              "ladder",
+              "range-matrix",
+              "stack-zones"
+            ],
+            "recall": true
+          },
+          "media": {
+            "count": 1,
+            "durationSeconds": 381.24,
+            "checkpointCount": 3,
+            "longFormCount": 0,
+            "guidedCount": 1,
+            "items": [
+              {
+                "id": "12-reindzhi_open_reizov_zapomni",
+                "title": "Как запоминать диапазоны",
+                "summary": "Освой ориентиры, с которыми диапазон легче восстановить, чем заучить клетку за клеткой.",
+                "learningTitle": "Чарт запоминается через форму и опорные точки",
+                "watchFor": "Какие ориентиры позволяют восстановить диапазон без зубрёжки?",
+                "rule": "Смотри коротко, закрывай чарт, восстанавливай и исправляй конкретные клетки.",
+                "practiceCue": "После десяти секунд просмотра закрой матрицу и восстанови форму текущего чарта.",
+                "checkpointCount": 3,
+                "durationSeconds": 381.24,
+                "longForm": false,
+                "guided": true,
+                "usageCount": 2
+              }
+            ]
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "review",
+            "trainerTitle": "Библиотека решений",
+            "title": "Найди нужный раздел и сразу примени",
+            "summary": "Смешанная серия проверяет, умеешь ли ты сначала определить тип решения, а уже затем выбрать действие.",
+            "bankSize": 12,
+            "sessionLength": 12,
+            "passScore": 80,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 0,
+              "tableBackedChoice": 0,
+              "conceptChoice": 12,
+              "families": {
+                "choice": 12
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "Где быстро проверить термин?",
+              "Что открыть после 3-бета?",
+              "Что открыть перед пограничным коллом?"
+            ]
+          }
+        },
+        {
+          "reviewId": "play:dress-rehearsal",
+          "type": "play",
+          "id": "dress-rehearsal",
+          "afterLessonId": "resources",
+          "title": "Репетиция самостоятельной игры",
+          "route": "/ffstart/play-session?session=dress-rehearsal",
+          "summary": "Десять турнирных раздач без подсказок и оценки. Принимай решение, называй его причину и только потом переходи к следующей руке.",
+          "kicker": "Перед итоговым тренажёром",
+          "hands": 10,
+          "mode": "tournament",
+          "modeLabel": "Турнир 6-max",
+          "stackLabel": "50 BB",
+          "tempo": "calm",
+          "duration": "около 12 минут"
+        },
+        {
+          "reviewId": "lesson:final-exam",
+          "type": "lesson",
+          "id": "final-exam",
+          "order": 36,
+          "title": "Итоговый тренажёр",
+          "route": "/ffstart/final-exam",
+          "minutes": 55,
+          "kind": "poker",
+          "steps": [
+            "encounter",
+            "wisdom",
+            "deep",
+            "practice"
+          ],
+          "summary": "В серии встречаются префлоп, блайнды, короткие стеки, постфлоп, математика и турнирное давление. Цель — устойчиво выбрать действие и назвать главный сигнал.",
+          "content": {
+            "encounterTitle": "Экзамен смешивает темы, как реальный стол",
+            "encounterSummary": "В серии встречаются префлоп, блайнды, короткие стеки, постфлоп, математика и турнирное давление. Цель — устойчиво выбрать действие и назвать главный сигнал.",
+            "wisdomTitles": [
+              "Один порядок работает во всех темах",
+              "Порог 80% требует устойчивости",
+              "Ошибка отправляет в конкретный урок",
+              "Объяснение закрепляет правильный ответ"
+            ],
+            "wisdomCount": 4,
+            "deepTitle": "Экзамен — начало точного повторения",
+            "deepSummary": "Смешанная серия показывает, какие правила выдерживают смену контекста, а какие узнаются только в знакомой формулировке.",
+            "deepCardTitles": [
+              "146 ситуаций в полном банке",
+              "Разбор самых дорогих ошибок",
+              "Готовность к реальной игре"
+            ],
+            "deepCardCount": 3,
+            "visualTypes": [
+              "flow",
+              "ladder",
+              "compare"
+            ],
+            "recall": false
+          },
+          "media": {
+            "count": 0,
+            "durationSeconds": 0,
+            "checkpointCount": 0,
+            "longFormCount": 0,
+            "guidedCount": 0,
+            "items": []
+          },
+          "practice": {
+            "delivery": "shared-decision-table",
+            "trainerKey": "exam",
+            "trainerTitle": "Итоговый тренажёр",
+            "title": "Пройди смешанную серию",
+            "summary": "Все 25 решений принимаются за интерактивным покерным столом. После каждой руки получи объяснение и продолжай без выхода из симулятора.",
+            "bankSize": 151,
+            "sessionLength": 25,
+            "passScore": 80,
+            "grading": "accuracy",
+            "interaction": {
+              "pokerAction": 106,
+              "tableBackedChoice": 45,
+              "conceptChoice": 0,
+              "families": {
+                "raise": 50,
+                "fold": 30,
+                "check": 9,
+                "call": 12,
+                "choice": 45,
+                "all-in": 5
+              }
+            },
+            "mediaLinkedSpots": 0,
+            "sampleQuestions": [
+              "UTG+1 Рейз 2 BB. Ты на HJ с A♦ Q♠ и стеком 25 BB. Как сыграть?",
+              "До тебя все спасовали. Ты на HJ с J♣ 9♥ и стеком 50 BB. Как сыграть?",
+              "До тебя все спасовали. Ты на UTG+1 с K♠ 8♠ и стеком 50 BB. Как сыграть?"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

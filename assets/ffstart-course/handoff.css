@@ -1,0 +1,190 @@
+:root {
+  --handoff-green: #66dfa4;
+  --handoff-red: #f18a91;
+  --handoff-blue: #80bcff;
+}
+
+.handoff-page {
+  background:
+    radial-gradient(circle at 14% 2%, rgba(128, 188, 255, .09), transparent 26%),
+    radial-gradient(circle at 82% -12%, rgba(154, 101, 214, .24), transparent 34%),
+    linear-gradient(180deg, #0d0b13, var(--course-bg) 34%);
+}
+.handoff-header__nav { display: flex; align-items: center; gap: 6px; }
+.handoff-header__nav a,
+.handoff-secondary {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 13px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--course-muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+}
+.handoff-header__nav a:last-child,
+.handoff-secondary { border-color: var(--course-line); background: rgba(255,255,255,.02); }
+.handoff-main { padding-bottom: 96px; }
+
+.handoff-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.18fr) minmax(380px, .64fr);
+  min-height: min(720px, calc(100svh - 82px));
+  align-items: center;
+  gap: clamp(44px, 7vw, 112px);
+  padding: 72px 0;
+}
+.handoff-hero h1 { max-width: 850px; margin: 0; font-size: clamp(54px, 7vw, 96px); line-height: .94; letter-spacing: -.065em; }
+.handoff-hero h1 em,
+.handoff-archive h2 em { color: var(--course-yellow); font-style: normal; }
+.handoff-hero__copy > p:not(.course-eyebrow) { max-width: 690px; margin: 26px 0 0; color: var(--course-muted); font-size: clamp(17px, 1.45vw, 20px); line-height: 1.62; }
+.handoff-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 32px; }
+.handoff-verdict {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+  border: 1px solid rgba(255,223,81,.24);
+  border-radius: 22px;
+  background: linear-gradient(145deg, rgba(255,223,81,.075), transparent 48%), var(--course-panel);
+  box-shadow: 0 28px 80px rgba(0,0,0,.36);
+}
+.handoff-verdict::after { position: absolute; inset: -80px -120px auto auto; width: 220px; height: 220px; border-radius: 50%; background: rgba(154,101,214,.18); filter: blur(46px); content: ""; pointer-events: none; }
+.handoff-verdict > p { margin: 0 0 26px; color: var(--course-yellow); font-size: 10px; font-weight: 900; letter-spacing: .11em; text-transform: uppercase; }
+.handoff-verdict > strong { display: block; font-size: clamp(35px, 4vw, 52px); line-height: 1; letter-spacing: -.045em; }
+.handoff-verdict > span { display: block; margin-top: 8px; color: var(--course-muted); font-size: 14px; }
+.handoff-verdict dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 28px 0 18px; }
+.handoff-verdict dl div { min-width: 0; padding: 11px 9px; border: 1px solid var(--course-line); border-radius: 10px; background: rgba(255,255,255,.022); }
+.handoff-verdict dt { color: var(--course-soft); font-size: 8px; line-height: 1.3; text-transform: uppercase; }
+.handoff-verdict dd { margin: 6px 0 0; font-size: 14px; font-weight: 900; font-variant-numeric: tabular-nums; }
+.handoff-verdict > small { display: block; padding-top: 16px; border-top: 1px solid var(--course-line); color: var(--course-soft); font-size: 10px; line-height: 1.5; }
+
+.handoff-proof { display: grid; grid-template-columns: repeat(3, 1fr); border-block: 1px solid var(--course-line); }
+.handoff-proof article { display: grid; grid-template-columns: 34px 1fr; gap: 14px; min-height: 172px; align-content: center; padding: 25px 28px; border-right: 1px solid var(--course-line); }
+.handoff-proof article:last-child { border-right: 0; }
+.handoff-proof article > span { padding-top: 3px; color: var(--course-violet); font-size: 11px; font-weight: 950; }
+.handoff-proof strong { font-size: 16px; }
+.handoff-proof p { margin: 8px 0 0; color: var(--course-muted); font-size: 11px; line-height: 1.58; }
+
+.handoff-files { display: grid; grid-template-columns: minmax(260px, .62fr) minmax(0, 1.38fr); gap: clamp(42px, 6vw, 96px); align-items: start; padding: 104px 0; }
+.handoff-files h2,
+.handoff-execution h2,
+.handoff-ready h2 { margin: 0; font-size: clamp(38px, 4.7vw, 64px); line-height: 1; letter-spacing: -.055em; }
+.handoff-files__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.handoff-files__grid > * { display: grid; min-height: 190px; align-content: start; padding: 21px; border: 1px solid var(--course-line); border-radius: 16px; background: linear-gradient(145deg, rgba(255,255,255,.04), transparent 54%), var(--course-panel); text-decoration: none; }
+.handoff-files__grid > a:first-child { border-color: rgba(255,223,81,.3); background: linear-gradient(145deg, rgba(255,223,81,.065), transparent 52%), var(--course-panel); }
+.handoff-files__grid > * > span { color: var(--course-violet); font-size: 9px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.handoff-files__grid strong { margin-top: 12px; font-size: 16px; overflow-wrap: anywhere; }
+.handoff-files__grid small { margin-top: 9px; color: var(--course-muted); font-size: 10px; line-height: 1.55; }
+.handoff-files__grid b { align-self: end; margin-top: 22px; color: var(--course-yellow); font-size: 10px; }
+.handoff-clone { grid-column: 1 / -1; min-height: 146px !important; grid-template-columns: 1fr auto; align-items: end; column-gap: 18px; }
+.handoff-clone > span,
+.handoff-clone > strong { grid-column: 1 / -1; }
+.handoff-clone code { display: block; min-width: 0; margin-top: 14px; overflow: hidden; color: var(--course-muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.handoff-clone button { min-height: 44px; padding: 9px 13px; border: 1px solid rgba(255,223,81,.32); border-radius: 10px; color: var(--course-yellow); background: rgba(255,223,81,.04); font: inherit; font-size: 10px; font-weight: 850; cursor: pointer; }
+
+.handoff-program { padding: 88px 0 108px; border-top: 1px solid var(--course-line); }
+.handoff-modules { display: grid; gap: 12px; }
+.handoff-module { overflow: hidden; border: 1px solid var(--course-line); border-radius: 18px; background: var(--course-panel); }
+.handoff-module__head { display: grid; grid-template-columns: 52px minmax(0,1fr) auto; align-items: center; gap: 14px; min-height: 104px; padding: 18px 21px; background: linear-gradient(90deg, rgba(154,101,214,.09), transparent 54%); }
+.handoff-module__number { color: var(--course-violet); font-size: 13px; font-weight: 950; }
+.handoff-module__head h3 { margin: 0; font-size: clamp(20px, 2.25vw, 30px); letter-spacing: -.035em; }
+.handoff-module__head p { max-width: 740px; margin: 6px 0 0; color: var(--course-muted); font-size: 11px; line-height: 1.5; }
+.handoff-module__head > span:last-child { color: var(--course-soft); font-size: 10px; white-space: nowrap; }
+.handoff-module__body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, .34fr); border-top: 1px solid var(--course-line); }
+.handoff-module__lessons { display: grid; }
+.handoff-module__lesson,
+.handoff-module__play { display: grid; grid-template-columns: 34px minmax(0,1fr) auto; align-items: center; gap: 12px; min-height: 54px; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,.06); }
+.handoff-module__lesson:last-child,
+.handoff-module__play:last-child { border-bottom: 0; }
+.handoff-module__lesson > span:first-child { color: var(--course-soft); font-size: 9px; font-weight: 900; }
+.handoff-module__lesson strong { font-size: 12px; }
+.handoff-module__lesson small { color: var(--course-soft); font-size: 9px; }
+.handoff-module__play { background: linear-gradient(90deg, rgba(255,223,81,.065), rgba(154,101,214,.04)); }
+.handoff-module__play > span:first-child { display: grid; width: 24px; height: 24px; place-items: center; border: 1px solid rgba(255,223,81,.38); border-radius: 50%; color: var(--course-yellow); font-size: 8px; }
+.handoff-module__play small { display: block; margin-bottom: 2px; color: var(--course-yellow); font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.handoff-module__play strong { font-size: 12px; }
+.handoff-module__rationale { display: grid; align-content: center; padding: 18px; border-left: 1px solid var(--course-line); background: rgba(255,255,255,.018); }
+.handoff-module__rationale span { color: var(--course-violet); font-size: 8px; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
+.handoff-module__rationale p { margin: 8px 0 0; color: var(--course-muted); font-size: 10px; line-height: 1.55; }
+
+.handoff-execution { display: grid; grid-template-columns: minmax(280px, .74fr) minmax(0, 1.26fr); gap: clamp(52px, 8vw, 124px); padding: 104px 0; border-top: 1px solid var(--course-line); }
+.handoff-execution__intro > p:last-child { max-width: 520px; margin: 23px 0 0; color: var(--course-muted); font-size: 13px; line-height: 1.65; }
+.handoff-execution ol { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; }
+.handoff-execution li { display: grid; grid-template-columns: 44px 1fr; gap: 13px; min-height: 112px; align-content: center; padding: 18px 0; border-bottom: 1px solid var(--course-line); }
+.handoff-execution li:first-child { border-top: 1px solid var(--course-line); }
+.handoff-execution li > span { color: var(--course-violet); font-size: 11px; font-weight: 950; }
+.handoff-execution li strong { font-size: 16px; }
+.handoff-execution li p { margin: 6px 0 0; color: var(--course-muted); font-size: 11px; line-height: 1.55; }
+
+.handoff-archive { padding: 104px 0; border-top: 1px solid var(--course-line); }
+.handoff-archive__grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+.handoff-archive-card { display: grid; min-height: 250px; align-content: start; padding: 22px; border: 1px solid rgba(241,138,145,.2); border-radius: 17px; background: linear-gradient(145deg, rgba(241,138,145,.045), transparent 52%), var(--course-panel); }
+.handoff-archive-card > span { color: var(--handoff-red); font-size: 8px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+.handoff-archive-card h3 { margin: 12px 0 0; font-size: 20px; letter-spacing: -.025em; }
+.handoff-archive-card__source { margin: 7px 0 0; color: var(--course-soft); font-size: 9px; line-height: 1.45; overflow-wrap: anywhere; }
+.handoff-archive-card dl { display: grid; gap: 14px; margin: 22px 0 0; }
+.handoff-archive-card dl div { padding-top: 12px; border-top: 1px solid var(--course-line); }
+.handoff-archive-card dt { color: var(--course-violet); font-size: 8px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+.handoff-archive-card dd { margin: 6px 0 0; color: var(--course-muted); font-size: 10px; line-height: 1.55; }
+
+.handoff-ready { display: flex; align-items: end; justify-content: space-between; gap: 40px; padding: 88px 0 34px; border-top: 1px solid var(--course-line); }
+
+@media (hover: hover) {
+  .handoff-header__nav a:hover,
+  .handoff-secondary:hover { border-color: rgba(255,223,81,.3); color: var(--course-text); background: rgba(255,223,81,.04); }
+  .handoff-files__grid > a:hover { border-color: rgba(255,223,81,.34); transform: translateY(-2px); }
+  .handoff-clone button:hover { background: rgba(255,223,81,.1); }
+}
+.handoff-files__grid > a { transition: border-color .16s ease, transform .16s ease; }
+
+@media (max-width: 960px) {
+  .handoff-hero { grid-template-columns: 1fr; min-height: auto; }
+  .handoff-verdict { max-width: 680px; }
+  .handoff-proof { grid-template-columns: 1fr; }
+  .handoff-proof article { min-height: 126px; border-right: 0; border-bottom: 1px solid var(--course-line); }
+  .handoff-proof article:last-child { border-bottom: 0; }
+  .handoff-files,
+  .handoff-execution { grid-template-columns: 1fr; }
+  .handoff-files__grid { max-width: 780px; }
+  .handoff-module__body { grid-template-columns: 1fr; }
+  .handoff-module__rationale { border-top: 1px solid var(--course-line); border-left: 0; }
+}
+
+@media (max-width: 680px) {
+  .handoff-header__nav a:first-child { display: none; }
+  .handoff-header__nav a { min-height: 44px; padding-inline: 10px; font-size: 10px; }
+  .handoff-main { padding-bottom: 70px; }
+  .handoff-hero { padding: 54px 0 62px; }
+  .handoff-hero h1 { font-size: clamp(46px, 15vw, 68px); }
+  .handoff-hero__actions { display: grid; justify-items: stretch; }
+  .handoff-secondary { width: 100%; }
+  .handoff-verdict { padding: 21px; }
+  .handoff-verdict dl { grid-template-columns: 1fr; }
+  .handoff-verdict dl div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .handoff-verdict dd { margin: 0; }
+  .handoff-files { padding: 74px 0; }
+  .handoff-files__grid { grid-template-columns: 1fr; }
+  .handoff-clone { grid-column: auto; grid-template-columns: 1fr; }
+  .handoff-clone > span,
+  .handoff-clone > strong { grid-column: auto; }
+  .handoff-clone code { white-space: normal; overflow-wrap: anywhere; }
+  .handoff-clone button { margin-top: 13px; }
+  .handoff-program,
+  .handoff-execution,
+  .handoff-archive { padding: 74px 0; }
+  .handoff-module__head { grid-template-columns: 36px minmax(0,1fr); gap: 8px; padding: 15px; }
+  .handoff-module__head > span:last-child { grid-column: 2; }
+  .handoff-module__lesson,
+  .handoff-module__play { grid-template-columns: 30px minmax(0,1fr); padding: 10px 13px; }
+  .handoff-module__lesson small { grid-column: 2; }
+  .handoff-archive__grid { grid-template-columns: 1fr; }
+  .handoff-ready { display: grid; align-items: start; }
+  .handoff-ready .course-primary { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handoff-files__grid > a { transition: none; }
+}

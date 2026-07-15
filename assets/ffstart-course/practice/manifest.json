@@ -1,0 +1,137 @@
+{
+  "schema": "ffstart-practice-index-v1",
+  "packs": [
+    {
+      "id": "course-start",
+      "spots": 6
+    },
+    {
+      "id": "poker-history-rules",
+      "spots": 6
+    },
+    {
+      "id": "combinations",
+      "spots": 10
+    },
+    {
+      "id": "positions",
+      "spots": 10
+    },
+    {
+      "id": "hand-actions",
+      "spots": 5
+    },
+    {
+      "id": "pairs-kicker",
+      "spots": 8
+    },
+    {
+      "id": "draws-outs",
+      "spots": 40
+    },
+    {
+      "id": "tournament-formats",
+      "spots": 12
+    },
+    {
+      "id": "tournament-navigation",
+      "spots": 18
+    },
+    {
+      "id": "preflop-start",
+      "spots": 13
+    },
+    {
+      "id": "betting-purpose",
+      "spots": 12
+    },
+    {
+      "id": "cbet-in-position",
+      "spots": 60
+    },
+    {
+      "id": "play-out-of-position",
+      "spots": 83
+    },
+    {
+      "id": "isolation-raise",
+      "spots": 183
+    },
+    {
+      "id": "cold-call",
+      "spots": 28
+    },
+    {
+      "id": "three-bet",
+      "spots": 109
+    },
+    {
+      "id": "versus-three-bet",
+      "spots": 56
+    },
+    {
+      "id": "multiway",
+      "spots": 44
+    },
+    {
+      "id": "blind-versus-blind",
+      "spots": 20
+    },
+    {
+      "id": "versus-aggressive",
+      "spots": 8
+    },
+    {
+      "id": "versus-passive",
+      "spots": 8
+    },
+    {
+      "id": "push-fold",
+      "spots": 30
+    },
+    {
+      "id": "jam-over-raise",
+      "spots": 59
+    },
+    {
+      "id": "decision-logic",
+      "spots": 11
+    },
+    {
+      "id": "poker-math",
+      "spots": 40
+    },
+    {
+      "id": "icm",
+      "spots": 78
+    },
+    {
+      "id": "poker-world",
+      "spots": 6
+    },
+    {
+      "id": "poker-profession",
+      "spots": 6
+    },
+    {
+      "id": "poker-perspectives",
+      "spots": 6
+    },
+    {
+      "id": "microstakes",
+      "spots": 7
+    },
+    {
+      "id": "course-feedback",
+      "spots": 6
+    },
+    {
+      "id": "resources",
+      "spots": 12
+    },
+    {
+      "id": "final-exam",
+      "spots": 151
+    }
+  ]
+}

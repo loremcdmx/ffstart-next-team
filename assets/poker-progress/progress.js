@@ -278,6 +278,28 @@
   function normalizeResult(skillKey, input, previous) {
     const now = new Date().toISOString();
     const attempts = Math.max(0, Math.round(readNumber(input?.attempts, previous?.attempts || 0)));
+    if (input?.evaluated === false) {
+      const errorCounts = normalizeErrorCounts(previous?.errorCounts, input?.errorTags);
+      const weakErrorTags = weakTagsFromCounts(errorCounts);
+      const status = deriveStatus(skillKey, 0, attempts, weakErrorTags, input?.status);
+      return {
+        skillKey,
+        evaluated: false,
+        completed: input?.completed === true || status === "passed",
+        completedHands: Math.max(0, Math.round(readNumber(input?.completedHands, attempts))),
+        targetHands: Math.max(0, Math.round(readNumber(input?.targetHands ?? input?.total, attempts))),
+        attempts,
+        correct: null,
+        score: null,
+        bestScore: null,
+        status,
+        streak: 0,
+        errorCounts,
+        weakErrorTags,
+        nextRecommendation: input?.nextRecommendation || input?.nextDrill || deriveNextRecommendation(skillKey, status),
+        lastSeenAt: now
+      };
+    }
     const correct = clamp(Math.round(readNumber(input?.correct, previous?.correct || 0)), 0, attempts || 9999);
     const sessionScore = Number.isFinite(Number(input?.bestScore))
       ? clamp(Math.round(Number(input.bestScore)), 0, 100)
@@ -483,6 +505,25 @@
 
   function normalizeTrainerEventResult(result, skillKey) {
     const source = result && typeof result === "object" ? result : {};
+    if (source.evaluated === false) {
+      return compactEvent({
+        skillKey: skillKeyFor(source.skillKey || skillKey),
+        evaluated: false,
+        completed: Boolean(source.completed || source.status === "passed"),
+        completedHands: Math.max(0, Math.round(readNumber(source.completedHands, source.attempts || 0))),
+        targetHands: Math.max(0, Math.round(readNumber(source.targetHands, source.attempts || 0))),
+        attempts: Math.max(0, Math.round(readNumber(source.attempts, 0))),
+        correct: null,
+        score: null,
+        bestScore: null,
+        status: String(source.status || "").slice(0, 40),
+        streak: 0,
+        weakErrorTags: Array.isArray(source.weakErrorTags) ? source.weakErrorTags.slice(0, 40).map(String) : [],
+        errorCounts: source.errorCounts && typeof source.errorCounts === "object" ? safeClone(source.errorCounts, {}) : {},
+        nextRecommendation: source.nextRecommendation || null,
+        lastSeenAt: source.lastSeenAt || nowIso()
+      });
+    }
     return compactEvent({
       skillKey: skillKeyFor(source.skillKey || skillKey),
       attempts: Math.max(0, Math.round(readNumber(source.attempts, 0))),
@@ -952,7 +993,9 @@
       progress: normalized
     });
 
-    recordTrainerProgressEvent(canonical, normalized, result || {}, options || {});
+    if (options.telemetry !== false) {
+      recordTrainerProgressEvent(canonical, normalized, result || {}, options || {});
+    }
 
     return normalized;
   }
@@ -997,7 +1040,9 @@
       };
     }
 
-    const percent = clamp(Math.round(readNumber(progress.bestScore, progress.score || 0)), 0, 100);
+    const percent = progress.evaluated === false
+      ? null
+      : clamp(Math.round(readNumber(progress.bestScore, progress.score || 0)), 0, 100);
     return {
       ...progress,
       percent,

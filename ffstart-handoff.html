@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0910">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Готовый план передачи и рекомендуемая новая архитектура FF Start.">
+  <title>План передачи · FF Start</title>
+  <link rel="icon" href="/assets/favicon.svg">
+  <link rel="stylesheet" href="/assets/poker-kit/tokens.css?v=20260716-handoff-v1">
+  <link rel="stylesheet" href="/assets/ffstart-course/course.css?v=20260715-ffstart-v20">
+  <link rel="stylesheet" href="/assets/ffstart-course/handoff.css?v=20260716-handoff-v1">
+</head>
+<body class="handoff-page">
+  <div class="course-glow is-one" aria-hidden="true"></div>
+  <div class="course-glow is-two" aria-hidden="true"></div>
+
+  <header class="course-header handoff-header">
+    <a class="course-brand" href="/ffstart" aria-label="Открыть собранный FF Start">
+      <span>FF</span>
+      <div><strong>Start</strong><small>план передачи</small></div>
+    </a>
+    <nav class="handoff-header__nav" aria-label="Внутренние страницы FF Start">
+      <a href="/ffstart">Текущий продукт</a>
+      <a href="/ffstart-review">Решения ревью</a>
+    </nav>
+  </header>
+
+  <main class="handoff-main">
+    <section class="handoff-hero" aria-labelledby="handoff-title">
+      <div class="handoff-hero__copy">
+        <p class="course-eyebrow">Версия для новой команды</p>
+        <h1 id="handoff-title">Курс собран.<br><em>Теперь — точнее.</em></h1>
+        <p>Это рекомендуемая следующая версия FF Start: короче обязательный маршрут, больше настоящей игры и ни одного потерянного материала.</p>
+        <div class="handoff-hero__actions">
+          <a class="course-primary" href="/FFSTART_CODEX_HANDOFF.md" download>Забрать файл для Codex <span aria-hidden="true">↓</span></a>
+          <a class="handoff-secondary" href="#program">Посмотреть новую программу</a>
+        </div>
+      </div>
+
+      <aside class="handoff-verdict" aria-label="Итоговая рекомендация">
+        <p>Итог ревью</p>
+        <strong>9 модулей</strong>
+        <span>29 уроков · 5 игровых пауз</span>
+        <dl>
+          <div><dt>Рабочая практика</dt><dd>1 147</dd></div>
+          <div><dt>Свободная игра</dt><dd>37 раздач</dd></div>
+          <div><dt>Оценка маршрута</dt><dd>≈ 14 часов</dd></div>
+        </dl>
+        <small>40 решений оставлены · 5 осмысленно переработаны · 7 выведены из обязательного маршрута</small>
+      </aside>
+    </section>
+
+    <section class="handoff-proof" aria-label="Что изменилось в архитектуре">
+      <article><span>01</span><div><strong>Путь стал короче</strong><p>Карьерный блок не тормозит обучение игре; математика и ICM приходят в момент, когда нужны.</p></div></article>
+      <article><span>02</span><div><strong>Симулятор остаётся центром</strong><p>Все покерные действия выполняются за рабочим столом, а пять игровых пауз разбавляют тестовый ритм.</p></div></article>
+      <article><span>03</span><div><strong>Архив — часть продукта</strong><p>Убранное не стирается: у каждого материала есть сохранённые исходники и измеримый сигнал возврата.</p></div></article>
+    </section>
+
+    <section class="handoff-files" aria-labelledby="files-title">
+      <div>
+        <p class="course-eyebrow">Один вход в работу</p>
+        <h2 id="files-title">Передайте команде<br>не пересказ, а продукт</h2>
+      </div>
+      <div class="handoff-files__grid">
+        <a href="/FFSTART_CODEX_HANDOFF.md" download>
+          <span>Главный файл</span>
+          <strong>FFSTART_CODEX_HANDOFF.md</strong>
+          <small>Контекст, правила, новый порядок, этапы, проверки и архив в одном документе.</small>
+          <b>Скачать для Codex ↓</b>
+        </a>
+        <a href="/course/ffstart-product-plan.json" download>
+          <span>Машинный план</span>
+          <strong>ffstart-product-plan.json</strong>
+          <small>Все 52 решения, 9 целевых модулей, связи исходников и причины изменений.</small>
+          <b>Скачать JSON ↓</b>
+        </a>
+        <div class="handoff-clone">
+          <span>Приватный репозиторий</span>
+          <strong>Клонировать всю сборку</strong>
+          <code data-clone-command>git clone https://github.com/loremcdmx/ffstart-next-team.git</code>
+          <button type="button" data-copy-clone>Скопировать команду</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="handoff-program" id="program" aria-labelledby="program-title">
+      <div class="course-section-heading">
+        <div><p class="course-eyebrow">Рекомендуемая архитектура</p><h2 id="program-title">Новый маршрут<br>от первого круга до экзамена</h2></div>
+        <p>Каждый модуль отвечает на один игровой вопрос. Игровые паузы встроены в точки, где ученику нужен опыт, а не ещё один тест.</p>
+      </div>
+      <div class="handoff-modules" data-handoff-modules aria-busy="true">
+        <div class="course-loading">Собираем новую карту программы…</div>
+      </div>
+    </section>
+
+    <section class="handoff-execution" aria-labelledby="execution-title">
+      <div class="handoff-execution__intro">
+        <p class="course-eyebrow">Порядок доработки</p>
+        <h2 id="execution-title">Четыре этапа<br>без пересборки с нуля</h2>
+        <p>Текущий продукт уже остаётся рабочим эталоном. Новая команда меняет архитектуру поверх него и доказывает качество на реальных маршрутах.</p>
+      </div>
+      <ol>
+        <li><span>01</span><div><strong>Защитить snapshot</strong><p>Поднять сборку, прогнать focused checks, зафиксировать media и telemetry boundaries.</p></div></li>
+        <li><span>02</span><div><strong>Собрать новый manifest</strong><p>Разнести префлоп и постфлоп, переместить математику с ICM, убрать архивные routes из overview.</p></div></li>
+        <li><span>03</span><div><strong>Переработать два узла</strong><p>Сжать onboarding и собрать контрастный урок по типам соперников без потери видео и практики.</p></div></li>
+        <li><span>04</span><div><strong>Проверить как ученик</strong><p>Пройти решения, мудрости, чарты, игровые паузы, desktop/mobile и только затем готовить production.</p></div></li>
+      </ol>
+    </section>
+
+    <section class="handoff-archive" id="archive" aria-labelledby="archive-title">
+      <div class="course-section-heading">
+        <div><p class="course-eyebrow">В конце — намеренно</p><h2 id="archive-title">Убрано из маршрута.<br><em>Не удалено.</em></h2></div>
+        <p>Новая команда должна ещё раз проверить эти материалы перед физическим удалением. Для каждого пункта указан сигнал, при котором его стоит вернуть.</p>
+      </div>
+      <div class="handoff-archive__grid" data-handoff-archive aria-busy="true">
+        <div class="course-loading">Собираем архив решений…</div>
+      </div>
+    </section>
+
+    <section class="handoff-ready" aria-label="Готовность к передаче">
+      <div><p class="course-eyebrow">Следующий шаг</p><h2>Откройте handoff в Codex<br>и начинайте с этапа A.</h2></div>
+      <a class="course-primary" href="/FFSTART_CODEX_HANDOFF.md" download>Скачать главный файл <span aria-hidden="true">↓</span></a>
+    </section>
+  </main>
+
+  <footer class="course-footer handoff-footer"><a href="/ffstart-review">← К решениям ревью</a><span>FF Start · план передачи новой команде</span></footer>
+  <script src="/assets/ffstart-course/handoff.js?v=20260716-handoff-v1"></script>
+</body>
+</html>

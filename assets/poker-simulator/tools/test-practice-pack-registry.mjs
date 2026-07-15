@@ -20,6 +20,15 @@ assert.equal(legacy.requestedId(), "resteal");
 assert.equal(legacy.catalogEntry().id, "resteal");
 assert(legacy.catalogEntry().scripts.every((path) => path.startsWith("assets/poker-resteal-lesson/")));
 
+const freeplayCatalog = harness("?embedded=1&practice=ffstart-play");
+assert.equal(freeplayCatalog.requestedId(), "ffstart-play");
+assert.equal(freeplayCatalog.catalogEntry().id, "ffstart-freeplay", "game-break alias resolves to the full-simulator pack");
+assert.deepEqual(
+  [...freeplayCatalog.catalogEntry().scripts],
+  ["assets/ffstart-course/simulator-freeplay-pack.js?v=20260715-freeplay-v1"],
+  "game breaks lazy-load one settings-only practice pack"
+);
+
 let createCalls = 0;
 const engine = {
   createTable(options) {

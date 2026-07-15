@@ -79,6 +79,7 @@
       "reset-idle",
       "restart-tournament",
       "select-table",
+      "session-hand-limit",
       "settings",
       "simulation-settings",
       "table-count",

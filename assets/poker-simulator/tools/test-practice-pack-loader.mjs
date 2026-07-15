@@ -94,12 +94,15 @@ async function boot(search) {
   runInContext(read("assets/poker-simulator/simulator-practice-packs.js"), context, { filename: "simulator-practice-packs.js" });
   runInContext(read("assets/poker-simulator/simulator-feature-loader.js"), context, { filename: "simulator-feature-loader.js" });
   const readyResult = await context.PokerSimulatorFeatureLoader.readyForBoot();
+  const settings = {};
+  context.PokerSimulatorPracticePacks.applyBootSettings(settings);
   return {
     active: context.PokerSimulatorPracticePacks.active(),
     loaded,
     registeredPacks,
     readyResult,
-    engineWrapped: engine.createTable !== baseCreateTable
+    engineWrapped: engine.createTable !== baseCreateTable,
+    settings
   };
 }
 
@@ -132,5 +135,35 @@ assert.deepEqual(
   "Resteal advice loads before its descriptor and boot waits for both"
 );
 assert.equal(legacy.readyResult[1]?.id, "resteal", "readyForBoot resolves with the registered legacy descriptor");
+
+const freeplay = await boot("?embedded=1&practice=ffstart-freeplay&hands=5&mode=random&stackMin=40&stackMax=80&tempo=calm");
+assert.equal(freeplay.active?.id, "ffstart-freeplay", "game-break query registers the real freeplay descriptor");
+assert(freeplay.engineWrapped, "the shared registry activates the settings-only freeplay descriptor");
+assert.deepEqual(freeplay.registeredPacks, [], "freeplay reuses the simulator's built-in gameplay pack");
+assert.deepEqual(
+  freeplay.loaded.map((entry) => entry.ref),
+  ["assets/ffstart-course/simulator-freeplay-pack.js"],
+  "game break loads only its bounded settings descriptor"
+);
+assert.equal(freeplay.readyResult[1]?.id, "ffstart-freeplay", "readyForBoot resolves with the game-break descriptor");
+assert.deepEqual(
+  {
+    tableCount: freeplay.settings.tableCount,
+    playerCount: freeplay.settings.playerCount,
+    simulationMode: freeplay.settings.simulationMode,
+    min: freeplay.settings.randomStackMinBb,
+    max: freeplay.settings.randomStackMaxBb,
+    hands: freeplay.settings.sessionHandLimit,
+    tempo: freeplay.settings.handTempo,
+    statsScope: freeplay.settings.statsScope
+  },
+  { tableCount: 1, playerCount: 6, simulationMode: "random", min: 40, max: 80, hands: 5, tempo: "calm", statsScope: "session" },
+  "game break applies the requested one-table session boundaries"
+);
+assert.match(
+  read("assets/poker-simulator/simulator-render-runtime.js"),
+  /const FULL = Object\.freeze\(\[[\s\S]*?"session-hand-limit"/,
+  "finishing a bounded game break uses a registered full-render reason"
+);
 
 console.log("Practice pack lazy-loader contract: ok");

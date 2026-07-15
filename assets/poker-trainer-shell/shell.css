@@ -3185,4 +3185,30 @@ button {
     --sim-1t-seat-w: 94px !important;
     --sim-1t-seat-h: 40px !important;
   }
+  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .client-controls > .client-row .table-action.has-amount .table-action-label {
+    display: flex;
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    overflow: visible;
+    text-align: center;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .client-controls > .client-row .table-action.has-amount :is(.table-action-verb, .table-action-amount) {
+    max-width: 100%;
+    overflow: visible;
+    text-overflow: clip;
+    white-space: normal;
+  }
+
+  .lesson-table-host .ff-shell-simulator-snapshot.table-grid[data-count="1"] .client-controls > .client-row .table-action.has-amount .table-action-amount::before {
+    content: "";
+    margin: 0;
+  }
 }

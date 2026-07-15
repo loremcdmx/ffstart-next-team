@@ -1,20 +1,18 @@
 (function (root) {
   "use strict";
 
-  var STATES = ["F", "C", "R", "B", "M"];
+  var STATES = ["F", "C", "B", "R"];
   var META = {
     F: { label: "пас", shortLabel: "Пас" },
     C: { label: "колл", shortLabel: "Колл" },
-    R: { label: "3-бет", shortLabel: "3-бет" },
-    B: { label: "микс 3-бет / колл", shortLabel: "3-бет / колл" },
-    M: { label: "микс колл / пас", shortLabel: "Колл / пас" }
+    B: { label: "микс 3-бет / колл 50/50", shortLabel: "Микс 50/50" },
+    R: { label: "3-бет", shortLabel: "3-бет" }
   };
   var ACTION_WEIGHTS = {
     F: { fold: 1, call: 0, raise: 0 },
     C: { fold: 0, call: 1, raise: 0 },
-    R: { fold: 0, call: 0, raise: 1 },
     B: { fold: 0, call: 0.5, raise: 0.5 },
-    M: { fold: 0.5, call: 0.5, raise: 0 }
+    R: { fold: 0, call: 0, raise: 1 }
   };
 
   function normalizeState(value) {
