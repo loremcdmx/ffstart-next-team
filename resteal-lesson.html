@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="assets/poker-kit/trainer-ui-sanitizer.css?v=2757a3bc8810">
   <link rel="stylesheet" href="assets/4k-scale.css">
   <link rel="stylesheet" href="assets/poker-resteal-lesson/lesson.css?v=20260714-prod-refresh-1">
+  <link rel="stylesheet" href="assets/poker-resteal-lesson/rank-comparison.css?v=90e50a2b0bee">
 </head>
 <body>
   <main class="app">
@@ -185,12 +186,62 @@
           </div>
         </div>
       </article>
+
+      <article class="panel rank-evidence-slide wisdom-slide" id="rankEvidenceSlide" data-wisdom-slide aria-label="Рестил-пуши по лигам FunFarm">
+        <div class="rank-evidence-head">
+          <div class="rank-evidence-copy">
+            <p class="eyebrow">Данные FF · ранг на момент раздачи</p>
+            <h3>Рестил-пуш растёт вместе с лигой и ABI</h3>
+            <p>Слева всегда совсем новички. Справа выбери лигу и сравни тот же спот: кто открыл, каким сайзом и при каком эффективном стеке.</p>
+          </div>
+          <div class="rank-growth-strip" id="rankGrowthStrip" aria-label="ABI и частота рестил-пушей по уровню FF"></div>
+        </div>
+
+        <div class="rank-evidence-controls" id="rankComparisonFilters" aria-label="Условия сравнения рестил-пушей">
+          <fieldset>
+            <legend>Кто открыл</legend>
+            <div class="rank-segments" id="rankPositionTabs" role="tablist" aria-label="Позиция опен-рейзера"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Сайз опена</legend>
+            <div class="rank-segments" id="rankSizeTabs" role="tablist" aria-label="Размер опена"></div>
+          </fieldset>
+          <fieldset>
+            <legend>Эффективный стек</legend>
+            <div class="rank-segments" id="rankDepthTabs" role="tablist" aria-label="Глубина эффективного стека"></div>
+          </fieldset>
+        </div>
+
+        <div class="rank-evidence-compare">
+          <section class="rank-chart is-novice" aria-labelledby="rankNoviceTitle">
+            <div class="rank-chart-head">
+              <div><span>Слева · фиксировано</span><h4 id="rankNoviceTitle">Совсем новички</h4></div>
+              <div class="rank-chart-stats" id="rankNoviceStats"></div>
+            </div>
+            <div class="rank-action-bar" id="rankNoviceActionBar" aria-hidden="true"></div>
+            <div class="rank-matrix" id="rankNoviceMatrix" role="grid" aria-label="Рестил-пуши совсем новичков"></div>
+          </section>
+
+          <section class="rank-chart is-league" aria-labelledby="rankLeagueTitle">
+            <div class="rank-chart-head">
+              <div><span>Справа · выбери уровень</span><h4 id="rankLeagueTitle">3 лига</h4></div>
+              <div class="rank-chart-stats" id="rankLeagueStats"></div>
+            </div>
+            <div class="rank-league-tabs" id="rankLeagueTabs" role="tablist" aria-label="Лига для сравнения"></div>
+            <div class="rank-action-bar" id="rankLeagueActionBar" aria-hidden="true"></div>
+            <div class="rank-matrix" id="rankLeagueMatrix" role="grid" aria-label="Рестил-пуши выбранной лиги"></div>
+          </section>
+        </div>
+
+        <div class="rank-hand-readout" id="rankHandReadout" aria-live="polite"></div>
+        <p class="rank-evidence-source" id="rankEvidenceSource"></p>
+      </article>
           </div>
         </div>
         <div class="wisdom-carousel-controls">
           <button class="wisdom-arrow" type="button" data-wisdom-prev aria-label="Предыдущая мысль">←</button>
           <div class="wisdom-carousel-status">
-            <span id="wisdomStoryCounter" aria-live="polite">1 из 6</span>
+            <span id="wisdomStoryCounter" aria-live="polite">1 из 7</span>
             <div class="wisdom-story-dots" id="wisdomStoryDots" aria-label="Выбор мысли"></div>
           </div>
           <button class="wisdom-arrow" type="button" data-wisdom-next aria-label="Следующая мысль">→</button>
@@ -310,7 +361,9 @@
   <script defer src="assets/poker-trainer-shell/simulator-practice.js?v=20260714-practice-api"></script>
   <script defer src="assets/poker-resteal-lesson/data/browser-bundle.js?v=63cee47708b4"></script>
   <script defer src="assets/poker-resteal-lesson/data.js?v=20260713-2"></script>
+  <script defer src="assets/poker-resteal-lesson/data/resteal-rank-data.js?v=c522607916cc"></script>
   <script defer src="assets/poker-resteal-lesson/engine.js?v=20260713-2"></script>
+  <script defer src="assets/poker-resteal-lesson/rank-comparison.js?v=eb545d7b77cb"></script>
   <script defer src="assets/poker-resteal-lesson/lesson.js?v=20260714-practice-api"></script>
 </body>
 </html>

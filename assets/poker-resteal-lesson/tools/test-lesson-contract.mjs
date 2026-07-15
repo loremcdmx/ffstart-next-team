@@ -13,19 +13,24 @@ const simulatorPackCss = readFileSync(new URL("assets/poker-resteal-lesson/simul
 const trainerShellCss = readFileSync(new URL("assets/poker-trainer-shell/shell.css", repo), "utf8");
 const practiceRegistry = readFileSync(new URL("assets/poker-simulator/simulator-practice-packs.js", repo), "utf8");
 const featureLoader = readFileSync(new URL("assets/poker-simulator/simulator-feature-loader.js", repo), "utf8");
+const rankComparison = readFileSync(new URL("assets/poker-resteal-lesson/rank-comparison.js", repo), "utf8");
+const rankCss = readFileSync(new URL("assets/poker-resteal-lesson/rank-comparison.css", repo), "utf8");
+const rankData = readFileSync(new URL("assets/poker-resteal-lesson/data/resteal-rank-data.js", repo), "utf8");
 
-for (const id of ["lessonIntro", "startLesson", "introBtnChips", "introPotChips", "introJamChips", "introHeroCards", "introDealerButton", "firstEncounter", "firstTable", "firstCoach", "wisdomScreen", "wisdomCarouselTrack", "wisdomStoryCounter", "wisdomStoryDots", "wisdomFoldRate", "wisdomHandSummary", "wisdomHandPicker", "wisdomPassRate", "wisdomCallRate", "wisdomDoubleRate", "wisdomRiskDots", "deepScreen", "deepMathPanel", "deepFieldPanel", "opponentTabs", "foldSummary", "handMatrix", "practiceSimulatorShell", "restealSimulator", "startPracticeSession", "exitPractice", "infoPopover"]) {
+for (const id of ["lessonIntro", "startLesson", "introBtnChips", "introPotChips", "introJamChips", "introHeroCards", "introDealerButton", "firstEncounter", "firstTable", "firstCoach", "wisdomScreen", "wisdomCarouselTrack", "wisdomStoryCounter", "wisdomStoryDots", "wisdomFoldRate", "wisdomHandSummary", "wisdomHandPicker", "wisdomPassRate", "wisdomCallRate", "wisdomDoubleRate", "wisdomRiskDots", "rankEvidenceSlide", "rankGrowthStrip", "rankComparisonFilters", "rankPositionTabs", "rankSizeTabs", "rankDepthTabs", "rankNoviceTitle", "rankNoviceStats", "rankNoviceActionBar", "rankNoviceMatrix", "rankLeagueTitle", "rankLeagueStats", "rankLeagueTabs", "rankLeagueActionBar", "rankLeagueMatrix", "rankHandReadout", "rankEvidenceSource", "deepScreen", "deepMathPanel", "deepFieldPanel", "opponentTabs", "foldSummary", "handMatrix", "practiceSimulatorShell", "restealSimulator", "startPracticeSession", "exitPractice", "infoPopover"]) {
   assert.match(html, new RegExp(`id=["']${id}["']`), `${id} exists`);
 }
 for (const script of [
   "deck-library.js", "chip-library.js", "simulator-board-render.js", "simulator-seat-slots.js",
   "simulator-seat-renderer.js", "simulator-table-renderer.js", "simulator-snapshot.js", "browser-bundle.js",
-  "embed.js", "simulator-practice.js", "data.js", "engine.js", "lesson.js"
+  "embed.js", "simulator-practice.js", "data.js", "resteal-rank-data.js", "engine.js", "rank-comparison.js", "lesson.js"
 ]) {
   assert.ok(html.indexOf(script) >= 0, `${script} is wired`);
 }
 assert.ok(html.indexOf("simulator-snapshot.js") < html.indexOf("lesson.js"), "snapshot loads before lesson runtime");
 assert.ok(html.indexOf("browser-bundle.js") < html.indexOf("lesson.js"), "file-safe data bundle loads before lesson runtime");
+assert.ok(html.indexOf("resteal-rank-data.js") < html.indexOf("rank-comparison.js"), "rank cube loads before rank comparison runtime");
+assert.ok(html.indexOf("rank-comparison.js") < html.indexOf("lesson.js"), "rank comparison initializes before the lesson carousel runtime");
 assert.match(simulatorHtml, /assets\/poker-simulator\/simulator-practice-packs\.js/);
 assert.doesNotMatch(simulatorHtml, /assets\/poker-resteal-lesson\/(?:advice|simulator-pack)\.(?:js|css)/, "practice assets are lazy-loaded only for the requested pack");
 for (const asset of ["assets/poker-resteal-lesson/simulator-pack.css", "assets/poker-resteal-lesson/advice.js", "assets/poker-resteal-lesson/simulator-pack.js"]) {
@@ -39,8 +44,9 @@ assert.doesNotMatch(html, /data-control=["']ante["']|pkoToggle|waterfall|<detail
 assert.match(html, /Всегда включён · 1 BB/);
 assert.match(html, /Понятно, сыграть раздачу/);
 assert.match(html, /class="intro-action-routes"/);
-assert.equal((html.match(/data-wisdom-slide/g) || []).length, 6, "wisdom carousel has six distinct slides");
-assert.match(html, /id="wisdomStoryCounter"[^>]*>1 из 6</);
+assert.equal((html.match(/data-wisdom-slide/g) || []).length, 7, "wisdom carousel has seven distinct slides");
+assert.match(html, /id="wisdomStoryCounter"[^>]*>1 из 7</);
+assert.match(html, /id="rankNoviceTitle">Совсем новички</, "left comparison cohort stays fixed to novices");
 assert.match(html, /data-step-target="wisdom"/);
 assert.match(html, /data-step-target="deep"/);
 assert.doesNotMatch(html, /data-step-target="(?:math|field)"/);
@@ -92,6 +98,26 @@ assert.match(js, /theoreticalResultFor\(state\.wisdomHand\)/, "selected hand use
 assert.match(js, /const firstPassShare = Math\.round\(firstExample\.foldEquity \* 100\)/, "the previous slide stays tied to the original QJo spot");
 assert.match(css, /risk-example-layout[\s\S]*grid-template-areas:[\s\S]*"copy picker"[\s\S]*"metrics picker"/, "desktop hand picker sits to the right of the model");
 assert.match(css, /wisdom-hand-options[^{]*\{[^}]*grid-template-columns:\s*repeat\(2/, "hand choices use a compact two-column grid");
+
+assert.match(rankData, /window\.PokerRestealRankData=/, "rank comparison has a file-safe data payload");
+assert.match(rankData, /"cohortOrder":\["novice","league3","league2","league1"\]/, "rank cube keeps the novice to league-one progression");
+assert.match(rankData, /"positionOrder":\["CO","BTN"\]/, "rank cube exposes opener-position slices");
+assert.match(rankData, /"sizeOrder":\["2\.0","2\.5","3\.0"\]/, "rank cube exposes open-size slices");
+assert.match(rankData, /"depthOrder":\["25-40","25-30","30-35","35-40"\]/, "rank cube exposes pooled and narrow effective-stack slices");
+assert.match(rankComparison, /var Data = window\.PokerRestealRankData/);
+assert.match(rankComparison, /league:\s*"league3"/, "league-three is the default comparison cohort");
+assert.match(rankComparison, /chartFor\("novice"\)/, "novice chart is rendered independently of the selected league");
+for (const league of ["league3", "league2", "league1"]) {
+  assert.match(rankComparison, new RegExp(`\\{ key: "${league}", label: "[123] лига" \\}`), `${league} comparison option exists`);
+}
+for (const dimension of ["rankPositionTabs", "rankSizeTabs", "rankDepthTabs"]) {
+  assert.match(rankComparison, new RegExp(`createTabs\\(byId\\("${dimension}"\\)`), `${dimension} drives the shared comparison slice`);
+}
+assert.match(rankComparison, /\["folds", "Пас"[\s\S]*\["calls", "Колл"[\s\S]*\["small3bets", "3-бет"[\s\S]*\["jams", "Олл-ин"/, "action bars separate folds, calls, small 3-bets, and direct jams");
+assert.match(rankCss, /\.rank-evidence-compare\s*\{[^}]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\)/, "rank evidence keeps two equal desktop charts");
+assert.match(rankCss, /\.rank-matrix\s*\{[^}]*grid-template-columns:\s*repeat\(13,\s*minmax\(0,\s*1fr\)\)/, "each rank chart is a 13x13 hand matrix");
+assert.match(rankCss, /@media \(max-width:\s*760px\)[\s\S]*\.wisdom-slide\.rank-evidence-slide\s*\{[^}]*overflow-y:\s*auto/, "rank evidence remains scrollable on narrow screens");
+assert.match(rankCss, /@media \(max-width:\s*760px\)[\s\S]*\.rank-evidence-compare\s*\{[^}]*grid-template-columns:\s*1fr/, "rank charts stack on narrow screens");
 
 assert.match(js, /firstChoice:\s*"",\s*\n\s*unlocked:\s*false/, "first-hand answer and persistent lesson unlock are separate state");
 assert.match(js, /if \(!state\.unlocked && next !== "idea"\) return;/, "saved lesson unlock controls tab navigation");
