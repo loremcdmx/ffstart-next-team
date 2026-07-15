@@ -2,7 +2,7 @@
 
 Самостоятельный статический продукт с пошаговой программой **FF Start** и общим покерным симулятором.
 
-**Защищённый handoff-preview:** https://ff-poker-learning-onrdtum04-loremcdmxs-projects.vercel.app/ffstart-handoff
+**Защищённый handoff-preview:** https://ff-poker-learning-ha7va4vu2-loremcdmxs-projects.vercel.app/ffstart-handoff
 
 **Приватный репозиторий для новой команды:** https://github.com/loremcdmx/ffstart-next-team
 
