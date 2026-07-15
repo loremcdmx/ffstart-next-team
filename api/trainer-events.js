@@ -32,10 +32,16 @@ export default async function handler(req, res) {
     return;
   }
 
+  const upstream = process.env.TRAINER_EVENTS_UPSTREAM || DEFAULT_UPSTREAM;
+  if (upstream === "disabled") {
+    json(res, 202, { ok: true, accepted: 0, disabled: true });
+    return;
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 12_000);
   try {
-    const response = await fetch(process.env.TRAINER_EVENTS_UPSTREAM || DEFAULT_UPSTREAM, {
+    const response = await fetch(upstream, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

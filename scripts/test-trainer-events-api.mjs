@@ -43,6 +43,15 @@ try {
   assert.equal(largeResponse.statusCode, 413, "oversized payloads are rejected before forwarding");
   assert.equal(fetchCalls.length, 0, "oversized payloads do not reach the upstream");
 
+  process.env.TRAINER_EVENTS_UPSTREAM = "disabled";
+  const disabledResponse = makeResponse();
+  await handler({ method: "POST", headers: {}, body: { events: [{ type: "preview_only" }] } }, disabledResponse);
+  assert.equal(disabledResponse.statusCode, 202, "preview can explicitly disable external delivery");
+  assert.deepEqual(JSON.parse(disabledResponse.body), { ok: true, accepted: 0, disabled: true });
+  assert.equal(fetchCalls.length, 0, "disabled preview never sends learner data outside the deployment");
+
+  process.env.TRAINER_EVENTS_UPSTREAM = "https://events.example.test/api/trainer-events";
+
   const postResponse = makeResponse();
   await handler({ method: "POST", headers: { "x-forwarded-for": "203.0.113.5" }, body: { schema: "ff-trainer-event-v1", events: [{ type: "lesson_complete" }] } }, postResponse);
   assert.equal(postResponse.statusCode, 202, "upstream status is preserved");

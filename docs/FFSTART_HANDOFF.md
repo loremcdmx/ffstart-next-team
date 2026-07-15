@@ -152,6 +152,7 @@ Release-правило:
 - игровая пауза без оценки сохраняет локальное завершение через `setResult(..., { telemetry: false })`, а upstream получает только `trainer_session` с `evaluated: false`, чтобы score-shaped API не превратил отсутствие оценки в `0%`;
 - browser endpoint — `POST /api/trainer-events`;
 - serverless proxy в `api/trainer-events.js` пересылает payload в `TRAINER_EVENTS_UPSTREAM`; без env используется `https://ff-start-poker-hub.vercel.app/api/trainer-events`;
+- для внутреннего Preview задайте `TRAINER_EVENTS_UPSTREAM=disabled`: proxy вернёт безопасный `202`, но не отправит тестовые события в production;
 - прогресс хранится локально в `localStorage["ff-player-progress-v1"]`;
 - очередь событий хранится в ограниченном `localStorage["ff-trainer-events-v1"]`; состояние нового урока — в profile-scoped ключах `ffstart-lesson-progress-v1:<profile-id>:<lesson-key>`.
 

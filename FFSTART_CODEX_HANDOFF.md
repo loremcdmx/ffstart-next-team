@@ -231,6 +231,8 @@ git diff --check
 
 `npm run build:ffstart:media` запускать только с подтверждённым private archive. Перед production отдельно проверить media delivery, права на публикацию, cache tokens, telemetry proxy и реальные маршруты в браузере.
 
+Для внутреннего Vercel Preview используйте `TRAINER_EVENTS_UPSTREAM=disabled`, чтобы тестовые прохождения не попадали в production telemetry. Перед production замените значение на согласованный канонический upstream.
+
 ## 7. Карта исходников
 
 - `course/ffstart-manifest.json` — порядок модулей, уроков и игровых пауз.
