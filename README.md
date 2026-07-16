@@ -2,11 +2,11 @@
 
 Самостоятельный статический продукт с пошаговой программой **FF Start** и общим покерным симулятором.
 
-**Защищённый handoff-preview:** https://ff-poker-learning-ha7va4vu2-loremcdmxs-projects.vercel.app/ffstart-handoff
+**Публичная handoff-сборка:** https://ffstart-next-team.vercel.app/ffstart-handoff
 
-**Приватный репозиторий для новой команды:** https://github.com/loremcdmx/ffstart-next-team
+**Публичный репозиторий для новой команды:** https://github.com/loremcdmx/ffstart-next-team
 
-Публичный `https://ff-poker-learning-hub.vercel.app` остаётся прежним production baseline и не содержит эту handoff-сборку. Preview открывается после входа в Vercel и намеренно не promoted в production до подтверждения media rights.
+Обе ссылки открываются без входа в GitHub или Vercel. Handoff опубликован отдельным проектом; `https://ff-poker-learning-hub.vercel.app` остаётся прежним production baseline и не содержит эту сборку.
 
 ## Что входит в FF Start
 
@@ -47,11 +47,11 @@ npm run build:ffstart
 npm run check:ffstart
 ```
 
-`build:ffstart:practice` собирает пакеты ситуаций из зафиксированного внешнего source snapshot, `build:ffstart:media` связывает private media archive с уроками, проверяет 36 авторских active-learning frames и обновляет web-артефакты, а `build:ffstart:pages` пересобирает 33 типовые страницы. Исходные MP4 и master M4A остаются вне deploy-репозитория; в нём хранятся media manifest, постеры, 36 компактных mono AAC, вычитанные VTT и синхронный текст. Видео воспроизводится через hashed Vimeo embed, а CDN URL хранится только как диагностический source reference. Полный `npm run check` остаётся release-gate для всего standalone-хаба, включая три legacy-урока и общий симулятор.
+`build:ffstart:practice` собирает пакеты ситуаций из зафиксированного внешнего source snapshot, `build:ffstart:media` связывает private media archive с уроками, проверяет 36 авторских active-learning frames и обновляет web-артефакты, а `build:ffstart:pages` пересобирает 33 типовые страницы. Исходные MP4 и master M4A остаются вне deploy-репозитория; в нём хранятся media manifest, постеры, 36 компактных mono AAC, вычитанные VTT и синхронный текст. Видео воспроизводится через hashed Vimeo embed, а CDN URL хранится только как диагностический source reference. Полный `npm run check` остаётся release-gate для всего standalone-хаба, включая три legacy-урока и общий симулятор. Текущая выделенная handoff-сборка опубликована по прямому решению владельца; перед её переносом в другой проект новая команда должна повторно зафиксировать допустимый объём распространения media.
 
-Обычная media-сборка сохраняет редакторские правки в `assets/ffstart-course/media/captions/*.vtt`. Режим `FFSTART_MEDIA_REIMPORT_CAPTIONS=1` заново импортирует raw ASR и очищает реестр approvals; captions и текст остаются скрытыми до новой вычитки и явного `FFSTART_MEDIA_MARK_CAPTIONS_REVIEWED=1`. Публичный релиз отдельно требует подтверждённых прав на Vimeo-записи, выделенное аудио и производный текст.
+Обычная media-сборка сохраняет редакторские правки в `assets/ffstart-course/media/captions/*.vtt`. Режим `FFSTART_MEDIA_REIMPORT_CAPTIONS=1` заново импортирует raw ASR и очищает реестр approvals; captions и текст остаются скрытыми до новой вычитки и явного `FFSTART_MEDIA_MARK_CAPTIONS_REVIEWED=1`. Любой последующий публичный релиз отдельно требует подтверждённых прав на Vimeo-записи, выделенное аудио и производный текст.
 
-Перед media-релизом отдельно запускается `npm run check:ffstart:media-delivery`. Gate проверяет все 36 hashed Vimeo oEmbed URL и репрезентативные player endpoints; текущий результат — `36/36` и `4/4`. Cold CDN probe по-прежнему показывает полный `200` вместо byte-range `206`, поэтому прямые MP4 не используются как primary player source и отмечаются только предупреждением. Отдельные web-аудиодорожки, синхронные captions и текст остаются same-origin артефактами. До публичного релиза всё ещё требуется письменное подтверждение прав на видео, аудио и производный текст.
+Перед media-релизом отдельно запускается `npm run check:ffstart:media-delivery`. Gate проверяет все 36 hashed Vimeo oEmbed URL и репрезентативные player endpoints; текущий результат — `36/36` и `4/4`. Cold CDN probe по-прежнему показывает полный `200` вместо byte-range `206`, поэтому прямые MP4 не используются как primary player source и отмечаются только предупреждением. Отдельные web-аудиодорожки, синхронные captions и текст остаются same-origin артефактами. Перед новым публичным релизом или переносом материалов команда повторно подтверждает права на видео, аудио и производный текст.
 
 Зафиксированный вход для текущей сборки: `af814314071cdd384a7a694b21a0ea37c922b5c5` в репозитории, заданном через `FFSTART_SOURCE_ROOT`.
 

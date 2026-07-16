@@ -6,7 +6,7 @@
 
 ## 1. Как открыть продукт
 
-После получения доступа к приватному handoff-репозиторию:
+Репозиторий публичный и клонируется без доступа к аккаунту владельца:
 
 ```bash
 git clone https://github.com/loremcdmx/ffstart-next-team.git
@@ -14,9 +14,16 @@ cd ffstart-next-team
 npm run dev
 ```
 
-Готовый защищённый preview: `https://ff-poker-learning-ha7va4vu2-loremcdmxs-projects.vercel.app/ffstart-handoff`. Для открытия нужен вход в Vercel; публичный production намеренно не обновлялся до подтверждения прав на media.
+Готовая публичная сборка: `https://ffstart-next-team.vercel.app/ffstart-handoff`. Вход в GitHub или Vercel не нужен. Это отдельный handoff-проект: основной `ff-poker-learning-hub` production не изменён.
 
-Открыть:
+Публично открываются:
+
+- `https://ffstart-next-team.vercel.app/ffstart` — текущий собранный курс;
+- `https://ffstart-next-team.vercel.app/ffstart-review` — все 52 решения ревью;
+- `https://ffstart-next-team.vercel.app/ffstart-handoff` — визуальный план новой архитектуры;
+- `https://ffstart-next-team.vercel.app/poker-simulator` — полный симулятор.
+
+После локального запуска те же разделы доступны по адресам:
 
 - `http://127.0.0.1:4173/ffstart` — текущий собранный курс;
 - `http://127.0.0.1:4173/ffstart-review` — все 52 решения ревью;
@@ -233,7 +240,7 @@ git diff --check
 
 `npm run build:ffstart:media` запускать только с подтверждённым private archive. Перед production отдельно проверить media delivery, права на публикацию, cache tokens, telemetry proxy и реальные маршруты в браузере.
 
-Для внутреннего Vercel Preview используйте `TRAINER_EVENTS_UPSTREAM=disabled`, чтобы тестовые прохождения не попадали в production telemetry. Перед production замените значение на согласованный канонический upstream.
+В публичной handoff-сборке используется `TRAINER_EVENTS_UPSTREAM=disabled`, поэтому тестовые прохождения не попадают в production telemetry. Перед подключением реальной телеметрии замените значение на согласованный канонический upstream.
 
 ## 7. Карта исходников
 
